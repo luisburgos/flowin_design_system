@@ -1,0 +1,32 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "baseline": {
+        "$value": "Inter",
+        "$description": "Baseline UI typeface. Delivery is a per-tech concern (see DESIGN.md); the spec names the family, not the loader."
+      }
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "regular": { "$value": 400 },
+      "semibold": { "$value": 600 }
+    }
+  },
+  "typography": {
+    "$type": "typography",
+    "$description": "Composite type tokens (baseline group). lineHeight is a unitless ratio; letterSpacing kept as-authored in px (see DESIGN.md px→em rule). Button labels bind to labelLarge.",
+    "baseline": {
+      "labelLarge": {
+        "$value": {
+          "fontFamily": "{font.family.baseline}",
+          "fontSize": { "value": 16, "unit": "px" },
+          "fontWeight": "{font.weight.semibold}",
+          "lineHeight": 1,
+          "letterSpacing": { "value": 0, "unit": "px" }
+        }
+      }
+    }
+  }
+}

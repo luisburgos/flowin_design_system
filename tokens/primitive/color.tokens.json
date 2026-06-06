@@ -1,0 +1,29 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "color": {
+    "$type": "color",
+    "$description": "Primitive color ramps — literal values, the raw palette. Not consumed directly by components; semantic tokens alias these. Values are byte-for-byte from the Flowin foundation (flutter_flowin/lib/src/foundations/colors.dart).",
+    "white": { "$value": "#ffffff" },
+    "black": { "$value": "#000000" },
+    "neutral": {
+      "100": { "$value": "#f9f9f9" },
+      "200": { "$value": "#f3f3f3" },
+      "300": { "$value": "#dbdbdb" },
+      "400": { "$value": "#ababab" },
+      "500": { "$value": "#7a7a7a" },
+      "600": { "$value": "#494949" },
+      "700": { "$value": "#313131" },
+      "800": { "$value": "#181818" }
+    },
+    "error": {
+      "100": { "$value": "#fef7f7" },
+      "200": { "$value": "#fde9e9" },
+      "300": { "$value": "#f5918f" },
+      "400": { "$value": "#f15957" },
+      "500": { "$value": "#ec221f" },
+      "600": { "$value": "#ac1f1d" },
+      "700": { "$value": "#821d1b" },
+      "800": { "$value": "#55161f" }
+    }
+  }
+}

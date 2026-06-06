@@ -27,9 +27,22 @@ overridable, not per-instance) + a "do not" list._
 
 ## 4. Component index
 
-_TBD. The v1 catalog (modern-only: components validated theme-first in `flutter_flowin`),
-each tagged generic-primitive vs domain/app-specific, each linking to its
-`design/components/<name>.md` contract._
+The v1 catalog (modern-only: components validated theme-first in `flutter_flowin`), each
+tagged generic-primitive vs domain/app-specific.
+
+| Component | Tag | Contract |
+|---|---|---|
+| button | generic-primitive | [design/components/button.md](design/components/button.md) |
+
+_Remaining v1 components (icon-button, chip, chip-group, tabs, app-bar, action-sheet,
+card, input-field, text-field, divider, color-picker-field, color-radial-button, …) are
+authored under the component-contracts slice._
+
+### Typography conversion rule
+
+`letterSpacing` is authored in **px** (as in the Flutter source). A transform targeting a
+platform that expects relative units converts per binding: `em = letterSpacing_px /
+fontSize_px`. `lineHeight` is a unitless ratio and transforms directly.
 
 ## 5. Open gaps
 
