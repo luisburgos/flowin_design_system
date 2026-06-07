@@ -136,6 +136,7 @@ divider styling rather than from the bar itself.
   parameter (max-height constraint only); legacy `FDTabAppBar` exposed a per-instance
   `dividerColor` override — dropped in the modern reference in favor of the global divider
   role.
+- **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `borderSubtle`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Illustrative anatomy aside (Flutter):** the bar is a `SizedBox` over a `Stack` — the
   footer in a bottom-pinned `Positioned`, the row in a top/left/right-padded `Row` with
   `ConstrainedBox` edge slots and an `Expanded`/`Spacer` center. This structure is

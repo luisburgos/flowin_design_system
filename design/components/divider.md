@@ -95,9 +95,7 @@ Nothing is resolved per call.
 - **Legacy names (reference):** `FDDivider` (wrapping `Divider`, `height: space50`) and
   `FDVerticalDivider` (wrapping `VerticalDivider`, `width: space50`), both defaulting the
   line color to `outlineVariant` and accepting optional `color` / `thickness` overrides.
-- **Color role note:** the reference slot binds `colorScheme.outlineVariant`; in agnostic
-  token terms this is the neutralized low-emphasis border role `{color.borderSubtle}`
-  (both resolve to the same neutral step).
+- **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `borderSubtle`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Audit:** faithful — color, thickness, and reserved extent are reproduced from the
   reference. Known gap: no vertical divider + no separate vertical-extent theme channel
   (Med).

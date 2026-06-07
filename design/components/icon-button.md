@@ -105,6 +105,7 @@ the error color roles).
 - **Size mapping (reference):** size is shared with the button via `FlowinButtonSize`; the
   square side is taken from the size's control height (`minHeight`) and the icon size from
   the size's paired icon size.
+- **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `surfaceSecondary`, `onSurfaceSecondary`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Tag:** generic-primitive.
 - **Conformance:** a theme-only-styling test must prove the circular shape comes from the
   theme, not the widget — override the slot, render the icon button, assert it reflects the

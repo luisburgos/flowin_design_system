@@ -112,9 +112,7 @@ shadows, clip).
   radius value object is `FlowinCardBorderRadius` with an `.all(radius)` constructor and a
   `.medium()` default-radius constructor.
 - **Theme slot (reference impl):** `cardTheme` (`color` + `shape`).
-- **Color-role neutralization:** the reference slot binds the platform's
-  `secondaryContainer` role for the fill; this contract refers to it by its neutralized
-  name `surfaceSecondary`.
+- **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `surfaceSecondary`, `cornerSmoothing`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Smoothing factor:** the reference foundation constant `iOSSmooth` (0.6) maps to the
   `{radius.cornerSmoothing}` token; `radius400` (16px) maps to `{radius.400}`.
 - **Legacy names (reference):** `FDCard` / `FDCardBorderRadius` — the legacy `borderRadius`

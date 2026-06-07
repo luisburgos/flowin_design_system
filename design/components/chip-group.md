@@ -138,6 +138,7 @@ only layout dimensions (height, spacing, padding) and the selection→role mappi
   signatures; `FdChipVariant` { selected, unselected, unselectedDimmed }. The standalone
   pager wrapper `FDChipGroupViewPager` (paged content driven by the chip row) is a separate
   legacy composite, out of scope for this contract.
+- **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `surfaceSecondary`, `onSurfaceSecondary`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Tag:** generic-primitive.
 - **Conformance:** a theme-only-styling test must prove the selected fill, border, label
   style, and pill shape come from the chip theme slot, not the group widget — override the

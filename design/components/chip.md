@@ -107,9 +107,7 @@ and, for `unselectedDimmed`, the reduced opacity.
 - **Reference implementation:** `FlowinChip` (flutter_flowin) — a thin composition over the
   framework's native choice-chip primitive (`ChoiceChip`).
 - **Theme slot (reference impl):** `chipTheme`.
-- **Color-role neutralization:** the reference slot binds the platform's `secondaryContainer`
-  / `onSecondaryContainer` / `outlineVariant` roles; this contract refers to them by their
-  neutralized names `surfaceSecondary` / `onSurfaceSecondary` / `borderSubtle`.
+- **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `surfaceSecondary`, `onSurfaceSecondary`, `borderSubtle`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Legacy names (reference):** `FdChip` / `FdChipVariant` (`selected` / `unselected` /
   `unselectedDimmed`), with `child` + `onLongPress` + per-instance styling hooks (see Known
   gaps).

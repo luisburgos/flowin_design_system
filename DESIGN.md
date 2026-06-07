@@ -137,6 +137,26 @@ column is shown only to demonstrate that the same token set maps onto a fundamen
 different mechanism (custom properties + classes) without changing the tokens — it is not
 a delivered transform.
 
+### Role-name mapping (neutral → Material)
+
+Several semantic role keys were given **platform-neutral names** so the agnostic layer does
+not presuppose any one framework's vocabulary (see §2). The Flutter reference implementation
+binds them onto Material's `ColorScheme` roles — the names differ, the binding is identical.
+This table is the single source of truth for that mapping; a Flutter transform applies it,
+and a reviewer uses it to confirm that a Material name in the code is the *correct* transform
+of a neutral spec name, not a deviation.
+
+| Spec (neutral) | Flutter (`ColorScheme` role / radius) |
+|---|---|
+| `surfaceSecondary` | `secondaryContainer` |
+| `onSurfaceSecondary` | `onSecondaryContainer` |
+| `borderSubtle` | `outlineVariant` |
+| `cornerSmoothing` | `iOSSmooth` (the `figma_squircle` smoothing factor) |
+
+Role keys not listed here map to the identically-named Material role (`primary` →
+`primary`, `onSurface` → `onSurface`, …). For a non-Material target (e.g. CSS custom
+properties), the neutral name *is* the name — no mapping applies.
+
 ### Conformance rules
 
 - **Every token binding must be globally overridable, not per-instance.** A binding is
