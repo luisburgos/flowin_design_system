@@ -16,6 +16,17 @@ specific rendering technique**.
 | `design/components/<name>.md` | Markdown | agents / transform input | per-component contracts (fixed template) |
 | `docs/` | HTML | humans | usage guides + rationale |
 
+## Docs
+
+Human-facing reference docs live in `docs/` as self-contained HTML:
+
+- [`docs/usage-guide.html`](docs/usage-guide.html) — a reader's tour of the spec: the
+  three-layer model, how to read a component contract, how the tokens resolve, and how a
+  transform produces a tech-specific package.
+- [`docs/rationale-theme-first.html`](docs/rationale-theme-first.html) — the long-form
+  "why theme-first" rationale (legacy closed-wrapper anti-pattern vs. the theme-first
+  rebuild) behind the thesis in `DESIGN.md` §1.
+
 ## Architecture: theme-first
 
 Native widgets / platform primitives are styled **entirely by a global theming
