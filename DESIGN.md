@@ -19,6 +19,15 @@ has no equivalent.
 
 _TBD. How tech-agnostic tokens map onto a platform's global theming mechanism._
 
+**Semantic role vocabulary (decided):** the semantic color role keys (primary, onPrimary,
+secondaryContainer, onSecondaryContainer, onSurface, outlineVariant, errorContainer,
+onErrorContainer) are adopted as the house agnostic role vocabulary for v1. They are
+Material-3-derived; this is a deliberate choice — the role+on-color contract is
+platform-neutral, and aligning keys with the first transform target keeps that transform
+1:1 and verifiable. The most platform-specific names (the `…Container` family,
+`outlineVariant`) are scheduled for neutralization when the full role set and dark mode
+land.
+
 ## 3. Transformation contract
 
 _TBD. Mechanism-mapping table (Flutter row real, others as shape-examples) +
@@ -27,8 +36,8 @@ overridable, not per-instance) + a "do not" list._
 
 ## 4. Component index
 
-The v1 catalog (modern-only: components validated theme-first in `flutter_flowin`), each
-tagged generic-primitive vs domain/app-specific.
+The v1 catalog (modern-only: components validated theme-first in the reference
+implementation), each tagged generic-primitive vs domain/app-specific.
 
 | Component | Tag | Contract |
 |---|---|---|
@@ -40,7 +49,7 @@ authored under the component-contracts slice._
 
 ### Typography conversion rule
 
-`letterSpacing` is authored in **px** (as in the Flutter source). A transform targeting a
+`letterSpacing` is authored in **px** (as authored in the Flowin foundation tokens). A transform targeting a
 platform that expects relative units converts per binding: `em = letterSpacing_px /
 fontSize_px`. `lineHeight` is a unitless ratio and transforms directly.
 

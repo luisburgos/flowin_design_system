@@ -2,7 +2,7 @@
   "$schema": "https://tr.designtokens.org/format/",
   "color": {
     "$type": "color",
-    "$description": "Primitive color ramps — literal values, the raw palette. Not consumed directly by components; semantic tokens alias these. Values are byte-for-byte from the Flowin foundation (flutter_flowin/lib/src/foundations/colors.dart).",
+    "$description": "Primitive color ramps — literal values, the raw palette. Not consumed directly by components; semantic tokens alias these. Values are byte-for-byte from the Flowin foundation palette.",
     "white": { "$value": "#ffffff" },
     "black": { "$value": "#000000" },
     "neutral": {

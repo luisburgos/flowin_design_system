@@ -2,7 +2,7 @@
   "$schema": "https://tr.designtokens.org/format/",
   "space": {
     "$type": "dimension",
-    "$description": "Spacing scale (padding, gaps, fixed dimensions). Non-linear step scale named by token weight. From flutter_flowin FlowinDesignSpace. Button references space200/250/300/400/600.",
+    "$description": "Spacing scale (padding, gaps, fixed dimensions). Non-linear step scale named by token weight. Derived from the Flowin foundation spacing scale.",
     "zero": { "$value": { "value": 0, "unit": "px" } },
     "50": { "$value": { "value": 2, "unit": "px" } },
     "100": { "$value": { "value": 4, "unit": "px" } },
@@ -15,8 +15,17 @@
   },
   "radius": {
     "$type": "dimension",
-    "$description": "Corner-radius scale. From flutter_flowin FlowinDesignRadius. Button shape binds to radius.400.",
+    "$description": "Corner-radius scale. Derived from the Flowin foundation corner-radius scale.",
     "400": { "$value": { "value": 16, "unit": "px" } },
     "full": { "$value": { "value": 9999, "unit": "px" } }
+  },
+  "size": {
+    "$type": "dimension",
+    "$description": "Control sizing scale — minimum heights for interactive controls. Distinct from the spacing scale: a control height is a sizing decision, not a spacing value.",
+    "control": {
+      "xs": { "$value": { "value": 32, "unit": "px" } },
+      "sm": { "$value": { "value": 40, "unit": "px" } },
+      "md": { "$value": { "value": 56, "unit": "px" } }
+    }
   }
 }

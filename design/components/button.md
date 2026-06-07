@@ -33,9 +33,9 @@ Default size is `sm`.
 
 | Size | Min height | Content padding (h × v) | Paired icon size |
 |---|---|---|---|
-| `xs` | `{space.*}` 32px | `space.300` × `space.200` (12 × 8) | sm (16) |
-| `sm` | 40px | `space.400` × `space.250` (16 × 10) | md (20) |
-| `md` | 56px | `space.600` × `space.400` (24 × 16) | lg (24) |
+| `xs` | `{size.control.xs}` (32px) | `space.300` × `space.200` (12 × 8) | sm (16) |
+| `sm` | `{size.control.sm}` (40px) | `space.400` × `space.250` (16 × 10) | md (20) |
+| `md` | `{size.control.md}` (56px) | `space.600` × `space.400` (24 × 16) | lg (24) |
 
 ## States
 
@@ -64,7 +64,7 @@ error color roles.
 | background | destructive, default | `{color.errorContainer}` |
 | foreground | destructive, default | `{color.onErrorContainer}` |
 | content padding | per size | `{space.*}` (see Sizes table) |
-| min height | per size | 32 / 40 / 56 px (see Sizes table) |
+| min height | per size | `{size.control.*}` (see Sizes table) |
 
 ## Behavioral notes
 
@@ -77,25 +77,25 @@ error color roles.
 
 - **Global (theme slot):** corner radius, base padding, base text style, and the
   per-variant color roles. A conformant transform installs these on the platform's
-  global button theming mechanism (Flutter: `filledButtonTheme` / `outlinedButtonTheme` /
-  `textButtonTheme`). They must be **globally overridable, not per-instance.**
+  global button theming mechanism. They must be **globally overridable, not per-instance.**
 - **Per-call (resolved by the thin widget):** variant selection, size (→ padding,
   min-height, icon size), and the destructive error-role overlay. These are the only
   concerns the theme cannot know per invocation.
 
 ## Known gaps / planned fix
 
-- Legacy `FDButton` applied a per-size **outer padding** wrapper (xs:8 / sm:4 / md:0) and
-  a per-size **text style** (xs→labelSmall, sm→labelMedium, md→labelLarge); the modern
-  reference collapses text to a single `labelLarge` and drops the outer padding. Recorded
-  as backlog (audit H6/H7), not specified here.
-- `xs` min-height token weight to be reconciled when the full dimension set lands
-  (fds#2).
+- The legacy variant applied a per-size **outer padding** and a per-size **label text
+  style**; the modern reference collapses to a single label style and drops the outer
+  padding. Recorded as backlog (audit H6/H7), not specified here.
 
 ## Transform notes
 
 - **Reference implementation:** `FlowinButton` (flutter_flowin). `outline` variant exists
   in the modern reference but not in legacy `FDButtonVariant` — v1 follows modern.
+- **Theme slots (reference impl):** `filledButtonTheme` / `outlinedButtonTheme` /
+  `textButtonTheme`.
+- **Legacy names (reference):** `FDButton` outer-padding + per-size text style xs/sm/md →
+  labelSmall/Medium/Large.
 - **Tag:** generic-primitive.
 - **Conformance:** a theme-only-styling test must prove corner radius (and other theme
   bindings) come from the theme, not the widget — override the slot, render the button,

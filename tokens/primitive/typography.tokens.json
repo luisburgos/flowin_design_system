@@ -16,7 +16,7 @@
   },
   "typography": {
     "$type": "typography",
-    "$description": "Composite type tokens (baseline group). lineHeight is a unitless ratio; letterSpacing kept as-authored in px (see DESIGN.md px→em rule). Button labels bind to labelLarge.",
+    "$description": "Composite type tokens (baseline group). lineHeight is a unitless ratio; letterSpacing kept as-authored in px (see DESIGN.md px→em rule).",
     "baseline": {
       "labelLarge": {
         "$value": {
