@@ -1,0 +1,16 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "shadow": {
+    "$type": "shadow",
+    "$description": "Elevation shadow tokens. Offsets, blur, and spread are px lengths; color aliases a primitive ramp step. Derived from the Flowin foundation elevation.",
+    "shadow100": {
+      "$value": {
+        "color": "{color.neutral.200}",
+        "offsetX": { "value": 0, "unit": "px" },
+        "offsetY": { "value": 8, "unit": "px" },
+        "blur": { "value": 32, "unit": "px" },
+        "spread": { "value": 5, "unit": "px" }
+      }
+    }
+  }
+}

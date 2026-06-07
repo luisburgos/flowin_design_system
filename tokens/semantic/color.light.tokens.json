@@ -2,32 +2,46 @@
   "$schema": "https://tr.designtokens.org/format/",
   "color": {
     "$type": "color",
-    "$description": "Light-mode semantic color roles — aliases onto primitive ramps. Dark mode lives in color.dark.tokens.json. Only the roles Button needs are defined in this tracer-bullet slice; the full role set arrives in the token-set slice.",
+    "$description": "Light-mode semantic color roles — aliases onto primitive ramps. Dark mode lives in color.dark.tokens.json; mode-independent colors in color.fixed.tokens.json. Role keys apply the neutralized vocabulary: surfaceSecondary/onSurfaceSecondary replace the former secondaryContainer/onSecondaryContainer, and borderSubtle replaces the former outlineVariant. primary/secondary/tertiary are PLACEHOLDERS aliasing the neutral ramp until a chromatic brand accent exists; note that the foundation primary/secondary 400 step was #b6b6b6 whereas neutral.400 is #ababab, so aliasing onto neutral shifts that one step — accepted divergence rather than inventing a new ramp.",
     "primary": {
       "$value": "{color.neutral.800}",
-      "$description": "PLACEHOLDER: primary currently aliases neutral — the brand has no chromatic accent yet. When a brand hue exists, re-point or de-alias this. See DESIGN.md open gaps."
+      "$description": "PLACEHOLDER: aliases the neutral ramp — no chromatic brand accent yet. Re-point or de-alias when a brand hue exists."
     },
     "onPrimary": { "$value": "{color.white}" },
-    "secondaryContainer": {
+    "secondary": {
       "$value": "{color.neutral.200}",
-      "$description": "Tonal button background. Aliases the neutral-200 grayscale placeholder until a secondary hue exists."
+      "$description": "PLACEHOLDER: aliases the neutral ramp pending a chromatic brand accent."
     },
-    "onSecondaryContainer": { "$value": "{color.neutral.800}" },
-    "onSurface": {
+    "onSecondary": { "$value": "{color.neutral.800}" },
+    "tertiary": {
+      "$value": "{color.neutral.100}",
+      "$description": "PLACEHOLDER: aliases the neutral ramp pending a chromatic brand accent."
+    },
+    "onTertiary": { "$value": "{color.neutral.800}" },
+    "surface": { "$value": "{color.white}" },
+    "onSurface": { "$value": "{color.neutral.800}" },
+    "onSurfaceVariant": { "$value": "{color.neutral.400}" },
+    "inverseSurface": { "$value": "{color.neutral.700}" },
+    "onInverseSurface": { "$value": "{color.white}" },
+    "shadow": { "$value": "{color.neutral.200}" },
+    "primaryContainer": { "$value": "{color.neutral.800}" },
+    "onPrimaryContainer": { "$value": "{color.white}" },
+    "surfaceSecondary": {
+      "$value": "{color.neutral.200}",
+      "$description": "Tonal/secondary surface. Neutralized name (was secondaryContainer)."
+    },
+    "onSurfaceSecondary": {
       "$value": "{color.neutral.800}",
-      "$description": "Outline/text button foreground."
+      "$description": "Foreground on the tonal/secondary surface. Neutralized name (was onSecondaryContainer)."
     },
-    "outlineVariant": {
+    "outline": { "$value": "{color.neutral.800}" },
+    "borderSubtle": {
       "$value": "{color.neutral.200}",
-      "$description": "Outline button border side."
+      "$description": "Low-emphasis border. Neutralized name (was outlineVariant)."
     },
-    "errorContainer": {
-      "$value": "{color.error.100}",
-      "$description": "Destructive button background."
-    },
-    "onErrorContainer": {
-      "$value": "{color.error.500}",
-      "$description": "Destructive button foreground."
-    }
+    "error": { "$value": "{color.error.500}" },
+    "onError": { "$value": "{color.white}" },
+    "errorContainer": { "$value": "{color.error.100}" },
+    "onErrorContainer": { "$value": "{color.error.500}" }
   }
 }
