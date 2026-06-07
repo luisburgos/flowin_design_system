@@ -121,6 +121,7 @@ contributes content and constraints only, never visual tokens.
   `labelDecoration`, the label sidebar + `FDVerticalDivider` + `FDCard` surface, and a
   fixed min-height (`space.1600`); the modern reference drops all of these for a standalone
   field. `border.regular` (1px) is the platform border-side default width.
+- **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `borderSubtle`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Tag:** generic-primitive.
 - **Conformance:** a theme-only-styling test must prove fill, hint style, content padding,
   corner radius, and border come from the theme, not the widget — override the input theme

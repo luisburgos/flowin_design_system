@@ -193,6 +193,7 @@ applies **no fill of its own to the slot content**.
   `popDefaultActionSheet`. Legacy `showDefaultActionSheet` accepted `constraints`,
   `backgroundColor`, and `clipBehavior` (dropped — audit H5); the legacy header pinned the
   close control to `FDButtonSize.xs` / 32×32 (regressed to default `sm` / 40×40 — audit H4).
+- **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `surfaceSecondary`, `onSurfaceSecondary`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Illustrative anatomy aside (Flutter):** the sheet is a `FlowinCard` (margin = the edge
   insets, `borderRadius` = `radius1000`, `backgroundColor` = `colorScheme.surface`) wrapping
   a min-size `Column` with `space400` spacing; the present helper is

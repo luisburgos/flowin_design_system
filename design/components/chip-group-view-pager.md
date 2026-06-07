@@ -125,11 +125,7 @@ on, recorded here so a conformant transform can verify them.
 - **Theme slots (reference impl):** `chipTheme` (chip shape/colors/label/padding),
   `tabBarTheme` (label text styles), and `dividerTheme` (separator color/thickness). No
   dedicated slot for the pager composition itself.
-- **Neutralized color roles:** the reference theme slot still wires selected-chip
-  background and border to the framework `secondaryContainer` role and the separator to
-  `outlineVariant`; this contract binds the **neutralized** roles `surfaceSecondary` and
-  `borderSubtle`. A conformant transform maps the neutralized roles onto whatever the host
-  framework's slot expects.
+- **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `surfaceSecondary`, `borderSubtle`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Legacy names (reference):** `FDChipGroupViewPager` with `chipFactory`,
   `controller` (external `PageController`), `chipGroupController`, `chipsPadding`,
   `chipSpacing` — all dropped in the modern reference (audit H11).

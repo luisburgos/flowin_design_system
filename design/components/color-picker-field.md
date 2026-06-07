@@ -166,6 +166,7 @@ selection-ring gap color.
   platform-native color-picker package outside the theme.
 - **Legacy names (reference):** the legacy swatch is `FDColorRadialButton`; the legacy field
   exposed an `id` parameter (test-key hook) dropped in the modern reference — see Known gaps.
+- **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `borderSubtle`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Illustrative anatomy aside (Flutter):** the picker row is a `SizedBox` over a `Row`
   pairing the gradient swatch with an `Expanded` horizontal `ListView.separated` of
   predefined swatches; each swatch is a `Stack` of concentric `DecoratedBox` circles that

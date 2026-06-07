@@ -149,6 +149,7 @@ the **shell**, not the field child.
   companion `FDTextField` placing a collapsed text field into the child slot. The legacy
   `FDInputFieldLabelDecoration.copyWith` is the source of the `copyWith` bug fixed in the
   modern reference (see Known gaps).
+- **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `borderSubtle`, `cornerSmoothing`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Illustrative anatomy aside (Flutter):** the shell is a `FlowinCard`
   (`SmoothRectangleBorder` surface) wrapping a fixed-height `SizedBox` over a `Row` of a
   fixed-width `SizedBox` label, a `VerticalDivider`, and an `Expanded` child. This structure

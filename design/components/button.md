@@ -96,6 +96,7 @@ error color roles.
   `textButtonTheme`.
 - **Legacy names (reference):** `FDButton` outer-padding + per-size text style xs/sm/md →
   labelSmall/Medium/Large.
+- **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `surfaceSecondary`, `onSurfaceSecondary`, `borderSubtle`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Tag:** generic-primitive.
 - **Conformance:** a theme-only-styling test must prove corner radius (and other theme
   bindings) come from the theme, not the widget — override the slot, render the button,
