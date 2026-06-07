@@ -5,11 +5,11 @@
       "$type": "fontFamily",
       "baseline": {
         "$value": "Inter",
-        "$description": "Baseline UI typeface — the family for all baseline text roles. The spec names the family; how it is delivered is a per-tech concern (see DESIGN.md)."
+        "$description": "Baseline UI typeface — the family for all baseline text roles. See DESIGN.md for font-delivery guidance."
       },
       "brand": {
         "$value": "Supreme",
-        "$description": "Expressive brand typeface — the family for the brand text roles (display, headline, and select title/body). The spec names the family; how it is delivered is a per-tech concern (see DESIGN.md)."
+        "$description": "Expressive brand typeface — the family for the brand text roles (display, headline, and select title/body). See DESIGN.md for font-delivery guidance."
       }
     },
     "weight": {

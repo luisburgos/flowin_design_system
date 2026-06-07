@@ -2,7 +2,7 @@
   "$schema": "https://tr.designtokens.org/format/",
   "color": {
     "$type": "color",
-    "$description": "Light-mode semantic color roles — aliases onto primitive ramps. Dark mode lives in color.dark.tokens.json; mode-independent colors in color.fixed.tokens.json. Role keys apply the neutralized vocabulary: surfaceSecondary/onSurfaceSecondary replace the former secondaryContainer/onSecondaryContainer, and borderSubtle replaces the former outlineVariant. primary/secondary/tertiary are PLACEHOLDERS aliasing the neutral ramp until a chromatic brand accent exists; note that the foundation primary/secondary 400 step was #b6b6b6 whereas neutral.400 is #ababab, so aliasing onto neutral shifts that one step — accepted divergence rather than inventing a new ramp.",
+    "$description": "Light-mode semantic color roles — aliases onto primitive ramps. Dark mode lives in color.dark.tokens.json; mode-independent colors in color.fixed.tokens.json. primary/secondary/tertiary are PLACEHOLDERS aliasing the neutral ramp until a chromatic brand accent exists; the foundation primary/secondary 400 step was #b6b6b6 whereas neutral.400 is #ababab, so aliasing onto neutral shifts that one step — accepted divergence rather than inventing a new ramp.",
     "primary": {
       "$value": "{color.neutral.800}",
       "$description": "PLACEHOLDER: aliases the neutral ramp — no chromatic brand accent yet. Re-point or de-alias when a brand hue exists."
@@ -28,16 +28,16 @@
     "onPrimaryContainer": { "$value": "{color.white}" },
     "surfaceSecondary": {
       "$value": "{color.neutral.200}",
-      "$description": "Tonal/secondary surface. Neutralized name (was secondaryContainer)."
+      "$description": "Tonal/secondary surface."
     },
     "onSurfaceSecondary": {
       "$value": "{color.neutral.800}",
-      "$description": "Foreground on the tonal/secondary surface. Neutralized name (was onSecondaryContainer)."
+      "$description": "Foreground on the tonal/secondary surface."
     },
     "outline": { "$value": "{color.neutral.800}" },
     "borderSubtle": {
       "$value": "{color.neutral.200}",
-      "$description": "Low-emphasis border. Neutralized name (was outlineVariant)."
+      "$description": "Low-emphasis border."
     },
     "error": { "$value": "{color.error.500}" },
     "onError": { "$value": "{color.white}" },
