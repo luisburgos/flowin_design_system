@@ -31,11 +31,18 @@ a bespoke button — the theme styles the native primitive.
 
 Default size is `sm`.
 
-| Size | Min height | Content padding (h × v) | Paired icon size |
-|---|---|---|---|
-| `xs` | `{size.control.xs}` (32px) | `space.300` × `space.200` (12 × 8) | sm (16) |
-| `sm` | `{size.control.sm}` (40px) | `space.400` × `space.250` (16 × 10) | md (20) |
-| `md` | `{size.control.md}` (56px) | `space.600` × `space.400` (24 × 16) | lg (24) |
+| Size | Min height | Content padding (h × v) | Outer padding | Label text style | Paired icon size |
+|---|---|---|---|---|---|
+| `xs` | `{size.control.xs}` (32px) | `space.300` × `space.200` (12 × 8) | `space.200` (8) | `{typography.baseline.labelSmall}` | sm (16) |
+| `sm` | `{size.control.sm}` (40px) | `space.400` × `space.250` (16 × 10) | `space.100` (4) | `{typography.baseline.labelMedium}` | md (20) |
+| `md` | `{size.control.md}` (56px) | `space.600` × `space.400` (24 × 16) | `space.0` (0) | `{typography.baseline.labelLarge}` | lg (24) |
+
+- **Content padding** is the padding *inside* the button (between its edge and the
+  label/icon).
+- **Outer padding** is applied *around* the button by the thin widget, so adjacent
+  buttons of the same size share consistent spacing without the call site adding it.
+- **Label text style** is per-size: it overrides the theme's base text style for `xs`
+  and `sm` (the base style equals the `md` style — `labelLarge`).
 
 ## States
 
@@ -45,9 +52,10 @@ in v1.
 
 ## Token bindings (normative)
 
-Shape, base padding, and text style are **theme-level** (apply to every button). The
-per-call layer adds only size padding / min-height / icon size, and for `destructive` the
-error color roles.
+Shape and the per-variant color roles are **theme-level** (apply to every button). The
+base text style is the theme default and equals the `md` label style; `xs`/`sm` override
+it per size. The per-call layer adds size padding / outer padding / per-size label text
+style / min-height / icon size, and for `destructive` the error color roles.
 
 | Property | Variant / State | Token |
 |---|---|---|
@@ -64,6 +72,8 @@ error color roles.
 | background | destructive, default | `{color.errorContainer}` |
 | foreground | destructive, default | `{color.onErrorContainer}` |
 | content padding | per size | `{space.*}` (see Sizes table) |
+| outer padding | per size | `{space.*}` (see Sizes table) |
+| label text style | per size | `{typography.baseline.label*}` (see Sizes table) |
 | min height | per size | `{size.control.*}` (see Sizes table) |
 
 ## Behavioral notes
@@ -75,18 +85,17 @@ error color roles.
 
 ## Theming directive
 
-- **Global (theme slot):** corner radius, base padding, base text style, and the
-  per-variant color roles. A conformant transform installs these on the platform's
+- **Global (theme slot):** corner radius, base text style (= the `md` label style), and
+  the per-variant color roles. A conformant transform installs these on the platform's
   global button theming mechanism. They must be **globally overridable, not per-instance.**
-- **Per-call (resolved by the thin widget):** variant selection, size (→ padding,
-  min-height, icon size), and the destructive error-role overlay. These are the only
-  concerns the theme cannot know per invocation.
+- **Per-call (resolved by the thin widget):** variant selection, size (→ content padding,
+  outer padding, per-size label text style, min-height, icon size), and the destructive
+  error-role overlay. These are the only concerns the theme cannot know per invocation.
 
 ## Known gaps / planned fix
 
-- The legacy variant applied a per-size **outer padding** and a per-size **label text
-  style**; the modern reference collapses to a single label style and drops the outer
-  padding. Recorded as backlog (audit H6/H7), not specified here.
+- _None._ (The legacy per-size **outer padding** and per-size **label text style** —
+  audit H6/H7 — are now **specified** above: see the Sizes table and Token bindings.)
 
 ## Transform notes
 
@@ -95,7 +104,7 @@ error color roles.
 - **Theme slots (reference impl):** `filledButtonTheme` / `outlinedButtonTheme` /
   `textButtonTheme`.
 - **Legacy names (reference):** `FDButton` outer-padding + per-size text style xs/sm/md →
-  labelSmall/Medium/Large.
+  labelSmall/Medium/Large — now adopted in v1 (above), restoring legacy parity.
 - **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `surfaceSecondary`, `onSurfaceSecondary`, `borderSubtle`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Tag:** generic-primitive.
 - **Conformance:** a theme-only-styling test must prove corner radius (and other theme
