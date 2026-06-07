@@ -1,0 +1,33 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "color": {
+    "$type": "color",
+    "$description": "Light-mode semantic color roles — aliases onto primitive ramps. Dark mode lives in color.dark.tokens.json. Only the roles Button needs are defined in this tracer-bullet slice; the full role set arrives in the token-set slice.",
+    "primary": {
+      "$value": "{color.neutral.800}",
+      "$description": "PLACEHOLDER: primary currently aliases neutral — the brand has no chromatic accent yet. When a brand hue exists, re-point or de-alias this. See DESIGN.md open gaps."
+    },
+    "onPrimary": { "$value": "{color.white}" },
+    "secondaryContainer": {
+      "$value": "{color.neutral.200}",
+      "$description": "Tonal button background. Aliases the neutral-200 grayscale placeholder until a secondary hue exists."
+    },
+    "onSecondaryContainer": { "$value": "{color.neutral.800}" },
+    "onSurface": {
+      "$value": "{color.neutral.800}",
+      "$description": "Outline/text button foreground."
+    },
+    "outlineVariant": {
+      "$value": "{color.neutral.200}",
+      "$description": "Outline button border side."
+    },
+    "errorContainer": {
+      "$value": "{color.error.100}",
+      "$description": "Destructive button background."
+    },
+    "onErrorContainer": {
+      "$value": "{color.error.500}",
+      "$description": "Destructive button foreground."
+    }
+  }
+}
