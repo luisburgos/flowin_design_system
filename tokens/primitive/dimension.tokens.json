@@ -11,21 +11,53 @@
     "250": { "$value": { "value": 10, "unit": "px" } },
     "300": { "$value": { "value": 12, "unit": "px" } },
     "400": { "$value": { "value": 16, "unit": "px" } },
-    "600": { "$value": { "value": 24, "unit": "px" } }
+    "600": { "$value": { "value": 24, "unit": "px" } },
+    "700": { "$value": { "value": 28, "unit": "px" } },
+    "800": { "$value": { "value": 32, "unit": "px" } },
+    "1000": { "$value": { "value": 40, "unit": "px" } },
+    "1200": { "$value": { "value": 48, "unit": "px" } },
+    "1400": { "$value": { "value": 56, "unit": "px" } },
+    "1600": { "$value": { "value": 64, "unit": "px" } },
+    "2400": { "$value": { "value": 96, "unit": "px" } },
+    "4000": { "$value": { "value": 160, "unit": "px" } }
   },
   "radius": {
     "$type": "dimension",
-    "$description": "Corner-radius scale. Derived from the Flowin foundation corner-radius scale.",
+    "$description": "Corner-radius scale. Derived from the Flowin foundation corner-radius scale. `cornerSmoothing` is a unitless smoothing factor (continuous-corner ratio), not a px length; `full` is a sentinel that yields a fully rounded (pill) shape.",
+    "100": { "$value": { "value": 4, "unit": "px" } },
+    "200": { "$value": { "value": 8, "unit": "px" } },
+    "300": { "$value": { "value": 12, "unit": "px" } },
     "400": { "$value": { "value": 16, "unit": "px" } },
+    "500": { "$value": { "value": 24, "unit": "px" } },
+    "600": { "$value": { "value": 26, "unit": "px" } },
+    "700": { "$value": { "value": 28, "unit": "px" } },
+    "800": { "$value": { "value": 32, "unit": "px" } },
+    "1000": { "$value": { "value": 40, "unit": "px" } },
+    "cornerSmoothing": { "$value": 0.6 },
     "full": { "$value": { "value": 9999, "unit": "px" } }
+  },
+  "border": {
+    "$type": "dimension",
+    "$description": "Border / stroke width scale. Derived from the Flowin foundation border scale.",
+    "regular": { "$value": { "value": 1, "unit": "px" } },
+    "bold": { "$value": { "value": 2, "unit": "px" } },
+    "extraBold": { "$value": { "value": 3, "unit": "px" } }
   },
   "size": {
     "$type": "dimension",
-    "$description": "Control sizing scale — minimum heights for interactive controls. Distinct from the spacing scale: a control height is a sizing decision, not a spacing value.",
+    "$description": "Sizing scales — fixed measures for interactive controls and icons. Distinct from the spacing scale: a control height or icon box is a sizing decision, not a spacing value.",
     "control": {
       "xs": { "$value": { "value": 32, "unit": "px" } },
       "sm": { "$value": { "value": 40, "unit": "px" } },
       "md": { "$value": { "value": 56, "unit": "px" } }
+    },
+    "icon": {
+      "xs": { "$value": { "value": 12, "unit": "px" } },
+      "sm": { "$value": { "value": 16, "unit": "px" } },
+      "md": { "$value": { "value": 20, "unit": "px" } },
+      "lg": { "$value": { "value": 24, "unit": "px" } },
+      "xl": { "$value": { "value": 32, "unit": "px" } },
+      "xxl": { "$value": { "value": 40, "unit": "px" } }
     }
   }
 }

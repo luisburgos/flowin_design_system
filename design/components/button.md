@@ -22,7 +22,7 @@ a bespoke button — the theme styles the native primitive.
 | Variant | Emphasis | Purpose |
 |---|---|---|
 | `filled` | high | Primary action. Solid `primary` background. **(default)** |
-| `tonal` | medium | Secondary action. `secondaryContainer` background. |
+| `tonal` | medium | Secondary action. `surfaceSecondary` background. |
 | `outline` | medium | Secondary action with a border, transparent fill. |
 | `text` | low | Lowest-emphasis, label-only. |
 | `destructive` | high | Dangerous action. Layers the error color role onto the filled shape. |
@@ -55,11 +55,11 @@ error color roles.
 | base text style | all | `{typography.baseline.labelLarge}` |
 | background | filled, default | `{color.primary}` |
 | foreground | filled, default | `{color.onPrimary}` |
-| background | tonal, default | `{color.secondaryContainer}` |
-| foreground | tonal, default | `{color.onSecondaryContainer}` |
+| background | tonal, default | `{color.surfaceSecondary}` |
+| foreground | tonal, default | `{color.onSurfaceSecondary}` |
 | background | outline, default | transparent |
 | foreground | outline, default | `{color.onSurface}` |
-| border side | outline, default | `{color.outlineVariant}` |
+| border side | outline, default | `{color.borderSubtle}` |
 | foreground | text, default | `{color.onSurface}` |
 | background | destructive, default | `{color.errorContainer}` |
 | foreground | destructive, default | `{color.onErrorContainer}` |

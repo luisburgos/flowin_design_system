@@ -5,19 +5,79 @@
       "$type": "fontFamily",
       "baseline": {
         "$value": "Inter",
-        "$description": "Baseline UI typeface. Delivery is a per-tech concern (see DESIGN.md); the spec names the family, not the loader."
+        "$description": "Baseline UI typeface — the family for all baseline text roles. See DESIGN.md for font-delivery guidance."
+      },
+      "brand": {
+        "$value": "Supreme",
+        "$description": "Expressive brand typeface — the family for the brand text roles (display, headline, and select title/body). See DESIGN.md for font-delivery guidance."
       }
     },
     "weight": {
       "$type": "fontWeight",
       "regular": { "$value": 400 },
-      "semibold": { "$value": 600 }
+      "medium": { "$value": 500 },
+      "semibold": { "$value": 600 },
+      "bold": { "$value": 700 }
     }
   },
   "typography": {
     "$type": "typography",
-    "$description": "Composite type tokens (baseline group). lineHeight is a unitless ratio; letterSpacing kept as-authored in px (see DESIGN.md px→em rule).",
+    "$description": "Composite type tokens. lineHeight is a unitless ratio; letterSpacing kept as-authored in px (see DESIGN.md px→em rule). `baseline` is the Inter UI scale; `brand` is the expressive Supreme scale.",
     "baseline": {
+      "headlineSmall": {
+        "$value": {
+          "fontFamily": "{font.family.baseline}",
+          "fontSize": { "value": 24, "unit": "px" },
+          "fontWeight": "{font.weight.semibold}",
+          "lineHeight": 1.3333333333333333,
+          "letterSpacing": { "value": -0.05, "unit": "px" }
+        }
+      },
+      "titleLarge": {
+        "$value": {
+          "fontFamily": "{font.family.baseline}",
+          "fontSize": { "value": 20, "unit": "px" },
+          "fontWeight": "{font.weight.semibold}",
+          "lineHeight": 1.2,
+          "letterSpacing": { "value": 0, "unit": "px" }
+        }
+      },
+      "titleMedium": {
+        "$value": {
+          "fontFamily": "{font.family.baseline}",
+          "fontSize": { "value": 16, "unit": "px" },
+          "fontWeight": "{font.weight.semibold}",
+          "lineHeight": 1.375,
+          "letterSpacing": { "value": 0, "unit": "px" }
+        }
+      },
+      "titleSmall": {
+        "$value": {
+          "fontFamily": "{font.family.baseline}",
+          "fontSize": { "value": 14, "unit": "px" },
+          "fontWeight": "{font.weight.semibold}",
+          "lineHeight": 1.4285714285714286,
+          "letterSpacing": { "value": 0, "unit": "px" }
+        }
+      },
+      "bodyLarge": {
+        "$value": {
+          "fontFamily": "{font.family.baseline}",
+          "fontSize": { "value": 16, "unit": "px" },
+          "fontWeight": "{font.weight.regular}",
+          "lineHeight": 1.5,
+          "letterSpacing": { "value": 0, "unit": "px" }
+        }
+      },
+      "bodyMedium": {
+        "$value": {
+          "fontFamily": "{font.family.baseline}",
+          "fontSize": { "value": 14, "unit": "px" },
+          "fontWeight": "{font.weight.regular}",
+          "lineHeight": 1.5714285714285714,
+          "letterSpacing": { "value": 0, "unit": "px" }
+        }
+      },
       "labelLarge": {
         "$value": {
           "fontFamily": "{font.family.baseline}",
@@ -25,6 +85,107 @@
           "fontWeight": "{font.weight.semibold}",
           "lineHeight": 1,
           "letterSpacing": { "value": 0, "unit": "px" }
+        }
+      },
+      "labelMedium": {
+        "$value": {
+          "fontFamily": "{font.family.baseline}",
+          "fontSize": { "value": 14, "unit": "px" },
+          "fontWeight": "{font.weight.semibold}",
+          "lineHeight": 1,
+          "letterSpacing": { "value": 0, "unit": "px" }
+        }
+      },
+      "labelSmall": {
+        "$value": {
+          "fontFamily": "{font.family.baseline}",
+          "fontSize": { "value": 12, "unit": "px" },
+          "fontWeight": "{font.weight.semibold}",
+          "lineHeight": 1,
+          "letterSpacing": { "value": 0, "unit": "px" }
+        }
+      },
+      "captionLarge": {
+        "$value": {
+          "fontFamily": "{font.family.baseline}",
+          "fontSize": { "value": 12, "unit": "px" },
+          "fontWeight": "{font.weight.medium}",
+          "lineHeight": 1.6666666666666667,
+          "letterSpacing": { "value": 0, "unit": "px" }
+        }
+      },
+      "captionMedium": {
+        "$value": {
+          "fontFamily": "{font.family.baseline}",
+          "fontSize": { "value": 10, "unit": "px" },
+          "fontWeight": "{font.weight.regular}",
+          "lineHeight": 1.6,
+          "letterSpacing": { "value": 0.2, "unit": "px" }
+        }
+      }
+    },
+    "brand": {
+      "displayXL": {
+        "$value": {
+          "fontFamily": "{font.family.brand}",
+          "fontSize": { "value": 160, "unit": "px" },
+          "fontWeight": "{font.weight.bold}",
+          "lineHeight": 1,
+          "letterSpacing": { "value": -2, "unit": "px" }
+        }
+      },
+      "displayLG": {
+        "$value": {
+          "fontFamily": "{font.family.brand}",
+          "fontSize": { "value": 80, "unit": "px" },
+          "fontWeight": "{font.weight.bold}",
+          "lineHeight": 1,
+          "letterSpacing": { "value": -1, "unit": "px" }
+        }
+      },
+      "headlineLarge": {
+        "$value": {
+          "fontFamily": "{font.family.brand}",
+          "fontSize": { "value": 48, "unit": "px" },
+          "fontWeight": "{font.weight.bold}",
+          "lineHeight": 1.1666666666666667,
+          "letterSpacing": { "value": 0, "unit": "px" }
+        }
+      },
+      "headlineSmall": {
+        "$value": {
+          "fontFamily": "{font.family.brand}",
+          "fontSize": { "value": 24, "unit": "px" },
+          "fontWeight": "{font.weight.bold}",
+          "lineHeight": 1.3333333333333333,
+          "letterSpacing": { "value": 0.2, "unit": "px" }
+        }
+      },
+      "titleMedium": {
+        "$value": {
+          "fontFamily": "{font.family.brand}",
+          "fontSize": { "value": 16, "unit": "px" },
+          "fontWeight": "{font.weight.bold}",
+          "lineHeight": 1.5,
+          "letterSpacing": { "value": 0.2, "unit": "px" }
+        }
+      },
+      "titleSmall": {
+        "$value": {
+          "fontFamily": "{font.family.brand}",
+          "fontSize": { "value": 14, "unit": "px" },
+          "fontWeight": "{font.weight.bold}",
+          "lineHeight": 1.4285714285714286,
+          "letterSpacing": { "value": 0.2, "unit": "px" }
+        }
+      },
+      "bodyLarge": {
+        "$value": {
+          "fontFamily": "{font.family.brand}",
+          "fontSize": { "value": 16, "unit": "px" },
+          "fontWeight": "{font.weight.medium}",
+          "lineHeight": 1.5,
+          "letterSpacing": { "value": 0.5, "unit": "px" }
         }
       }
     }
