@@ -195,16 +195,19 @@ implementation), each tagged generic-primitive vs domain/app-specific.
 | Component | Tag | Contract |
 |---|---|---|
 | button | generic-primitive | [design/components/button.md](design/components/button.md) |
+| item-button | generic-primitive | [design/components/item-button.md](design/components/item-button.md) |
 | icon-button | generic-primitive | [design/components/icon-button.md](design/components/icon-button.md) |
 | chip | generic-primitive | [design/components/chip.md](design/components/chip.md) |
 | chip-group | generic-primitive | [design/components/chip-group.md](design/components/chip-group.md) |
 | chip-group-view-pager | generic-primitive | [design/components/chip-group-view-pager.md](design/components/chip-group-view-pager.md) |
 | tabs | generic-primitive | [design/components/tabs.md](design/components/tabs.md) |
+| tab-item | generic-primitive | [design/components/tab-item.md](design/components/tab-item.md) |
 | app-bar | generic-primitive | [design/components/app-bar.md](design/components/app-bar.md) |
 | action-sheet | generic-primitive | [design/components/action-sheet.md](design/components/action-sheet.md) |
 | card | generic-primitive | [design/components/card.md](design/components/card.md) |
 | input-field | generic-primitive | [design/components/input-field.md](design/components/input-field.md) |
 | text-field | generic-primitive | [design/components/text-field.md](design/components/text-field.md) |
+| labeled-text-field | generic-primitive | [design/components/labeled-text-field.md](design/components/labeled-text-field.md) |
 | divider | generic-primitive | [design/components/divider.md](design/components/divider.md) |
 | color-picker-field | domain/app-specific | [design/components/color-picker-field.md](design/components/color-picker-field.md) |
 | color-radial-button | domain/app-specific | [design/components/color-radial-button.md](design/components/color-radial-button.md) |
