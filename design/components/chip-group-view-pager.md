@@ -88,6 +88,16 @@ on, recorded here so a conformant transform can verify them.
   move.
 - **Transition tuning.** The chip-tap → page animation duration and easing, and the paged
   view's scroll/swipe physics, are per-call behavior knobs (not styling).
+- **Controlled or uncontrolled.** A caller may optionally supply an external **paging
+  controller** and/or an external **chip-selection controller** to drive and observe the
+  active index from outside (controlled mode). When omitted, the component creates and owns
+  both internally (uncontrolled, today's behavior). Externally-supplied controllers are
+  owned by the caller and are not disposed by the component.
+- **Custom chip rendering (optional).** A caller may supply an optional **chip builder/
+  factory** to customize each chip's rendering, forwarded to the composed chip row; when
+  omitted, chips render from labels through the themed chip row.
+- **Chip-row layout knobs (optional).** The chip-row outer padding and inter-chip spacing
+  may be forwarded as per-call parameters; when omitted, the chip row's own defaults apply.
 
 ## Theming directive
 
@@ -99,23 +109,17 @@ on, recorded here so a conformant transform can verify them.
 - **Per-call (resolved by the thin widget):** the ordered item list (label + page
   builder), initial index, unselected-chip emphasis, whether the chip row scrolls vs.
   wraps, whether pages are kept alive, the transition duration/curve, the paged-view
-  physics, and the index-change callback. These are the only concerns the theme cannot
-  know per invocation — none of them are visual styling.
+  physics, the index-change callback, optional external paging / chip-selection
+  controllers, an optional chip builder, and optional chip-row layout knobs (outer padding,
+  inter-chip spacing). These are the only concerns the theme cannot know per invocation —
+  none of them are visual styling.
 
 ## Known gaps / planned fix
 
-- **Dropped page-content / chip rendering hook.** The legacy reference accepted a chip
-  factory so the call site could fully customize each chip's rendering. The current
-  reference drops it: chips are rendered from labels through the themed chip row only.
-  Recorded as audit gap **H11**; not specified here. Planned fix tracked in `flowin_pm`.
-- **Dropped externally-supplied controllers.** The legacy reference accepted an external
-  paging controller and an external chip-selection controller for controlled-mode
-  operation (driving or reading selection from outside the component). The current
-  reference always owns both controllers internally; there is no controlled mode. Recorded
-  as audit gap **H11**; not specified here. Planned fix tracked in `flowin_pm`.
-- **Dropped chip-row layout knobs.** The legacy reference forwarded chip-row outer padding
-  and inter-chip spacing as per-call parameters. The current reference relies on the chip
-  row's own defaults. Recorded under audit gap **H11**; not specified here.
+- **Controlled mode, chip factory, and chip-row layout knobs (audit H11) — now specified
+  above.** Optional external paging + chip-selection controllers (controlled mode), an
+  optional chip builder, and forwardable chip-row outer padding / inter-chip spacing are
+  part of the contract. _(Previously deferred; resolved.)_
 
 ## Transform notes
 
@@ -128,7 +132,8 @@ on, recorded here so a conformant transform can verify them.
 - **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `surfaceSecondary`, `borderSubtle`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Legacy names (reference):** `FDChipGroupViewPager` with `chipFactory`,
   `controller` (external `PageController`), `chipGroupController`, `chipsPadding`,
-  `chipSpacing` — all dropped in the modern reference (audit H11).
+  `chipSpacing` — re-adopted in v1 as optional per-call parameters (audit H11), restoring
+  controlled-mode parity.
 - **Tag:** generic-primitive.
 - **Conformance:** a theme-only-styling test must prove the separator color/thickness and
   the chip styling come from their theme slots, not the widget — override the slots, render

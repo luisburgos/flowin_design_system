@@ -73,8 +73,12 @@ and, for `unselectedDimmed`, the reduced opacity.
   owns selection — the chip does not self-toggle its variant.
 - `unselectedDimmed` differs from `unselected` **only** by a reduced-opacity wrapper; its
   fill/border/foreground roles are identical to `unselected`.
-- A label is **required**. An optional leading element renders before the label inside the
-  same pill.
+- The **label is arbitrary content**: it accepts any composed element (text, an icon-plus-
+  text row, etc.), not only a string. An optional leading element renders before the label
+  inside the same pill.
+- An optional **long-press** callback may be supplied alongside the activation (tap)
+  callback. Long-press is a secondary gesture and does not affect selection unless the
+  caller chooses to act on it; a null long-press callback simply disables that gesture.
 - The dimmed opacity (`0.5`) is a literal multiplier applied by the thin wrapper, not a
   color/elevation token — it scales the whole composed pill uniformly.
 
@@ -84,16 +88,16 @@ and, for `unselectedDimmed`, the reduced opacity.
   the per-selection fill/foreground color roles. A conformant transform installs these on
   the platform's global chip theming mechanism. They must be **globally overridable, not
   per-instance.**
-- **Per-call (resolved by the thin widget):** selection variant, the label, an optional
-  leading element, the activation callback, and the `unselectedDimmed` opacity multiplier.
-  These are the only concerns the theme cannot know per invocation.
+- **Per-call (resolved by the thin widget):** selection variant, the label (arbitrary
+  content), an optional leading element, the activation callback, an optional long-press
+  callback, and the `unselectedDimmed` opacity multiplier. These are the only concerns the
+  theme cannot know per invocation.
 
 ## Known gaps / planned fix
 
-- The legacy variant accepted an arbitrary composite **child** and an **`onLongPress`**
-  gesture; the modern reference reduces the content surface to a **label-only** API (plus an
-  optional leading element) and drops long-press. Recorded as backlog (audit H8), not
-  specified here.
+- **Composite content + long-press (audit H8) — now specified above.** The label accepts
+  arbitrary content and an optional long-press callback is part of the contract (see
+  Behavioral notes / Theming directive). _(Previously deferred; resolved.)_
 - The legacy variant used a **uniform** content padding of `{space.400}` on all sides
   (16 all-round); the modern reference changes this to **h `{space.400}` × v `{space.200}`**
   (16 × 8). This contract specifies the current (validated) h16/v8 shape; the change is
