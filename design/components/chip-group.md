@@ -94,8 +94,18 @@ only layout dimensions (height, spacing, padding) and the selection→role mappi
   internally (uncontrolled), seeded by an initial index. An out-of-range initial index is
   clamped into range; if the label set shrinks below the current index, the index is
   clamped down.
+- **Custom chip content (optional builder).** By default each option renders as a themed
+  label chip from its string. A caller may instead supply an optional **chip builder** that,
+  given the item's index, label, selected state, and selection callback, returns the chip to
+  render — enabling leading media or other composed content while keeping the simple
+  `labels` path as the default. The builder is additive: when omitted, the default rendering
+  applies.
 - **Selection callback.** After a tap updates the selection, the group reports the newly
-  selected **index** to an optional callback.
+  selected **index** to an optional callback. An optional **label callback** may also be
+  supplied for callers who prefer the selected label string; both fire on the same tap.
+- **Long-press (optional).** An optional per-item long-press callback may be supplied
+  alongside tap; it reports the long-pressed item's index and does not change selection. A
+  null long-press callback disables the gesture.
 - **Layout switch.** A flag chooses horizontal scrolling (a single scrollable run of fixed
   height) versus wrapping (a centered multi-line wrap with no fixed height). Scroll physics
   are platform-default for the scrollable run.
@@ -107,21 +117,19 @@ only layout dimensions (height, spacing, padding) and the selection→role mappi
   style, and chip content padding. These live on the platform's global chip theming
   mechanism and must be **globally overridable, not per-instance** — the group never
   passes per-chip styling overrides.
-- **Per-call (resolved by the thin widget):** the option **labels**, the unselected role
-  for the group, the selection model (controller / initial index), the selection callback,
-  and the group layout dimensions (scroll-vs-wrap, height, inter-chip spacing, run
-  padding). These are the only concerns the theme cannot know per invocation.
+- **Per-call (resolved by the thin widget):** the option **labels**, an optional **chip
+  builder** for custom chip content, the unselected role for the group, the selection model
+  (controller / initial index), the selection callback (index, plus an optional label
+  callback), an optional per-item **long-press** callback, and the group layout dimensions
+  (scroll-vs-wrap, height, inter-chip spacing, run padding). These are the only concerns the
+  theme cannot know per invocation.
 
 ## Known gaps / planned fix
 
-- **Labels only, no custom chip content (audit H10).** The reference accepts a list of
-  **strings**, not a list of fully-formed chip objects. Per-chip custom content (leading
-  media, bespoke chrome, arbitrary child widgets) that the legacy `List<chip>` input
-  allowed is **not** expressible today. Recorded as backlog (audit H10); not specified
-  here. Link: `flowin_pm`.
-- **Long-press affordance dropped.** The legacy group exposed a per-item long-press
-  callback alongside tap; the modern reference exposes only the tap/selection callback.
-  Long-press is not part of the v1 contract.
+- **Custom chip content + long-press (audit H10) — now specified above.** An optional chip
+  builder restores custom per-chip content (leading media, composed children) over the
+  simple `labels` path, and an optional per-item long-press callback is part of the
+  contract. _(Previously deferred; resolved.)_
 - **Scroll handle dropped.** The legacy tap/long-press callbacks handed the caller the run's
   scroll controller (to programmatically scroll to the tapped chip); the modern reference
   does not surface a scroll handle. Programmatic scroll-to-selection is not available in v1.
