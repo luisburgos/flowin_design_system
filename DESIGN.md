@@ -94,6 +94,22 @@ semantic roles and writes them into whatever the platform exposes as its global 
 store — the platform's color-role table, its type scale, and its per-component default
 slots.
 
+**Flowin is monochrome by design.** The `primary`, `secondary` and `tertiary` ramps are
+**neutral greys, deliberately** — identical at every step, carrying no hue. Colour in this
+system is reserved for *meaning*: only the `error`, `warning` and `success` ramps are
+chromatic. When nothing else on screen is coloured, a red or green is impossible to miss.
+
+This is a decision, not an unfinished palette. Three same-valued brand ramps read like
+placeholder scaffolding, and the legacy package shipped the same greys, so a conformance
+pass comparing against it will keep finding grey and concluding nothing is wrong — which
+is correct, for the opposite reason. Recorded here (2026-08-04) so the greys are not
+"fixed" into brand hues by someone reading them as an oversight.
+
+Consequence: a component that needs a distinguishable set of arbitrary colours — a colour
+picker's palette, a chart series, user-chosen entity colours — takes them from the **call
+site**, not from the brand ramps. The system supplies neutrals and semantics; it does not
+supply a spectrum.
+
 **Semantic color uses role + on-color pairs.** Color is never a bare value in the semantic
 tier; it is always a *role* paired with the *on-color* that is legible on top of it (a
 fill and its on-color, a surface and its on-color, an error surface and its on-color).
