@@ -8,9 +8,9 @@
 A labelled field for picking a single color, presented as an inline row of selectable
 swatches: a custom-color affordance followed by a scrollable strip of predefined swatches.
 Exactly one color may be selected at a time, and the selection is communicated outward as
-the field's value changes. It is a **domain composition**: the field chrome (label column,
-divider, bordered surface) comes from the labelled-field primitive and the global theme,
-while the picker row owns only the swatch layout. The call site supplies the label, the
+the field's value changes. It is a **domain composition**: the field chrome (stacked label,
+bordered surface) comes from the labelled-field primitive and the global theme, while the
+picker row owns only the swatch layout. The call site supplies the label, the
 predefined palette, an optional initial color, and a change handler — it never styles the
 field chrome.
 
@@ -19,21 +19,21 @@ field chrome.
 A labelled field whose content region is a single horizontal swatch row:
 
 ```
+  label                                                        ← stacked label
 ┌──────────────────────────────────────────────────────────┐  ← field surface (bordered)
-│            │                                               │
-│   label    │  (◍)   ◉  ○  ○  ○  ○  ○  ○  ○  ○  …  ►        │  ← content row (scrolls →)
-│            │   ↑         ↑                                  │
+│  ◉  ○  ○  ○  ○  ○  ○  …  ►                          (◍)  │  ← content row (scrolls →)
+│  ↑                                                    ↑   │
 └──────────────────────────────────────────────────────────┘
-   label col  │  custom    predefined swatch strip (horizontal scroll)
-              │  swatch
-            divider
+   predefined swatch strip (horizontal scroll)      custom swatch
+                                                    (pinned right)
 ```
 
-- **label column** — a fixed-width label beside a vertical divider, on the field surface.
-  Inherited from the labelled-field primitive; the picker contributes none of this chrome.
-- **custom swatch** — a leading circular swatch filled with a rainbow sweep gradient that
-  opens a full-spectrum custom-color picker. It reads as *selected* when the active color
-  is **not** one of the predefined swatches.
+- **label** — themed text above the field surface. Inherited from the labelled-field
+  primitive; the picker contributes none of this chrome.
+- **custom swatch** — a circular swatch filled with a rainbow sweep gradient that opens a
+  full-spectrum custom-color picker, **pinned to the trailing edge** of the row and
+  separated from the strip. It reads as *selected* when the active color is **not** one of
+  the predefined swatches.
 - **predefined strip** — a horizontally-scrolling row of circular swatches, one per
   palette entry, each separated by a uniform gap. The swatch matching the active color
   reads as *selected*.
@@ -53,7 +53,7 @@ below are intrinsic parts of the one component, not selectable variants.
 
 | Swatch role | Purpose |
 |---|---|
-| custom | Leading rainbow-gradient swatch; opens the platform custom-color picker. Reads selected when the active color is off-palette. |
+| custom | Trailing rainbow-gradient swatch, pinned to the row's far edge; opens the platform custom-color picker. Reads selected when the active color is off-palette. |
 | predefined | One swatch per palette entry; selecting it sets the active color to that entry. |
 
 ## Sizes
@@ -66,10 +66,13 @@ Single-size. The field exposes no `xs`/`sm`/`md` scale; its measures are fixed.
 | Swatch diameter | `{space.700}` (28) |
 | Selected ring width | `{border.extraBold}` (3) |
 | Selected ring gap width | `{border.bold}` (2) |
-| Gap between custom swatch and strip | `{space.400}` (16) |
+| Minimum gap between strip and custom swatch | `{space.400}` (16) |
 | Gap between predefined swatches | `{space.400}` (16) |
 
-> Label-column width, field padding, and field min-height are owned by the labelled-field
+> The custom swatch is **pinned to the trailing edge**: the strip takes the remaining width
+> and the gap grows beyond the minimum when the palette is short.
+
+> The label gap, field padding, and field min-height are owned by the labelled-field
 > primitive (see Theming directive), not re-specified per call.
 
 ## States
@@ -94,7 +97,7 @@ selection-ring gap color.
 |---|---|---|
 | field surface corner radius | field chrome | `{radius.400}` |
 | field border color | field chrome | `{color.borderSubtle}` |
-| divider color (label ↔ content) | field chrome | `{color.borderSubtle}` |
+| label → surface gap | field chrome | `{space.200}` |
 | label text style | field chrome | `{typography.baseline.labelMedium}` |
 | label text color | field chrome | `{color.onSurface}` |
 | content row height | all swatches | `{space.1000}` |
@@ -116,6 +119,12 @@ selection-ring gap color.
 - **Single selection.** At most one color is active. A predefined swatch is selected when
   the active color equals its palette entry; the custom swatch is selected when the active
   color is non-null and **not** present in the palette.
+- **Selection compares canonical color values, not color objects.** A color returned by a
+  platform picker may carry a wide-gamut color space (e.g. Display P3) while the palette
+  entry it came from is sRGB. An identity comparison treats those as different, so every
+  predefined color would read as *custom* once it had round-tripped through the picker or
+  through storage. Comparison is therefore on the **canonical packed value**, not on the
+  color object.
 - **Change emission.** Selecting any swatch — predefined or custom — updates the active
   color and notifies the optional change handler with the new color. Absence of a handler
   does not disable selection; the internal selection still updates.
@@ -124,23 +133,28 @@ selection-ring gap color.
   through the same change path as a predefined selection.
 - **Initial color.** An optional initial color seeds the selection; it may be on- or
   off-palette (an off-palette initial color selects the custom swatch).
+- **Re-seeding on a new subject.** When the caller supplies a different initial color — for
+  example switching to another entity being edited — the selection re-seeds from it.
+  The comparison uses the canonical value rule above, so a color that merely round-tripped
+  through storage is not treated as a change and does not clobber a color the user is
+  actively picking.
 - **Overflow.** The predefined strip scrolls horizontally when the palette exceeds the
-  available width; the custom swatch stays pinned at the leading edge.
+  available width; the custom swatch stays pinned at the **trailing** edge and never
+  scrolls out of reach.
 - **Affordance hint.** The custom swatch surfaces a hover/long-press hint distinguishing
   "pick a custom color" from "custom color selected"; the hint text is presentational and
   not tokenized.
 
 ## Theming directive
 
-- **Global (theme):** the field chrome — surface corner radius, border color, label↔content
-  divider color, and label text style — is installed by the **labelled-field primitive**
-  through the global card / divider / text theming, and the selection-ring gap reads the
-  global surface role. Overriding those global roles re-skins every color-picker field at
-  once. The picker contributes **no dedicated theme slot** of its own.
+- **Global (theme):** the field chrome — surface corner radius, border color, label gap,
+  and label text style — is installed by the **labelled-field primitive** through the global
+  card / text theming, and the selection-ring gap reads the global surface role. Overriding
+  those global roles re-skins every color-picker field at once. The picker contributes **no dedicated theme slot** of its own.
 - **Per-call (resolved at the call site):** the label string, the predefined palette, the
-  optional initial color, the change handler, and the label-column layout (width /
-  alignment). These are the only concerns the theme cannot know per invocation. Swatch
-  diameters and ring widths are fixed by the component, not surfaced per call.
+  optional initial color, and the change handler. These are the only concerns the theme
+  cannot know per invocation. Swatch diameters and ring widths are fixed by the component,
+  not surfaced per call.
 
 ## Known gaps / planned fix
 
@@ -161,8 +175,8 @@ selection-ring gap color.
   `FlowinInlineColorPicker`; each swatch is a `FlowinColorRadialButton` (with
   `FlowinColorRadialButton.gradient` for the custom-color affordance).
 - **Theme slots (reference impl):** none dedicated to the picker. Field chrome resolves
-  through the labelled-field primitive's surface (`cardTheme`), `dividerTheme`, and the
-  global `textTheme` label role; the custom-color picker surface is provided by a
+  through the labelled-field primitive's surface (`cardTheme`) and the global `textTheme`
+  label role; the custom-color picker surface is provided by a
   platform-native color-picker package outside the theme.
 - **Legacy names (reference):** the legacy swatch is `FDColorRadialButton`; the legacy field
   exposed an `id` parameter (test-key hook) dropped in the modern reference — see Known gaps.
@@ -172,9 +186,16 @@ selection-ring gap color.
   predefined swatches; each swatch is a `Stack` of concentric `DecoratedBox` circles that
   carves the selection ring with a surface-colored gap circle. This structure is
   illustrative only and not part of the binding contract.
-- **Tag:** domain/app-specific. The field is a Flowin product affordance (labelled
-  side-by-side layout + inline swatch picker), not a reusable generic primitive.
-- **Conformance:** prove the field chrome (corner radius, border, divider, label style)
+- **Stacked layout + trailing custom swatch (2026-08-04).** This contract previously
+  specified the **sidebar** field chrome (label column · divider · content) inherited from
+  the pre-2026-08-04 [input-field](input-field.md), and placed the custom swatch at the
+  **leading** edge. Both now match the shipping product: the label stacks above the surface,
+  and the custom swatch is pinned to the trailing edge with the predefined strip leading.
+  The legacy package still renders the leading-custom sidebar variant; apps migrating onto
+  flutter_flowin adopt the stacked form as part of adoption.
+- **Tag:** domain/app-specific. The field is a Flowin product affordance (labelled stacked
+  layout + inline swatch picker), not a reusable generic primitive.
+- **Conformance:** prove the field chrome (corner radius, border, label style)
   reflects an override of the **global** theme roles rather than per-instance values, and
   prove the selection-ring gap tracks the **global surface** role so a surface override
   re-colors the carved ring.
