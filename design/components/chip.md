@@ -65,6 +65,7 @@ and, for `unselectedDimmed`, the reduced opacity.
 | background | selected | `{color.surfaceSecondary}` |
 | foreground (label) | selected | `{color.onSurfaceSecondary}` |
 | opacity | unselectedDimmed | `0.5` (literal, see Behavioral notes) |
+| selection glyph | all | none — selection is conveyed by fill and border only |
 
 ## Behavioral notes
 
@@ -76,6 +77,10 @@ and, for `unselectedDimmed`, the reduced opacity.
 - The **label is arbitrary content**: it accepts any composed element (text, an icon-plus-
   text row, etc.), not only a string. An optional leading element renders before the label
   inside the same pill.
+- **Selection adds no glyph.** Selection is conveyed by the fill and border roles alone —
+  the chip never inserts a checkmark or any other automatic leading affordance. The
+  leading slot holds only what the caller puts there, in every state. A platform whose
+  choice-chip primitive shows a selected-state checkmark by default must turn it off.
 - An optional **long-press** callback may be supplied alongside the activation (tap)
   callback. Long-press is a secondary gesture and does not affect selection unless the
   caller chooses to act on it; a null long-press callback simply disables that gesture.
