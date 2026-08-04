@@ -16,7 +16,9 @@ owns only its layout (spacing, padding, scroll-vs-wrap) and its selection bookke
 A horizontal strip of pill-shaped chips separated by a fixed gap, with horizontal padding
 around the run. Each chip is a label inside a stadium-shaped container; the selected chip
 is filled, the rest are outlined/transparent. When scrolling is disabled the strip becomes
-a centered multi-line wrap instead of a single scrollable line.
+a multi-line wrap instead of a single scrollable line: rows are separated by a vertical
+gap matching the inter-chip spacing, and every row — including a short final one — starts
+at the leading edge.
 
 > Illustrative platform aside (non-binding): the reference implementation composes the
 > framework's native choice-chip primitive per item and lays them out with a horizontal
@@ -41,14 +43,20 @@ whichever chip the selection model points at.
 
 The group exposes no per-call size scale. Chip footprint (padding, label style, pill shape)
 is fixed by the theme. The only group-level dimensions are the run **height** (scrollable
-mode) and the inter-chip **spacing**, both group layout concerns rather than a size token
+mode) and the chip **spacing**, both group layout concerns rather than a size token
 scale.
 
 | Dimension | Default | Token |
 |---|---|---|
 | run height (scrollable) | 48px | `{space.1200}` |
 | inter-chip spacing | 8px | `{space.200}` |
+| wrapped-row spacing (wrap) | 8px | `{space.200}` — matches inter-chip spacing |
 | run padding (horizontal) | 12px | `{space.300}` |
+
+> **Wrapped rows get the same gap in both axes.** The vertical gap between wrapped rows
+> tracks the inter-chip spacing rather than being set independently, so the wrap reads as
+> an even grid. A platform whose wrap primitive defaults its run spacing to zero must set
+> it explicitly — leaving it unset makes wrapped rows touch.
 
 ## States
 
@@ -76,6 +84,8 @@ only layout dimensions (height, spacing, padding) and the selection→role mappi
 | chip opacity | unselectedDimmed | `0.5` |
 | run height | scrollable | `{space.1200}` |
 | inter-chip spacing | all | `{space.200}` |
+| wrapped-row spacing | wrap | `{space.200}` (tracks the inter-chip spacing) |
+| wrapped-row alignment | wrap | leading edge |
 | run padding (horizontal) | all | `{space.300}` |
 
 > The chip's selected fill, border color, and label style are bound at the **chip-theme**
@@ -107,8 +117,12 @@ only layout dimensions (height, spacing, padding) and the selection→role mappi
   alongside tap; it reports the long-pressed item's index and does not change selection. A
   null long-press callback disables the gesture.
 - **Layout switch.** A flag chooses horizontal scrolling (a single scrollable run of fixed
-  height) versus wrapping (a centered multi-line wrap with no fixed height). Scroll physics
-  are platform-default for the scrollable run.
+  height) versus wrapping (a leading-aligned multi-line wrap with no fixed height, rows
+  separated by the wrapped-row spacing). Scroll physics are platform-default for the
+  scrollable run.
+- **Wrap layout is overridable per call.** The wrapped-row spacing and alignment above are
+  defaults, not fixed values: a call site may override either (for example, centring a
+  short standalone row). The defaults are what an unconfigured group must render.
 - **At least one option.** The group requires a non-empty label set.
 
 ## Theming directive
@@ -146,6 +160,17 @@ only layout dimensions (height, spacing, padding) and the selection→role mappi
   signatures; `FdChipVariant` { selected, unselected, unselectedDimmed }. The standalone
   pager wrapper `FDChipGroupViewPager` (paged content driven by the chip row) is a separate
   legacy composite, out of scope for this contract.
+- **Deliberate divergence from the legacy reference — wrap layout (2026-08-04).** Two
+  wrap-mode values now stated above were previously unstated here, so the reference
+  implementation inherited the legacy behaviour by default:
+  - **Wrapped-row spacing.** `FdChipGroup` set its wrap primitive's `alignment` and
+    `spacing` but never its **run** spacing, so the platform default (0) applied and
+    wrapped rows touched vertically. That was an unset property, not an intent; the
+    contract now binds it to `{space.200}`.
+  - **Wrapped-row alignment.** `FdChipGroup` explicitly centred its rows — a real choice,
+    but one that leaves a short final row floating out of line with the full rows above
+    it. The contract now specifies leading alignment, with centring available as a
+    per-call override.
 - **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `surfaceSecondary`, `onSurfaceSecondary`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Tag:** generic-primitive.
 - **Conformance:** a theme-only-styling test must prove the selected fill, border, label
