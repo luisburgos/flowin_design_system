@@ -77,19 +77,26 @@ binds only the label's text style and the gap between label and field.
 
 ## Known gaps / planned fix
 
-- **Sidebar layout not carried forward (intentional).** The legacy bundled-label *sidebar*
-  (label beside the field) is replaced by a **stacked** (label-above) layout by design. If a
-  sidebar arrangement is ever needed it would be a separate variant, not this component.
+- **Sidebar layout removed system-wide (2026-08-04).** The legacy bundled-label *sidebar*
+  (label beside the field) was replaced here by a **stacked** (label-above) layout. This
+  contract previously left the door open — "if a sidebar arrangement is ever needed it would
+  be a separate variant" — and [input-field](input-field.md) was authored as exactly that
+  variant. The sidebar is now removed from the design system entirely: stacked is the only
+  labelled-field shape, and input-field has been re-specified as the generic stacked
+  primitive.
 
 ## Transform notes
 
-- **Reference implementation:** `FlowinLabeledTextField` (flutter_flowin), composing a label
-  and `FlowinTextField` in a `Column`.
+- **Reference implementation:** `FlowinLabeledTextField` (flutter_flowin), a thin adapter
+  over [input-field](input-field.md) that fills its child slot with a
+  [text-field](text-field.md). The stacked layout, surface and label styling live in the
+  input field; this component contributes only the text-field wiring.
 - **Theme slots (reference impl):** the text-field's input theming (field chrome) plus the
   global `textTheme` (label style). No dedicated slot for the composition itself.
-- **Legacy names (reference):** the legacy bundled-label text field used a leading label
-  sidebar; v1 restores a labeled field as an opt-in convenience but **stacked**, not as a
-  sidebar (audit: Med · TextField).
+- **Legacy names (reference):** `FDInputField` — the legacy bundled-label text field, which
+  used a leading label sidebar. v1 restores a labeled field as an opt-in convenience but
+  **stacked**, not as a sidebar (audit: Med · TextField). Note the name collision: the legacy
+  `FDInputField` maps to *this* component, not to [input-field](input-field.md).
 - **Tag:** generic-primitive.
 - **Conformance:** a layout test must prove the label renders **above** the field (vertical
   order); a theme-only-styling test must prove the field chrome still comes from the
