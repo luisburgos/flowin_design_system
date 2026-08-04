@@ -41,7 +41,14 @@ No per-call size scale. The item button is a single row footprint: full width, u
 
 | Size | Notable dimensions |
 |---|---|
-| (single) | full width; padding `{space.400}` (16) all sides; label `{typography.baseline.labelLarge}`; alignment center-left |
+| (single) | full width; min height `{size.control.md}` (56); padding `{space.400}` (16) all sides; label `{typography.baseline.labelLarge}`; leading icon `{size.icon.md}` (20); alignment center-left |
+
+> **Note — the row icon is `md` (20), not the `md` control's paired `lg` (24).**
+> [button](button.md) pairs each *control* size with an icon size, and its `md` row
+> pairs to `lg` (24). The item button deliberately does **not** inherit that pairing:
+> its leading icon is a quiet affordance beside a `labelLarge` label, so it binds
+> directly to `{size.icon.md}`. The legacy reference rendered 24 because it routed the
+> icon through the control scale rather than stating an intent; this contract states it.
 
 ## States
 
@@ -60,6 +67,8 @@ the error color roles.
 | width | all | full (stretches to the parent's width) |
 | alignment | all | center-left (leading edge) |
 | content padding | all | `{space.400}` (16) on all sides |
+| min height | all | `{size.control.md}` (56) |
+| leading icon size | all | `{size.icon.md}` (20) — **not** the `md` control's paired `lg`; see Sizes |
 | label text style | all | `{typography.baseline.labelLarge}` |
 | background | tonal, default | `{color.surfaceSecondary}` |
 | foreground | tonal, default | `{color.onSurfaceSecondary}` |
@@ -106,6 +115,13 @@ the error color roles.
 - **Legacy names (reference):** a left-aligned, full-width list-row button (all-16 padding,
   tonal default + destructive) that was dropped in the rebuild — restored here (audit H9),
   with the variant set extended to mirror `FlowinButton`.
+- **Deliberate divergence from the legacy reference — icon size (2026-08-04).** The legacy
+  `FDItemButton` rendered its icon at **24**: it hardcoded the *control* size `md`, and the
+  legacy scale mapped that control step to icon step `lg`. This contract binds the row icon
+  directly to `{size.icon.md}` (**20**) instead. The design system is the source of truth
+  here, not the legacy package — the 24 was a side effect of the control-scale routing, not
+  a stated intent. Scope is this component only: [button](button.md)'s per-size icon pairing
+  (`xs`→16, `sm`→20, `md`→24) is unchanged.
 - **Tag:** generic-primitive.
 - **Conformance:** a layout test must prove the row stretches to full width and aligns its
   content center-left; a theme-only-styling test must prove the variant colors come from the
