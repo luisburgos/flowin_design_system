@@ -37,10 +37,12 @@ A labelled field whose content region is a single horizontal swatch row:
 - **predefined strip** — a horizontally-scrolling row of circular swatches, one per
   palette entry, each separated by a uniform gap. The swatch matching the active color
   reads as *selected*.
-- **swatch (selected ring)** — a filled circle; when selected, a gap ring in the field
-  surface color is carved out near the edge, leaving a colored outer ring around an inner
-  colored disc. There is no platform swatch primitive, so this stacked-circle treatment is
-  the reference structure; how the ring is rendered is platform-dependent and not binding.
+- **swatch (selected ring)** — a filled circle; when selected, an **unpainted** gap ring is
+  carved out near the edge, leaving a colored outer ring around an inner colored disc. The
+  field surface shows through the gap rather than being painted into it. There is no
+  platform swatch primitive; how the ring is rendered is platform-dependent and not binding,
+  but that the gap reveals the background rather than covering it **is** binding (see
+  [color-radial-button](color-radial-button.md)).
 
 The custom-color picker surface itself (the full-spectrum picker opened by the custom
 swatch) is **platform-native** and outside this contract — only the affordance that opens
@@ -81,8 +83,9 @@ Two state axes apply: per-swatch **selection** and per-swatch interaction.
 
 - **swatch: default · selected** — the active color's swatch shows the carved selection
   ring; all others render as a plain filled disc.
-- **swatch: pressed/hovered** — the platform's themed pressable surface overlay on tap;
-  the spec does not override it in v1.
+- **swatch: pressed/hovered** — **no visual overlay.** Unlike the rest of the system, a
+  swatch does not take the platform's pressable tint: the swatch is the colour value itself,
+  so tinting it misreports the value (see Token bindings). The tap still activates.
 
 The field as a whole has no `disabled` state in the current reference — there is no
 mechanism to disable the picker. Only `default` applies at the field level.
@@ -91,7 +94,7 @@ mechanism to disable the picker. Only `default` applies at the field level.
 
 The field chrome (surface, border, label) is **theme-level**, inherited from the
 labelled-field primitive. The picker row binds only the swatch dimensions and the
-selection-ring gap color.
+separation shadow; it binds no swatch colour at all.
 
 | Property | Role / State | Token |
 |---|---|---|
@@ -106,15 +109,22 @@ selection-ring gap color.
 | swatch fill | custom, default | rainbow sweep gradient (intrinsic, untokenized) |
 | selection ring width | any, selected | `{border.extraBold}` |
 | selection ring gap width | any, selected | `{border.bold}` |
-| selection ring gap color | predefined, selected | `{color.surface}`, **unless** it fails to contrast with the swatch — then the accessible-colour layer's resolved foreground |
-| selection ring gap color | custom, selected | `{color.surface}` (the gradient carries its own edges) |
+| selection ring gap fill | any, selected | **none** — unpainted; the background shows through |
 | swatch separation shadow | all swatches | `shadow10` — themed against the scheme in dark mode |
+| swatch interaction overlay | all swatches | **none** — splash/highlight/hover suppressed |
 | inter-swatch gap | all swatches | `{space.400}` |
 
 > Swatch fill colors are **data, not theme**: the predefined palette is caller-supplied and
 > the custom swatch's gradient is an intrinsic affordance, so neither resolves to a semantic
-> color role. The only color role the picker row binds is the selection-ring gap
-> (`{color.surface}`), which must match the field surface so the carved ring reads cleanly.
+> color role. The picker row binds **no color role at all** for the swatches — the selection
+> ring's gap is unpainted (see [color-radial-button](color-radial-button.md)), so there is
+> no gap colour for the picker to resolve, per-swatch or otherwise.
+
+> **No interaction overlay on a swatch.** A swatch *is* the colour value it stands for, so a
+> pressed/hover tint misreports that value — and with the gap carved out, the platform's ink
+> overlay tints what shows through the gap as well. Suppressed rather than restyled;
+> selection is communicated by the ring. This is a deliberate departure from the platform's
+> default pressable behaviour, which the rest of the system inherits.
 
 ## Behavioral notes
 
@@ -145,26 +155,26 @@ selection-ring gap color.
   scrolls out of reach.
 - **A swatch stays visible whatever colour it carries.** The palette is caller-supplied
   data, so an entry may match the field surface — a white swatch on a white surface is a
-  real case, not a contrived one. Two guarantees follow, both resolved through the
-  contrast layer (see [DESIGN.md §2](../../DESIGN.md#2-theming-model)):
+  real case, not a contrived one. Two guarantees follow, and **neither needs a colour
+  resolved for it**:
   - **Unselected**, the hairline separation shadow every swatch already carries is what
     keeps it readable — a swatch matching the surface still reads as a disc because the
     shadow draws its edge. No swatch takes a border of its own; adding one on top of the
     shadow would double the treatment.
-  - **Selected**, the ring gap must contrast with the swatch. Carving the ring in the
-    surface colour alone would paint surface-on-surface-on-surface for such a swatch and
-    the selection would be invisible.
+  - **Selected**, the ring gap is **unpainted**, so the ring reads against whatever is
+    behind the swatch. A swatch matching the surface still shows its ring, because the
+    separation comes from the background itself rather than from a colour chosen to
+    contrast with the swatch.
 
   Both apply symmetrically in dark themes, where a near-black swatch fails the same way.
 
-  The **custom swatch is exempt** from the gap rule: its sweep gradient always has edges,
-  and its notional colour is the *selection seed* rather than a rendered fill, so
-  resolving contrast against it would be meaningless — and would make the swatch read as
-  selected when it is not.
+  The **custom swatch needs no exemption**: with no gap colour to resolve, there is no rule
+  it could be wrongly subjected to. (An earlier revision had to exempt it, because
+  resolving contrast against its *selection seed* — which is not a rendered fill — made it
+  read as selected when it was not.)
 
-  Both decisions belong to the **picker**, not to the swatch primitive: only the picker
-  knows which swatch is predefined and which is the custom affordance, and it is what
-  supplies the gap colour.
+  Neither guarantee requires the picker to know which swatch is which. The gap belongs
+  entirely to the swatch primitive; the picker contributes only the separation shadow.
 - **Affordance hint.** The custom swatch surfaces a hover/long-press hint distinguishing
   "pick a custom color" from "custom color selected"; the hint text is presentational and
   not tokenized.
@@ -173,8 +183,9 @@ selection-ring gap color.
 
 - **Global (theme):** the field chrome — surface corner radius, border color, label gap,
   and label text style — is installed by the **labelled-field primitive** through the global
-  card / text theming, and the selection-ring gap reads the global surface role. Overriding
-  those global roles re-skins every color-picker field at once. The picker contributes **no dedicated theme slot** of its own.
+  card / text theming. Overriding those global roles re-skins every color-picker field at
+  once. The picker contributes **no dedicated theme slot** of its own, and the swatches bind
+  no theme colour: their fills are caller data and the selection gap is unpainted.
 - **Per-call (resolved at the call site):** the label string, the predefined palette, the
   optional initial color, and the change handler. These are the only concerns the theme
   cannot know per invocation. Swatch diameters and ring widths are fixed by the component,
@@ -207,9 +218,9 @@ selection-ring gap color.
 - **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `borderSubtle`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Illustrative anatomy aside (Flutter):** the picker row is a `SizedBox` over a `Row`
   pairing the gradient swatch with an `Expanded` horizontal `ListView.separated` of
-  predefined swatches; each swatch is a `Stack` of concentric `DecoratedBox` circles that
-  carves the selection ring with a surface-colored gap circle. This structure is
-  illustrative only and not part of the binding contract.
+  predefined swatches; each swatch paints an even-odd path whose hole forms the selection
+  gap. This structure is illustrative only and not part of the binding contract — but that
+  the gap is *carved rather than painted* **is** binding.
 - **Stacked layout + trailing custom swatch (2026-08-04).** This contract previously
   specified the **sidebar** field chrome (label column · divider · content) inherited from
   the pre-2026-08-04 [input-field](input-field.md), and placed the custom swatch at the
@@ -219,10 +230,16 @@ selection-ring gap color.
   flutter_flowin adopt the stacked form as part of adoption.
 - **Tag:** domain/app-specific. The field is a Flowin product affordance (labelled stacked
   layout + inline swatch picker), not a reusable generic primitive.
-- **Conformance:** prove the field chrome (corner radius, border, label style)
-  reflects an override of the **global** theme roles rather than per-instance values, and
-  prove the selection-ring gap tracks the **global surface** role so a surface override
-  re-colors the carved ring. Additionally prove the two visibility guarantees with a
-  swatch whose colour matches the surface: that its selection ring gap contrasts with it
-  when selected, and that selecting it leaves the custom swatch neither selected nor
-  visually distinguished.
+- **Conformance:** prove the field chrome (corner radius, border, label style) reflects an
+  override of the **global** theme roles rather than per-instance values. Prove the
+  visibility guarantees with a swatch whose colour matches the surface: that it still reads
+  as a disc when unselected (the separation shadow), that its selection ring is still
+  visible when selected (the carved gap), and that selecting it leaves the custom swatch
+  neither selected nor visually distinguished. Prove no gap colour is resolved anywhere —
+  a transform that reintroduces one is non-conformant.
+- **Conformance (rendered, not structural).** The swatch guarantees above must be proven
+  against **rendered output**, not the widget tree. Two defects shipped past green
+  structural suites here: an invisible selection ring (the test drove a bare swatch, not
+  the composed picker) and an interaction overlay dimming the swatch (ink is painted by the
+  platform's material layer, so no widget in the swatch's subtree reveals it). Both were
+  found only by running the app.
