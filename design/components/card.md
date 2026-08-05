@@ -75,6 +75,13 @@ shadows, clip).
 - An optional border may be supplied per-call (off by default).
 - Optional drop shadows may be supplied per-call (none by default); shadows are a
   caller-provided list, not a theme elevation token in v1.
+- **An elevation shadow's colour resolves per brightness.** The geometry is fixed
+  (`{shadow.shadow100}`), but the colour binds to the semantic `shadow` role, which is a
+  light neutral in light mode and **black** in dark. A shadow is an absence of light, so
+  it darkens whatever it falls on; a colour that does not vary by mode inverts that on a
+  dark surface and renders a glow. Binding the colour to a fixed primitive ramp step is
+  **non-conformant**, and so is a dark shadow drawn from a neutral step near the surface —
+  `neutral.700` on a `neutral.800` surface is one step of separation and reads as nothing.
 - Outer margin, inner padding, and an explicit width/height may be supplied per-call as
   intrinsic layout concerns.
 - Clipping of the content to the smooth-corner shape is **opt-in** per-call (off by
@@ -121,3 +128,7 @@ shadows, clip).
 - **Conformance:** a theme-only-styling test must prove the fill color and default corner
   radius come from the theme slot, not the widget — override the slot, render the card with
   no per-call overrides, assert it reflects the override.
+- **Conformance (elevation):** prove the elevation shadow's colour differs between the two
+  brightnesses, and that the dark one is **darker than the surface it falls on**. Asserting
+  only that a shadow exists is insufficient — the light-only value was a valid `BoxShadow`
+  throughout, and it rendered as a glow.

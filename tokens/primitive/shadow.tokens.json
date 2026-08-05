@@ -2,7 +2,7 @@
   "$schema": "https://tr.designtokens.org/format/",
   "shadow": {
     "$type": "shadow",
-    "$description": "Elevation shadow tokens. Offsets, blur, and spread are px lengths; color aliases a primitive ramp step. Derived from the Flowin foundation elevation.",
+    "$description": "Elevation shadow GEOMETRY. Offsets, blur, and spread are px lengths; the colour here is the light-mode value and is the raw source, not the binding. Consumers bind the colour to the semantic `shadow` role so it resolves per brightness — see semantic/color.{light,dark}.tokens.json. A shadow colour that does not vary by mode is a glow on a dark surface.",
     "shadow100": {
       "$value": {
         "color": "{color.neutral.200}",
