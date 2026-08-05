@@ -106,7 +106,8 @@ selection-ring gap color.
 | swatch fill | custom, default | rainbow sweep gradient (intrinsic, untokenized) |
 | selection ring width | any, selected | `{border.extraBold}` |
 | selection ring gap width | any, selected | `{border.bold}` |
-| selection ring gap color | any, selected | `{color.surface}` |
+| selection ring gap color | any, selected | `{color.surface}`, **unless** it fails to contrast with the swatch — then the accessible-colour layer's resolved foreground |
+| swatch outline | any, swatch ≈ surface | the accessible-colour layer's resolved foreground; absent when the swatch already reads as distinct |
 | inter-swatch gap | all swatches | `{space.400}` |
 
 > Swatch fill colors are **data, not theme**: the predefined palette is caller-supplied and
@@ -141,6 +142,17 @@ selection-ring gap color.
 - **Overflow.** The predefined strip scrolls horizontally when the palette exceeds the
   available width; the custom swatch stays pinned at the **trailing** edge and never
   scrolls out of reach.
+- **A swatch stays visible whatever colour it carries.** The palette is caller-supplied
+  data, so an entry may match the field surface — a white swatch on a white surface is a
+  real case, not a contrived one. Two guarantees follow, both resolved through the
+  contrast layer (see [DESIGN.md §2](../../DESIGN.md#2-theming-model)):
+  - **Unselected**, a swatch too close in luminance to the surface carries an outline, so
+    it reads as an option rather than a gap in the row.
+  - **Selected**, the ring gap must contrast with the swatch. Carving the ring in the
+    surface colour alone would paint surface-on-surface-on-surface for such a swatch and
+    the selection would be invisible.
+
+  Both apply symmetrically in dark themes, where a near-black swatch fails the same way.
 - **Affordance hint.** The custom swatch surfaces a hover/long-press hint distinguishing
   "pick a custom color" from "custom color selected"; the hint text is presentational and
   not tokenized.
@@ -198,4 +210,6 @@ selection-ring gap color.
 - **Conformance:** prove the field chrome (corner radius, border, label style)
   reflects an override of the **global** theme roles rather than per-instance values, and
   prove the selection-ring gap tracks the **global surface** role so a surface override
-  re-colors the carved ring.
+  re-colors the carved ring. Additionally prove the two visibility guarantees with a
+  swatch whose colour matches the surface: that it is outlined when unselected, and that
+  its selection ring gap contrasts with it when selected.

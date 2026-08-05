@@ -110,6 +110,31 @@ picker's palette, a chart series, user-chosen entity colours — takes them from
 site**, not from the brand ramps. The system supplies neutrals and semantics; it does not
 supply a spectrum.
 
+**Colour that comes from data is vetted, not trusted.** The consequence above leaves a
+hole: a colour supplied by the call site — a team's colour, a chart series, a user-picked
+accent — has no on-colour paired with it and no guarantee it differs from the surface it
+lands on. Two questions follow at every such site, and the system answers both in one
+place rather than letting each component invent its own heuristic:
+
+1. **What can be drawn legibly on top of it?** A foreground is chosen from candidates
+   (the caller's preference first, then black, then white) by WCAG 2.1 contrast ratio at
+   a stated compliance level — 4.5:1 for normal text, 3.0:1 for large text and non-text
+   UI, 7.0:1 for AAA.
+2. **Does it stand apart from what is behind it?** When the colour and its background are
+   within a luminance threshold of each other, the edge between them disappears and a
+   border is needed to restore it.
+
+**The layer reports; it does not repaint.** When no candidate meets the required ratio,
+the best available is returned *and flagged as not meeting it*. A colour a designer chose
+is never silently replaced — the call site decides whether to accept the shortfall, pick
+a different seed, or surface a warning. Auto-correction would hide exactly the cases worth
+knowing about.
+
+A component consuming caller colour is **required** to resolve through this layer rather
+than comparing luminance itself. Hand-rolled checks drift: the same rule implemented
+independently at several call sites produces several different answers, which is what
+happened before the layer existed (`flowin_pm#14`).
+
 **Semantic color uses role + on-color pairs.** Color is never a bare value in the semantic
 tier; it is always a *role* paired with the *on-color* that is legible on top of it (a
 fill and its on-color, a surface and its on-color, an error surface and its on-color).
