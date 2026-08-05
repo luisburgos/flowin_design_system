@@ -106,8 +106,9 @@ selection-ring gap color.
 | swatch fill | custom, default | rainbow sweep gradient (intrinsic, untokenized) |
 | selection ring width | any, selected | `{border.extraBold}` |
 | selection ring gap width | any, selected | `{border.bold}` |
-| selection ring gap color | any, selected | `{color.surface}`, **unless** it fails to contrast with the swatch — then the accessible-colour layer's resolved foreground |
-| swatch outline | any, swatch ≈ surface | the accessible-colour layer's resolved foreground; absent when the swatch already reads as distinct |
+| selection ring gap color | predefined, selected | `{color.surface}`, **unless** it fails to contrast with the swatch — then the accessible-colour layer's resolved foreground |
+| selection ring gap color | custom, selected | `{color.surface}` (the gradient carries its own edges) |
+| swatch separation shadow | all swatches | `shadow10` — themed against the scheme in dark mode |
 | inter-swatch gap | all swatches | `{space.400}` |
 
 > Swatch fill colors are **data, not theme**: the predefined palette is caller-supplied and
@@ -146,13 +147,24 @@ selection-ring gap color.
   data, so an entry may match the field surface — a white swatch on a white surface is a
   real case, not a contrived one. Two guarantees follow, both resolved through the
   contrast layer (see [DESIGN.md §2](../../DESIGN.md#2-theming-model)):
-  - **Unselected**, a swatch too close in luminance to the surface carries an outline, so
-    it reads as an option rather than a gap in the row.
+  - **Unselected**, the hairline separation shadow every swatch already carries is what
+    keeps it readable — a swatch matching the surface still reads as a disc because the
+    shadow draws its edge. No swatch takes a border of its own; adding one on top of the
+    shadow would double the treatment.
   - **Selected**, the ring gap must contrast with the swatch. Carving the ring in the
     surface colour alone would paint surface-on-surface-on-surface for such a swatch and
     the selection would be invisible.
 
   Both apply symmetrically in dark themes, where a near-black swatch fails the same way.
+
+  The **custom swatch is exempt** from the gap rule: its sweep gradient always has edges,
+  and its notional colour is the *selection seed* rather than a rendered fill, so
+  resolving contrast against it would be meaningless — and would make the swatch read as
+  selected when it is not.
+
+  Both decisions belong to the **picker**, not to the swatch primitive: only the picker
+  knows which swatch is predefined and which is the custom affordance, and it is what
+  supplies the gap colour.
 - **Affordance hint.** The custom swatch surfaces a hover/long-press hint distinguishing
   "pick a custom color" from "custom color selected"; the hint text is presentational and
   not tokenized.
@@ -211,5 +223,6 @@ selection-ring gap color.
   reflects an override of the **global** theme roles rather than per-instance values, and
   prove the selection-ring gap tracks the **global surface** role so a surface override
   re-colors the carved ring. Additionally prove the two visibility guarantees with a
-  swatch whose colour matches the surface: that it is outlined when unselected, and that
-  its selection ring gap contrasts with it when selected.
+  swatch whose colour matches the surface: that its selection ring gap contrasts with it
+  when selected, and that selecting it leaves the custom swatch neither selected nor
+  visually distinguished.
