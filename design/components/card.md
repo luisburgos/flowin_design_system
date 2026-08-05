@@ -13,6 +13,12 @@ concerns (per-corner radius, optional border, margin, padding, explicit size, sh
 and whether to clip the content to the smooth corners). It carries no emphasis axis and
 no interaction of its own.
 
+Because the fill may be **caller-supplied data** rather than a theme role, the card also
+owns the readability of what is drawn on it: it resolves a text and icon colour against
+its own fill rather than letting the content inherit one chosen for a different surface.
+That is the one way a card reaches into its content slot, and it exists because nothing
+else in the tree can — the theme cannot see a colour that arrives at the call site.
+
 ## Anatomy (illustrative)
 
 A single smooth-cornered rectangular container wrapping one arbitrary content slot. The
@@ -59,9 +65,16 @@ shadows, clip).
 | Property | Variant / State | Token |
 |---|---|---|
 | background | default | `{color.surfaceSecondary}` |
+| content foreground | default | **resolved against the fill** — not a token; see below |
 | corner radius (each corner) | default | `{radius.400}` |
 | corner smoothing factor | all | `{radius.cornerSmoothing}` |
 | border side | default | none (transparent, zero width) |
+
+> **The content foreground binds to no token, by design.** A token would be a fixed
+> answer to a question whose input is caller data. It is computed per-fill through the
+> contrast layer ([DESIGN.md §2](../../DESIGN.md#2-theming-model)) at the **normal-text**
+> compliance level (4.5:1) — the level for body text, which is the content a card most
+> often holds.
 
 ## Behavioral notes
 
@@ -72,6 +85,27 @@ shadows, clip).
   applies to whatever radius is in effect and is not separately overridable per-call.
 - The fill color may be overridden per-call; absent an override it resolves from the theme
   surface fill, falling back to the tonal surface role.
+- **The content's text and icon colour is resolved against the card's fill, by default.**
+  A fill may be caller-supplied data — a team colour, a user accent — and the ambient
+  colour the content would otherwise inherit was chosen by the theme for a theme surface,
+  not for that fill. Measured across four representative fills in both brightnesses, six
+  of eight pairings fell below the 4.5:1 minimum; dark body text on a black fill is
+  1.18:1. The failures **invert** between brightnesses — light themes fail on dark fills,
+  dark themes on light ones — so no single inherited colour can serve a fill the theme
+  cannot see. Resolution is the default rather than opt-in for that reason: a call site
+  that forgets to ask gets readable content, not unreadable content.
+- **A preferred foreground is a preference, not an override.** A call site may name the
+  colour it wants; it is used when it meets the compliance level on that fill, and
+  replaced when it does not. A card cannot promise both "your exact colour" and
+  "readable", and this contract chooses readable. The layer reports the shortfall rather
+  than silently downgrading the requirement (see [DESIGN.md §2](../../DESIGN.md#2-theming-model)).
+- **A fully transparent fill is never resolved against.** What the content is read against
+  is then whatever is behind the card, which the card cannot see. A transparent colour
+  also reports zero luminance, so resolving against it returns the foreground for black —
+  white text on a see-through surface. Transparent-filled cards keep the inherited colour.
+- Resolution may be **turned off** per-call, for a card whose content manages its own
+  colours. Doing so returns the content to the inherited colour and forfeits the
+  guarantee; it is not a way to supply a colour (see the preference rule above).
 - An optional border may be supplied per-call (off by default).
 - Optional drop shadows may be supplied per-call (none by default); shadows are a
   caller-provided list, not a theme elevation token in v1.
@@ -93,11 +127,16 @@ shadows, clip).
   transform installs these on the platform's global card theming mechanism. They must be
   **globally overridable, not per-instance.**
 - **Per-call (resolved by the thin widget):** the content slot, per-corner radius
-  override, fill-color override, border side, margin, padding, explicit size, shadows, and
-  the clip-content flag. These are the intrinsic surface concerns the theme cannot know per
+  override, fill-color override, border side, margin, padding, explicit size, shadows,
+  the clip-content flag, the preferred content foreground, and whether to resolve a
+  foreground at all. These are the intrinsic surface concerns the theme cannot know per
   invocation — they exist because the framework has no native equivalent for a
   smooth-cornered surface, not as styling escape hatches for color/shape that the theme
   already owns.
+- **Computed, not themed:** the content foreground is neither of the above. It is derived
+  from the fill in effect, so a theme override changes it only by changing that fill.
+  A transform must not add a theme slot for it — a themed value would be a fixed answer
+  to a per-fill question, and would reintroduce exactly the mismatch this rule removes.
 
 ## Known gaps / planned fix
 
@@ -132,3 +171,9 @@ shadows, clip).
   brightnesses, and that the dark one is **darker than the surface it falls on**. Asserting
   only that a shadow exists is insufficient — the light-only value was a valid `BoxShadow`
   throughout, and it rendered as a glow.
+- **Conformance (content contrast):** prove the content's resolved colour clears 4.5:1
+  against the fill, for fills spanning the range a caller might supply (at minimum: near
+  black, near white, and a saturated mid-tone) **in both brightnesses**. Testing one
+  brightness passes while the other fails — the two break on opposite fills. Additionally
+  prove a transparent fill leaves the inherited colour untouched, and that a preferred
+  foreground is honoured when it meets the level and replaced when it does not.

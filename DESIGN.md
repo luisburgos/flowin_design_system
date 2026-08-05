@@ -135,6 +135,20 @@ than comparing luminance itself. Hand-rolled checks drift: the same rule impleme
 independently at several call sites produces several different answers, which is what
 happened before the layer existed (`flowin_pm#14`).
 
+**Normal text (4.5:1) is the default compliance level.** A component asks for a different
+one only when it knows its content is not body text — large display type or a non-text
+element such as an icon or border, both 3.0:1. Defaulting to the stricter level is
+deliberate: a component that guesses wrong at 3.0:1 ships unreadable body text, while one
+that guesses wrong at 4.5:1 merely overshoots.
+
+**Reporting is not the same as rendering.** The rule above governs what the layer *returns*
+— it never silently swaps a seed colour and calls it a match. A component still has to
+decide what to paint, and one drawing content **on** a caller's fill has no legible option
+but to override an unreadable foreground: it cannot show the caller's colour and remain
+readable, and unreadable content is not a shortfall the viewer can act on. Such a component
+therefore treats a caller-supplied foreground as a *preference* — used when it meets the
+level, replaced when it does not. The seed itself is still never repainted.
+
 **Semantic color uses role + on-color pairs.** Color is never a bare value in the semantic
 tier; it is always a *role* paired with the *on-color* that is legible on top of it (a
 fill and its on-color, a surface and its on-color, an error surface and its on-color).
