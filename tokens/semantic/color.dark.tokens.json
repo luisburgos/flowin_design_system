@@ -24,7 +24,10 @@
     "surfaceBright": { "$value": "{color.neutral.700}" },
     "inverseSurface": { "$value": "{color.white}" },
     "onInverseSurface": { "$value": "{color.neutral.800}" },
-    "shadow": { "$value": "{color.neutral.700}" },
+    "shadow": {
+      "$value": "{color.black}",
+      "$description": "Elevation shadow colour. Black rather than a neutral step: a shadow is an absence of light, so it darkens whatever it falls on. A dark-grey shadow on the dark surface (neutral.700 on neutral.800) is only one step of separation and reads as nothing at all."
+    },
     "primaryContainer": { "$value": "{color.neutral.200}" },
     "onPrimaryContainer": { "$value": "{color.neutral.800}" },
     "surfaceSecondary": {
