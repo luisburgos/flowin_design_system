@@ -196,7 +196,8 @@ of a second transform, not a shipped one.
 | Concept | Flutter (reference) | Example: CSS (illustrative) |
 |---|---|---|
 | Semantic colors | Bound onto `ColorScheme` roles (role + on-color → the scheme's color/on-color pairs); native widgets inherit from `Theme.of(context).colorScheme`. | Custom properties on `:root` (`--color-primary`, `--color-on-primary`, …); elements read them via `var(--color-…)`. |
-| Typography | Bound onto `TextTheme` slots; native text inherits the resolved text styles from the theme. | Custom properties (`--font-body`, `--line-height-body`, …) plus utility classes that apply them. |
+| Typography (baseline) | Overlaid onto `TextTheme` slots on top of Material's own scale with the Flowin family applied; native text inherits the resolved styles. | Custom properties (`--font-body`, `--line-height-body`, …) plus utility classes that apply them. |
+| Typography (caption + brand) | No `TextTheme` slot exists for these, so they are exposed as typed accessors alongside the theme rather than replacing a standard slot. | Additional custom properties + their own utility classes. |
 | Spacing / radius / other non-Material tokens | Carried on a `ThemeExtension` (e.g. a `FlowinTokens` extension: spacing scale, radius, base shadow, icon sizing), read via a typed `context` accessor. | Custom properties (`--space-200`, `--radius-400`, `--shadow-100`, …) under `:root`. |
 | Status colors (`success` / `warning` / `info` + on-colors) | Carried on the same `ThemeExtension` (a semantic-colors value object), **not** on `ColorScheme` — Material models no such roles. Resolved per brightness. | Custom properties (`--color-success`, `--color-on-success`, …) under `:root`, re-declared in the dark-mode block. |
 | Base elevation shadow | Carried on the `ThemeExtension` as the resolved per-brightness shadow; the geometry is one token, the colour binds to the per-mode `shadow` role. | `--shadow-100` under `:root`, re-declared in the dark-mode block. |
@@ -290,6 +291,29 @@ implementation), each tagged generic-primitive vs domain/app-specific.
 platform that expects relative units converts per binding: `em = letterSpacing_px /
 fontSize_px`. `lineHeight` is a unitless ratio and transforms directly.
 
+### Typography binding rules
+
+**The type scale overlays the platform's baseline; it does not replace it.** A conformant
+transform starts from the platform's own type scale, applies the Flowin font family across
+it, and then overrides *only* the slots the token set names. Slots the token set does not
+name keep their platform-default size and weight, in the Flowin family. Replacing the whole
+scale would leave unnamed slots undefined and change the rendering of native widgets that
+read them.
+
+**Two families, two roles.** The **baseline** family carries the working type — body, labels,
+titles, captions — and is what native widgets inherit. The **brand** family is expressive
+display type; it has no standard slot on a typical platform and therefore binds through the
+theme-extension mechanism (§2) alongside the other non-native tokens. A transform must keep
+both reachable: replacing brand styles with baseline ones collapses the distinction the two
+families exist to draw.
+
+**A font family shipped with the design system must be referenced by its packaged name.**
+Where a platform namespaces bundled font assets (so that a library's font is addressed
+differently from an application's), the binding must use the namespaced form. Referencing
+the bare family name typically does not fail loudly — it silently falls back to the host's
+default UI font, which on some platforms resembles the intended face closely enough to pass
+review unnoticed.
+
 ## 5. Open gaps
 
 These are spec-coverage gaps known and tracked. They are declared here so transforms know
@@ -313,6 +337,14 @@ backlog.
   role binds a brand ramp's 400 step, so the divergence reaches no rendered output
   (verified against the reference implementation, audit unit 1). It becomes live the moment
   a role does bind that step.
+- **`typography.baseline.titleLarge` is declared but not bound.** The style is defined in
+  the token set, but no component contract cites it and the reference implementation leaves
+  the corresponding native slot at the platform default (carried forward from the production
+  source, where it appears to be an oversight). A transform must **not** install it just
+  because it exists — see the token's own `$description`. Resolving this means either binding
+  it deliberately across all transforms or removing it; until then it stays declared and
+  unbound, not silently adopted.
+
 - **Legacy-only & intentionally-trimmed component capabilities.** Capabilities that
   existed in the legacy widgets but were intentionally dropped in the theme-first rebuild
   (and any legacy-only widgets not yet carried over) are tracked as scoped items in the

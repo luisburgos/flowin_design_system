@@ -34,6 +34,7 @@
         }
       },
       "titleLarge": {
+        "$description": "DECLARED BUT NOT BOUND. This style is defined here, but no component contract cites it and the reference implementation deliberately leaves the corresponding native slot at the platform's own default rather than overriding it with this value — carried forward from the production source, where it is a probable oversight. A transform MUST NOT install this style into a type-scale slot on the strength of its presence here; doing so silently diverges the rendered output from the reference. Tracked as a gap in DESIGN.md §5.",
         "$value": {
           "fontFamily": "{font.family.baseline}",
           "fontSize": { "value": 20, "unit": "px" },
