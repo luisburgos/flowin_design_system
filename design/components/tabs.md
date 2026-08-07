@@ -58,6 +58,7 @@ scheme defaults — recorded explicitly below.
 | Property | State | Token |
 |---|---|---|
 | bar height | all | `{space.1400}` |
+| label horizontal padding (per side) | all | `{space.100}` (4) |
 | label text style | selected | `{typography.baseline.labelMedium}` |
 | label text style | unselected | `{typography.baseline.labelMedium}` |
 | selection indicator size | selected | full tab cell (spans the whole tab, not just the label) |
@@ -81,10 +82,14 @@ scheme defaults — recorded explicitly below.
 
 ## Theming directive
 
-- **Global (theme slot):** label text style (selected and unselected), full-tab selection
-  indicator sizing, and divider suppression. A conformant transform installs these on the
-  platform's global tab-bar theming mechanism. They must be **globally overridable, not
-  per-instance.**
+- **Global (theme slot):** label text style (selected and unselected), label horizontal
+  padding, full-tab selection indicator sizing, and divider suppression. A conformant
+  transform installs these on the platform's global tab-bar theming mechanism. They must be
+  **globally overridable, not per-instance.**
+- **Label padding is deliberately tight** (`{space.100}` per side). Platforms commonly
+  default a tab's label padding far wider (the reference platform defaults to 16 per side);
+  at that width, a fixed-width bar clamps icon+label tabs hard enough that ordinary labels
+  ellipsize. A transform must set this explicitly rather than inherit the platform default.
 - **Per-call (resolved by the thin widget):** the selection driver, the list of tab cells,
   the scroll/overflow flag, and (as an escape hatch) the bar height. These are the only
   concerns the theme cannot know per invocation.

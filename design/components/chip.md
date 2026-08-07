@@ -36,9 +36,13 @@ Selection is the only axis. Default is `unselected`.
 The chip has **no per-call size axis**. Footprint is fixed by the theme (single padding +
 label style for every chip). This is intentional and differs from the multi-size button.
 
-| Size | Content padding (h × v) | Label text style |
+| Size | Content padding (all sides) | Label text style |
 |---|---|---|
-| (single) | `space.400` × `space.200` (16 × 8) | `typography.baseline.labelMedium` |
+| (single) | `space.400` (16, uniform) | `typography.baseline.labelSmall` |
+
+The padding is **uniform on all four sides**, not a horizontal/vertical pair: the chip's
+height is driven by the padding rather than by a min-height token, so the vertical and
+horizontal insets are the same step.
 
 ## States
 
@@ -53,17 +57,24 @@ Shape, border, padding, label style, and the per-selection fill/foreground roles
 **theme-level** (apply to every chip). The per-call layer adds only the selection variant
 and, for `unselectedDimmed`, the reduced opacity.
 
+**The label color does not change with selection.** It is `{color.onSurfaceSecondary}` in
+every state, including `unselected` where the chip's fill is transparent and the label
+therefore sits on the page surface rather than on `surfaceSecondary`. This is deliberate:
+selection is conveyed by the fill and border alone (see the `selection glyph` row), so a
+label that also shifted color would double-encode it, and the two roles resolve to the same
+value on both light and dark surfaces. A transform must bind the label to
+`onSurfaceSecondary` in all states rather than "the on-color of whatever fill is active".
+
 | Property | Variant / State | Token |
 |---|---|---|
 | shape | all | pill — `{radius.full}` |
-| label text style | all | `{typography.baseline.labelMedium}` |
-| content padding | all | `{space.400}` × `{space.200}` |
+| label text style | all | `{typography.baseline.labelSmall}` |
+| content padding | all | `{space.400}` (uniform, all sides) |
 | border side color | unselected | `{color.borderSubtle}` |
 | border side width | all | `{border.regular}` |
 | background | unselected | transparent |
-| foreground (label) | unselected | `{color.onSurface}` |
+| foreground (label) | **all** | `{color.onSurfaceSecondary}` |
 | background | selected | `{color.surfaceSecondary}` |
-| foreground (label) | selected | `{color.onSurfaceSecondary}` |
 | opacity | unselectedDimmed | `0.5` (literal, see Behavioral notes) |
 | selection glyph | all | none — selection is conveyed by fill and border only |
 

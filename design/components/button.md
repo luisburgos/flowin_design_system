@@ -38,7 +38,11 @@ Default size is `sm`.
 | `md` | `{size.control.md}` (56px) | `space.600` × `space.400` (24 × 16) | `space.0` (0) | `{typography.baseline.labelLarge}` | lg (24) |
 
 - **Content padding** is the padding *inside* the button (between its edge and the
-  label/icon).
+  label/icon). The theme also carries a **base** content padding of `space.400` × `space.300`
+  (16 × 12), which is what a *bare platform-native button* renders with when no Flowin size
+  is resolved. It sits between `sm` and `md` and is deliberately not equal to any size row:
+  a call site that picks a size always overrides it. It exists so the theme-first promise
+  holds — a native button with no wrapper already looks like Flowin.
 - **Outer padding** is applied *around* the button by the thin widget, so adjacent
   buttons of the same size share consistent spacing without the call site adding it.
 - **Label text style** is per-size: it overrides the theme's base text style for `xs`
@@ -57,9 +61,17 @@ base text style is the theme default and equals the `md` label style; `xs`/`sm` 
 it per size. The per-call layer adds size padding / outer padding / per-size label text
 style / min-height / icon size, and for `destructive` the error color roles.
 
+**The button is a pill at every size.** Its corner radius resolves to *half the rendered
+height*, so the ends stay perfectly semicircular whether the button is 32, 40, or 56 tall.
+This is why the binding is `{radius.full}` (the pill sentinel) and not a fixed step: a
+fixed `{radius.400}` (16px) is exactly half of the `xs` height but only a rounded rectangle
+at `md`, so the shape would drift between sizes. A transform whose platform has a native
+pill/stadium shape should use it; one without should compute `height / 2` rather than
+substituting a fixed radius.
+
 | Property | Variant / State | Token |
 |---|---|---|
-| shape corner radius | all | `{radius.400}` |
+| shape corner radius | all | `{radius.full}` (pill — see note below) |
 | base text style | all | `{typography.baseline.labelLarge}` |
 | background | filled, default | `{color.primary}` |
 | foreground | filled, default | `{color.onPrimary}` |
@@ -71,6 +83,7 @@ style / min-height / icon size, and for `destructive` the error color roles.
 | foreground | text, default | `{color.onSurface}` |
 | background | destructive, default | `{color.errorContainer}` |
 | foreground | destructive, default | `{color.onErrorContainer}` |
+| content padding | theme base (no size resolved) | `space.400` × `space.300` (16 × 12) |
 | content padding | per size | `{space.*}` (see Sizes table) |
 | outer padding | per size | `{space.*}` (see Sizes table) |
 | label text style | per size | `{typography.baseline.label*}` (see Sizes table) |
@@ -103,6 +116,15 @@ style / min-height / icon size, and for `destructive` the error color roles.
   in the modern reference but not in legacy `FDButtonVariant` — v1 follows modern.
 - **Theme slots (reference impl):** `filledButtonTheme` / `outlinedButtonTheme` /
   `textButtonTheme`.
+- **Pill shape is inherited, not set.** The reference implementation deliberately sets
+  *no* shape on the button theme slots, because Material's own default for these slots is
+  already `StadiumBorder` — the pill the contract requires. Inheriting it is therefore the
+  binding, and it is what production renders. Two consequences for a reviewer: an absent
+  `shape:` in the button theme is **conformant, not a gap**, and the theme-overridability
+  test still holds (overriding the slot's shape changes the rendered button). A transform
+  onto a platform whose default is *not* a pill must set the shape explicitly.
+- **`item-button` is the documented exception:** it pins `{radius.400}` on its own style,
+  because a full-width row reads as a surface rather than a pill.
 - **Legacy names (reference):** `FDButton` outer-padding + per-size text style xs/sm/md →
   labelSmall/Medium/Large — now adopted in v1 (above), restoring legacy parity.
 - **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `surfaceSecondary`, `onSurfaceSecondary`, `borderSubtle`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
