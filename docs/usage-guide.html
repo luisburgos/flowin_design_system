@@ -314,7 +314,6 @@
     <div class="meta">
       <span><strong>Audience:</strong> humans (designers, engineers, reviewers)</span>
       <span><strong>Repo:</strong> flowin_design_system (tech-agnostic spec)</span>
-      <span><strong>Companion:</strong> <a href="rationale-theme-first.html">rationale-theme-first.html</a></span>
     </div>
   </header>
 
@@ -326,8 +325,8 @@
       agents transform it into technology-specific packages (Flutter first, others later). This guide
       orients a <strong>human</strong> reader; the normative material it points at lives in
       <a href="../DESIGN.md">DESIGN.md</a>, <a href="../tokens/">tokens/</a>, and
-      <a href="../design/components/">design/components/</a>. For the long-form <em>why</em> behind the
-      whole approach, read the companion <a href="rationale-theme-first.html">theme-first rationale</a>.
+      <a href="../design/components/">design/components/</a>. For the <em>why</em> behind the whole
+      approach, read <a href="../DESIGN.md">DESIGN.md §1</a>.
     </p>
   </div>
 
@@ -393,8 +392,7 @@
 │   ├── _TEMPLATE.md<span class="ann">        # the fixed contract template</span>
 │   └── button.md<span class="ann">           # reference contract</span>
 └── <span class="dir">docs/</span><span class="ann">                   # layer 3 — human reading (HTML)</span>
-    ├── <span class="new">usage-guide.html</span><span class="ann">        # this file</span>
-    └── <span class="new">rationale-theme-first.html</span><span class="ann"># the long-form "why"</span>
+    └── <span class="new">usage-guide.html</span><span class="ann">        # this file</span>
     </div>
 
     <div class="callout rule">
@@ -404,9 +402,8 @@
         global theming mechanism — not recomputed inside wrapper widgets per call. Tokens feed a single
         theme; native widgets inherit the Flowin look; a thin component resolves <em>only</em> the two
         things a theme cannot know per call: <strong>which variant</strong> and <strong>which size</strong>.
-        Everything in this repo serves that idea. The full argument is in
-        <a href="rationale-theme-first.html">the rationale</a>; the normative statement is
-        <a href="../DESIGN.md">DESIGN.md §1</a>.
+        Everything in this repo serves that idea; the normative statement — and the argument
+        behind it — is <a href="../DESIGN.md">DESIGN.md §1</a>.
       </p>
     </div>
   </section>
@@ -678,16 +675,14 @@
       <p>
         Start with this guide → skim <a href="../DESIGN.md">DESIGN.md</a> §1–§3 for the normative spine →
         open a contract under <a href="../design/components/">design/components/</a> alongside
-        <a href="../tokens/">tokens/</a> to see bindings resolve → read
-        <a href="rationale-theme-first.html">rationale-theme-first.html</a> for the full "why" → check
+        <a href="../tokens/">tokens/</a> to see bindings resolve → check
         <a href="https://github.com/luisburgos/flowin_pm"><code>flowin_pm</code></a> for what's planned.
       </p>
     </div>
   </section>
 
   <p class="footnote">
-    Companion to <a href="rationale-theme-first.html">rationale-theme-first.html</a> (the long-form "why
-    theme-first"). Normative material lives in <a href="../DESIGN.md">DESIGN.md</a>,
+    Normative material lives in <a href="../DESIGN.md">DESIGN.md</a>,
     <a href="../tokens/">tokens/</a>, and <a href="../design/components/">design/components/</a>; this
     guide only points at it. Planned work lives in the
     <a href="https://github.com/luisburgos/flowin_pm"><code>flowin_pm</code></a> backlog.

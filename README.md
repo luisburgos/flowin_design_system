@@ -21,14 +21,12 @@ specific rendering technique**.
 
 ## Docs
 
-Human-facing reference docs live in `docs/` as self-contained HTML:
+Human-facing reference docs live in `docs/` as self-contained HTML. They **explain** what
+`DESIGN.md` and the contracts **assert** — pedagogy, never a second source of truth:
 
 - [`docs/usage-guide.html`](docs/usage-guide.html) — a reader's tour of the spec: the
   three-layer model, how to read a component contract, how the tokens resolve, and how a
   transform produces a tech-specific package.
-- [`docs/rationale-theme-first.html`](docs/rationale-theme-first.html) — the long-form
-  "why theme-first" rationale (legacy closed-wrapper anti-pattern vs. the theme-first
-  rebuild) behind the thesis in `DESIGN.md` §1.
 
 ## Architecture: theme-first
 
