@@ -34,7 +34,14 @@ mechanism** (Flutter `ThemeData` + component themes, CSS custom properties + cla
 etc.). Custom components exist only where a platform has no equivalent. Every token
 binding must be **globally overridable, not per-instance**.
 
+## Contributing
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for how to change a contract, what the validation
+gates check, and when a release is warranted. Run `npm run validate` before committing.
+
 ## Status
 
-v1 in progress. Program planning lives in
+Released as `0.2.0` — the first state audited against a stable reference implementation
+(`flutter_flowin`), with every unit of the audit protocol verdicted. Open gaps are
+declared in [`DESIGN.md`](DESIGN.md) §5; program planning lives in
 [`flowin_pm`](https://github.com/luisburgos/flowin_pm).

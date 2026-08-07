@@ -88,7 +88,7 @@ mechanism. See each contract's **Transform notes** for the reference theme-slot 
 
 ---
 
-## Gate 4 — Structural lint (MANUAL)
+## Gate 4 — Structural lint (AUTOMATED)
 
 **What it checks:** every component contract follows the fixed template, and the spec's
 indexes match the files present.
@@ -106,24 +106,15 @@ indexes match the files present.
   *Transform notes* and a clearly-marked illustrative *Anatomy* aside — never in Intent /
   Variants / Sizes / States / Token bindings / Theming directive / Known gaps.
 
-A scan that surfaces index-vs-file drift:
+All three checks run in `tokens/validate-contracts.mjs`, alongside Gate 2.
 
-```sh
-# component files
-ls design/components/*.md | grep -v _TEMPLATE | xargs -n1 basename | sed 's/.md//' | sort
-# index links in DESIGN.md
-grep -oE 'design/components/[a-z-]+\.md' DESIGN.md | sort -u
-```
-
-The two lists should match one-to-one.
-
-**When:** when adding or reviewing a component contract.
+**When:** on every change to `design/components/**` or DESIGN.md's component index.
+Treat a non-zero exit as a blocking failure.
 
 ---
 
-## Planned automation
+## Coverage
 
-v1 automates only Gate 1. Gates 2–4 are candidates for automation (a contract-aware
-linter that resolves `{…}` references against the token set, checks template-section
-presence, and diffs the index against the filesystem). Tracked in the
-[`flowin_pm`](https://github.com/luisburgos/flowin_pm) backlog.
+Gates 1, 2 and 4 are automated. Gate 3 is manual by nature: it asserts a property of an
+*implementation* (that a documented binding can be overridden on that platform's theme),
+which no check run inside this repository can see.
