@@ -317,8 +317,11 @@ review unnoticed.
 ## 5. Open gaps
 
 These are spec-coverage gaps known and tracked. They are declared here so transforms know
-**not to invent values** for them (see §3 "Do not"). Each is tracked in the `flowin_pm`
-backlog.
+**not to invent values** for them (see §3 "Do not"). This section is authoritative; the
+`flowin_pm` backlog tracks the work.
+
+- Chromatic brand accent → [`flowin_pm#30`](https://github.com/luisburgos/flowin_pm/issues/30)
+- The three declared-but-unbound gaps → [`flowin_pm#31`](https://github.com/luisburgos/flowin_pm/issues/31)
 
 - **Chromatic brand accent.** The `primary` / `secondary` / `tertiary` roles are
   **placeholder aliases to the neutral ramp** — the brand has no chromatic accent yet.

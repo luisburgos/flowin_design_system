@@ -1,33 +1,7 @@
-# Changelog
-
-Generated from the commit history with `npm run changelog`. Sections follow
-the conventional-commit types; `docs` leads because in a specification
-repository a documentation change *is* a contract change.
-
-**What this file does not tell you:** the open gaps. Those are conditions of
-the current release rather than events in it, so they are maintained by hand
-below and restated in `DESIGN.md` §5, which is authoritative.
-
-## Open gaps (as of 0.2.0)
-
-A transform must carry these as declared and **must not invent values** for
-them:
-
-- **No chromatic brand accent.** The `primary`, `secondary` and `tertiary`
-  roles alias the neutral ramp. They are named slots awaiting a real palette;
-  filling them will be a breaking change for any transform that shipped
-  against the placeholders.
-- **`typography.baseline.titleLarge` is declared but not bound.** No contract
-  cites it and the reference implementation leaves the corresponding slot at
-  the platform default.
-- **The tab item's icon size is unbound.** The reference accepts an arbitrary
-  icon whose size the caller sets; no token names it yet.
-- **Dark-mode `onSurfaceBright` / `onSurfaceBrightVariant` are undefined.**
-  The dark scheme declares the bright surface but no on-colour for it.
 
 ## [0.2.0](https://github.com/luisburgos/flowin_design_system/compare/0.1.0...0.2.0) (2026-08-07)
 
-### Specification
+### Documentation
 
 * **action-sheet:** allow suppressing the card's outer margin ([1752177](https://github.com/luisburgos/flowin_design_system/commit/1752177f127b2e4b173ac79d9514bd91c5af20b6))
 * **audit:** components — correct bindings, close six stale gaps ([81a52d2](https://github.com/luisburgos/flowin_design_system/commit/81a52d255320405335b18a00985f4e115d92acd0))
@@ -50,3 +24,7 @@ them:
 
 * **card:** specify the foreground-on-arbitrary-fill rule ([#20](https://github.com/luisburgos/flowin_design_system/issues/20)) ([74203d2](https://github.com/luisburgos/flowin_design_system/commit/74203d25ebefdbde47e76aae1c43a231a0cd0f37)), closes [flowin_pm#16](https://github.com/luisburgos/flowin_pm/issues/16)
 * **tokens:** make the elevation shadow colour brightness-aware ([#19](https://github.com/luisburgos/flowin_design_system/issues/19)) ([43156e1](https://github.com/luisburgos/flowin_design_system/commit/43156e12e3aff6c555c02ee2162d40b99f86fd95)), closes [flowin_pm#12](https://github.com/luisburgos/flowin_pm/issues/12)
+
+### Build & Dependencies
+
+* add changelog generation and the 0.2.0 entry ([f18651a](https://github.com/luisburgos/flowin_design_system/commit/f18651a68f178099031f22c31dc12912f0fbfdac))
