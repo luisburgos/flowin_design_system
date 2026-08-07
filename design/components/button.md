@@ -116,6 +116,13 @@ substituting a fixed radius.
   in the modern reference but not in legacy `FDButtonVariant` — v1 follows modern.
 - **Theme slots (reference impl):** `filledButtonTheme` / `outlinedButtonTheme` /
   `textButtonTheme`.
+- **Inherited bindings are conformant.** Several rows in the Token bindings table are
+  satisfied by the platform's own defaults rather than by an explicit assignment in the
+  theme builder — the pill shape (below) and the `tonal` fill/on-color pair, whose platform
+  defaults already resolve to the roles the table names. A binding met by inheritance is
+  **still a binding**: it is globally overridable, which is the actual conformance test
+  (§3). A reviewer should therefore not read an absent assignment as a gap, and a transform
+  onto a platform whose defaults differ must set these explicitly.
 - **Pill shape is inherited, not set.** The reference implementation deliberately sets
   *no* shape on the button theme slots, because Material's own default for these slots is
   already `StadiumBorder` — the pill the contract requires. Inheriting it is therefore the

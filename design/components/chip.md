@@ -18,8 +18,10 @@ A pill-shaped container wrapping an optional leading element (typically an icon)
 label. The reference implementation composes the host platform's native choice-chip
 primitive (in Flutter: `ChoiceChip`) rather than drawing a bespoke chip — the theme styles
 the native primitive, and a wrapper applies the dimmed opacity. Exact internal layout
-(gap between leading element and label, ripple bounds) is **platform-dependent**; the spec
-fixes the *intent* (leading element precedes label inside a single pill), not the pixels.
+(ripple bounds, overlay geometry) is **platform-dependent**; the spec fixes the *intent*
+(leading element precedes label inside a single pill), not the pixels. The **gap** between
+a leading element and the label is an exception: it is bound to `{space.100}` in the
+Theming directive rather than left to the platform.
 
 ## Variants
 
@@ -106,21 +108,31 @@ value on both light and dark surfaces. A transform must bind the label to
   per-instance.**
 - **Per-call (resolved by the thin widget):** selection variant, the label (arbitrary
   content), an optional leading element, the activation callback, an optional long-press
-  callback, and the `unselectedDimmed` opacity multiplier. These are the only concerns the
-  theme cannot know per invocation.
+  callback, the `unselectedDimmed` opacity multiplier, and an optional **minimum-size
+  constraint**. These are the only concerns the theme cannot know per invocation.
+- The minimum-size constraint is a **layout floor, not a styling override**: it lets a
+  caller make a run of chips uniform when their labels differ in width, which is a property
+  of the arrangement rather than of the chip's appearance. It may only raise the footprint;
+  it never changes a role, padding, or text style the theme owns.
+- **Gap between a leading element and the label:** `{space.100}` (4). Bound here rather than
+  left platform-dependent because it applies only when a leading element is present, which a
+  global chip theme typically cannot express conditionally — so the component resolves it.
 
 ## Known gaps / planned fix
 
 - **Composite content + long-press (audit H8) — now specified above.** The label accepts
   arbitrary content and an optional long-press callback is part of the contract (see
   Behavioral notes / Theming directive). _(Previously deferred; resolved.)_
-- The legacy variant used a **uniform** content padding of `{space.400}` on all sides
-  (16 all-round); the modern reference changes this to **h `{space.400}` × v `{space.200}`**
-  (16 × 8). This contract specifies the current (validated) h16/v8 shape; the change is
-  recorded as audit H8, not reverted.
+- _(Corrected 2026-08-06, audit unit "chip".)_ This entry previously claimed the modern
+  reference changed the padding to h `{space.400}` × v `{space.200}` (16 × 8). That was
+  wrong in both directions: the padding is **uniform `{space.400}` on all sides**, and that
+  is what *both* the legacy source and the modern reference render. The bindings above are
+  authoritative; there is no padding divergence to track.
 - Legacy exposed per-instance escape hatches (`backgroundColor`, `borderColor`, `border`,
-  `constraints`, `padding`, `margin`); these are intentionally **not** carried forward —
-  styling is theme-only.
+  `padding`, `margin`); these are intentionally **not** carried forward — styling is
+  theme-only. A **minimum-size constraint** is the one exception, and it is *not* an escape
+  hatch of that kind: it sets a layout floor (so a run of chips can be made uniform) rather
+  than restyling a role the theme owns, and it is a documented per-call concern above.
 
 ## Transform notes
 

@@ -74,7 +74,7 @@ measures below are fixed.
 | Header top / left / right padding | `{space.600}` (24) |
 | Body & footer horizontal padding | `{space.600}` (24) |
 | Footer column gap | `{space.300}` (12) |
-| Close control square side | `{size.control.sm}` (40) — see Known gaps |
+| Close control square side | `{size.control.xs}` (32) |
 | Close control icon size | `{size.icon.sm}` (16) |
 
 ## States
@@ -125,11 +125,21 @@ applies **no fill of its own to the slot content**.
   it; a caller may override the close handler to run custom logic instead of the default
   dismiss.
 - The **header reshapes around the header icon**: with no icon, the title is the leading
-  element on the header row and any subtitle is **not** rendered. With an icon, the icon
+  element on the header row and the subtitle renders **below** it. With an icon, the icon
   becomes the leading header element and the title (and optional subtitle) drop below it.
-  **A subtitle is only ever shown when a header icon is present.**
+  **A supplied subtitle always renders, with or without a header icon** — only its
+  arrangement relative to the title changes.
 - The **close control is optional** (shown by default) and is a tonal icon button bearing
   a close glyph.
+- **Why the subtitle is not gated on the icon.** An earlier shape rendered the subtitle only
+  as a sibling of the demoted title, so an icon-less sheet silently dropped a subtitle the
+  caller had supplied. Dropping caller content because an unrelated slot is empty is a
+  defect, not a layout rule — a transform must render a supplied subtitle in both
+  arrangements. Recorded because a conformance pass against the legacy source will find this
+  difference and it is intended.
+- **The card's width is clamped.** It fills the available width minus the side insets, up to
+  a maximum of **480**. Beyond that the sheet stops growing and stays centered, so the
+  layout does not stretch to full width on a tablet or desktop viewport.
 - The **footer lays out as equal-width columns**: an optional left action and a required
   right action each take an equal share of the footer width, separated by the footer
   column gap. With no left action, the right action still occupies its single column.
@@ -159,18 +169,13 @@ applies **no fill of its own to the slot content**.
 
 ## Known gaps / planned fix
 
-- **Close control footprint (audit H4).** The close control renders at
-  `{size.control.sm}` (**40×40**) because the header constructs the tonal icon button
-  **without selecting a size**, falling through to the default `sm`. The validated intent
-  is the extra-small footprint `{size.control.xs}` (**32×32**) used by the legacy
-  reference. Recorded as a deviation; planned fix is to pin the close control to the
-  `xs` size (`flowin_pm`).
-- **Presentation helper dropped parameters (audit H5).** The imperative present helper
-  exposes only a scrim-barrier override and a scroll-control flag; the legacy present
-  helper additionally accepted **size constraints**, an explicit **background color**, and
-  a **clip behavior** override. Those three parameters were dropped in the modern shape.
-  Recorded as a regression; planned fix is to restore the dropped overrides on the present
-  helper (`flowin_pm`).
+- _(Closed 2026-08-06, audit unit "action-sheet".)_ **Close control footprint (audit H4)**
+  is fixed: the close control is pinned to `{size.control.xs}` (32×32), matching the
+  validated intent. The Sizes table above now states 32 directly.
+- _(Closed 2026-08-06, audit unit "action-sheet".)_ **Presentation helper dropped
+  parameters (audit H5)** is fixed: the present helper accepts size constraints, an
+  explicit background color, and a clip-behavior override, alongside the scrim-barrier and
+  scroll-control flags. All three are honored and tested.
 - **Floating card surface not theme-bound.** The card's `{color.surface}` fill and
   `{radius.1000}` radius are set by the sheet's card composition per-instance rather than
   installed on a global theme slot, so they are not globally overridable. Only the modal

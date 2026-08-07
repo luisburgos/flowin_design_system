@@ -55,7 +55,7 @@ with the overall height being the only caller-overridable dimension (see Behavio
 | Bar height (`bar`, default) | `{space.1400}` (56) |
 | Edge slot min height / min width | `{space.1200}` (48) |
 | Edge & top padding (uniform inset) | `{space.200}` (8) |
-| Bar height (`tab-bar`) | base height `{space.1400}` (56) + tab-strip height |
+| Bar height (`tab-bar`) | `{space.1400}` (56) — the same single row as the base bar; the tab strip occupies the bar's content slot rather than stacking below it |
 
 ## States
 
@@ -105,9 +105,15 @@ divider styling rather than from the bar itself.
   from the **global divider styling**; overriding the divider role re-skins every app bar
   footer at once.
 - **Per-call (resolved at the call site):** which slots are filled and with what content,
-  the overall bar height, and — for `tab-bar` — the selection controller, the tab list, and
-  whether the strip scrolls. These are the only concerns the bar surfaces, because all
-  visual styling lives in the slot content, not the bar.
+  the overall bar height, whether the bar reserves room for the system status bar, and —
+  for `tab-bar` — the selection controller, the tab list, whether the strip scrolls, and an
+  optional divider-colour override. These are the only concerns the bar surfaces, because
+  all other visual styling lives in the slot content, not the bar.
+- **System status-bar inset.** On a platform that overlays a status bar, the bar pads its
+  content down by that inset so the content clears it. The inset is **excluded from the
+  bar's declared height**: the declared height describes the bar's own content row, and the
+  platform inset is added on top. A transform on a platform with no such inset ignores this
+  and renders the declared height as-is.
 
 ## Known gaps / planned fix
 
@@ -115,15 +121,16 @@ divider styling rather than from the bar itself.
   validated; the one intentional addition over the legacy shape is a caller-overridable
   **bar height** parameter (legacy fixed the height via a max-height constraint with no
   override). Recorded as an accepted enhancement, not a deviation.
-- **Sub-variant `tab-bar` regressions (audit H2/H3).** The tab footer composes a hairline
-  divider stacked above the tab strip as a two-child column, where the legacy reference
-  laid the tabs and divider as a single footer row. Two gaps are tracked against the
-  current shape: (H2) the **divider hairline** is emitted as a generic divider that picks
-  up the global divider role/thickness rather than a footer-local hairline, and (H3) the
-  **single-row footer layout** of the legacy reference is not reproduced — the modern shape
-  is a divider-over-strip column. Both are recorded as backlog (`flowin_pm`), and the
-  `tab-bar` sub-variant is specified here as part of the app-bar family rather than as a
-  separate contract.
+- _(Closed 2026-08-06, audit unit "app-bar".)_ **Single-row footer layout (audit H3)** is
+  fixed: the tab strip occupies the bar's content slot with the hairline pinned at the
+  bottom, so the `tab-bar` stays one `{space.1400}`-tall row rather than stacking a strip
+  below the bar. The Sizes table above now states that height directly.
+- **Footer hairline reserves no extra extent (audit H2).** The footer rule binds the global
+  divider role for its colour and thickness, but overrides the divider's **reserved extent**
+  per-instance so the hairline occupies only its own thickness instead of the global
+  `{space.50}`. Without that override the rule would add vertical space inside a
+  fixed-height bar. This is a deliberate, documented per-instance exception to the divider's
+  extent binding — colour and thickness remain globally themed.
 
 ## Transform notes
 
@@ -133,9 +140,10 @@ divider styling rather than from the bar itself.
   implements `PreferredSizeWidget` purely for scaffold integration). The `tab-bar` footer
   divider resolves through the global `dividerTheme` slot.
 - **Legacy names (reference):** `FDAppBar` / `FDTabAppBar`. Legacy `FDAppBar` had no height
-  parameter (max-height constraint only); legacy `FDTabAppBar` exposed a per-instance
-  `dividerColor` override — dropped in the modern reference in favor of the global divider
-  role.
+  parameter (max-height constraint only). The legacy per-instance **divider-colour
+  override** is **retained** in the modern reference, not dropped: it is an optional
+  per-call override that falls back to the global subtle-border role when absent, so the
+  default path is still fully themed.
 - **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `borderSubtle`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Illustrative anatomy aside (Flutter):** the bar is a `SizedBox` over a `Stack` — the
   footer in a bottom-pinned `Positioned`, the row in a top/left/right-padded `Row` with

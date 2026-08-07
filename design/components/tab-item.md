@@ -18,9 +18,9 @@ the label — the Flowin tab item is explicitly icon-**left**.
 
 > *Illustrative platform aside (non-binding):* the reference implementation is a small
 > widget composed inside the native tab primitive's cell; the bar (`FlowinTabs`) re-wraps
-> each item to the bar height. The exact ripple bounds and icon-label gap are
-> platform-dependent; the **intent** (icon-left row, single-line ellipsized label) is
-> normative.
+> each item to the bar height. The exact ripple bounds are platform-dependent; the
+> **intent** (icon-left row, single-line ellipsized label) is normative. The **icon-label
+> gap** is *not* platform-dependent — it is bound to `{space.100}` below.
 
 ## Variants
 
@@ -56,7 +56,8 @@ indicator are bound at the **bar / tab-theme** level (see [tabs](tabs.md)).
 | label text style | all | `14 / w500` (— see Behavioral notes) |
 | label overflow | all | ellipsis (single line) |
 | icon placement | all | leading (icon-left of label) |
-| icon size | all | the tabs paired icon size |
+| icon-label gap | all (icon present) | `{space.100}` (4) |
+| icon size | all | caller-supplied — **not bound**; see Known gaps |
 | selected label color | selected | inherited from the bar (tab-theme / global role) |
 
 ## Behavioral notes
@@ -75,13 +76,19 @@ indicator are bound at the **bar / tab-theme** level (see [tabs](tabs.md)).
 
 - **Global (theme / bar slot):** selected/unselected label color and the selection
   indicator — these come from the tab theme and global color roles, never from the item.
-- **Per-call (resolved by the thin widget):** the label, an optional leading icon, and the
-  icon-left layout with ellipsized single-line label. These are the only concerns the bar
-  and theme cannot know per item.
+- **Per-call (resolved by the thin widget):** the label, an optional leading icon, the
+  icon-left layout with ellipsized single-line label, and — when the bar itself was given a
+  non-default height — a matching **height** so the item tracks it. These are the only
+  concerns the bar and theme cannot know per item.
 
 ## Known gaps / planned fix
 
-- _None._ (Restores the legacy icon-left labeled tab cell; see Transform notes.)
+- **Icon size is unbound.** The bindings table previously cited "the tabs paired icon size",
+  which resolves to nothing: [tabs](tabs.md) declares no icon-size token, and the reference
+  accepts an arbitrary icon widget whose size the caller sets. The reference correctly did
+  not invent a value (DESIGN.md §3 "Do not invent values for documented gaps"). Resolving
+  this means choosing a step from the icon scale and binding it here; until then the row is
+  marked unbound rather than pointing at a non-existent token.
 
 ## Transform notes
 

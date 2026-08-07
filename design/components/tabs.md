@@ -21,9 +21,9 @@ indicator sized to the full tab cell. No divider rule is drawn beneath the bar.
 *Platform-dependent rendering note:* the reference implementation is a **thin wrapper over
 the host platform's native tab-bar primitive** (in Flutter: `TabBar`), fixed to a Flowin
 height. It does **not** draw a bespoke bar — the theme styles the native primitive. Tab
-*cell* content (label-only, icon + label, icon placement) is supplied by the caller as
-arbitrary child content and is therefore **not constrained by this contract today** — see
-Known gaps.
+*cell* content is supplied by the caller as arbitrary child content, so this contract does
+not constrain it; the [tab-item](tab-item.md) contract constrains the Flowin cell, and a
+caller passing a raw platform cell instead gets the platform's own arrangement.
 
 ## Variants
 
@@ -63,6 +63,7 @@ scheme defaults — recorded explicitly below.
 | label text style | unselected | `{typography.baseline.labelMedium}` |
 | selection indicator size | selected | full tab cell (spans the whole tab, not just the label) |
 | divider beneath bar | all | suppressed (transparent) |
+| content inset (scrolling bar only) | all | `{space.400}` (16) horizontal |
 | label color | selected | `{color.onSurface}` (color-scheme default; not pinned by the theme slot) |
 | label color | unselected | `{color.onSurfaceVariant}` (color-scheme default; not pinned by the theme slot) |
 | selection indicator color | selected | `{color.primary}` (color-scheme default; not pinned by the theme slot) |
@@ -73,8 +74,8 @@ scheme defaults — recorded explicitly below.
   supplies a selection driver/controller and the list of tabs; the bar reflects and reports
   selection through that driver. Exactly one tab is selected at a time.
 - **Tab content is caller-supplied.** The bar accepts an ordered list of tab cells as
-  arbitrary child content; it does not impose a label/icon structure. (This is the source of
-  the anatomy gap below.)
+  arbitrary child content; it does not impose a label/icon structure. The Flowin cell layout
+  lives in [tab-item](tab-item.md).
 - **Overflow handling is a boolean choice.** When scrolling is off (default), tabs share the
   available width equally; when on, tabs take content width and the bar scrolls horizontally.
 - The bar advertises a **fixed preferred height**, so it can be slotted directly beneath an
@@ -93,18 +94,22 @@ scheme defaults — recorded explicitly below.
 - **Per-call (resolved by the thin widget):** the selection driver, the list of tab cells,
   the scroll/overflow flag, and (as an escape hatch) the bar height. These are the only
   concerns the theme cannot know per invocation.
+- **The scrolling bar takes a horizontal content inset** of `{space.400}`, so the first and
+  last tabs do not sit flush against the bar's edges. It applies **only** when the bar
+  scrolls: an equal-width bar divides the full width among its tabs, where an inset would
+  shrink the cells instead of adding breathing room. Resolved per-call because it depends on
+  the overflow flag, which the theme cannot know.
 - **Currently unpinned (color scheme defaults):** selected/unselected label colors and the
   indicator color are inherited from the global color scheme rather than fixed in the
   tab-bar slot. A theme that re-points those color roles moves the tab colors with it.
 
 ## Known gaps / planned fix
 
-- **No tab-cell primitive (audit H1).** There is no Flowin tab-item primitive today, so
-  callers pass raw native tab cells. With a raw cell holding both an icon and a label, the
-  platform default **stacks the icon ABOVE the label**. The legacy reference rendered
-  **icon-LEFT of the label**, with a fixed **14px / medium-weight** label and **ellipsis**
-  overflow. Planned fix: introduce a Flowin tab-item primitive that restores icon-left
-  layout and the label treatment. Tracked in `flowin_pm` (audit H1).
+- _(Closed 2026-08-06, audit unit "tabs".)_ **No tab-cell primitive (audit H1)** is fixed:
+  a tab-item primitive now ships with its own contract ([tab-item](tab-item.md)), restoring
+  the icon-left row with a single-line ellipsized label. The bar still *accepts* arbitrary
+  cell content, so a caller passing a raw platform cell gets the platform's stacked
+  arrangement — using the tab-item primitive is what produces the Flowin layout.
 - **Indicator size & divider suppression are now theme-dependent (audit, Med).** The
   reference previously pinned the full-tab indicator size and the transparent divider on the
   widget itself; these are now expressed only through the theme slot. If a host theme does
@@ -122,7 +127,8 @@ scheme defaults — recorded explicitly below.
   unselected label and indicator colors are left to `ColorScheme` defaults.
 - **Legacy names (reference):** `FDTabs` pinned `indicatorSize`/`dividerColor` on the widget
   and accepted an `FDTabItem` (`Tab` → `Row` of icon + 4px gap + 14/w500 ellipsis `Text`).
-  The modern reference dropped `FDTabItem`, which is the H1 gap above.
+  The modern reference restores that cell as `FlowinTabItem` — see
+  [tab-item](tab-item.md).
 - **Tag:** generic-primitive.
 - **Conformance:** a theme-only-styling test must prove the label style, full-tab indicator
   size, and divider suppression come from the theme slot, not the widget — override the slot,

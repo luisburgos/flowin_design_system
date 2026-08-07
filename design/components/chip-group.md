@@ -72,14 +72,14 @@ only layout dimensions (height, spacing, padding) and the selection→role mappi
 | Property | Role / State | Token |
 |---|---|---|
 | chip shape | all | pill / stadium (fully rounded) — see Behavioral notes |
-| chip label text style | all | `{typography.baseline.labelMedium}` |
-| chip content padding (h × v) | all | `{space.400}` × `{space.200}` |
+| chip label text style | all | `{typography.baseline.labelSmall}` |
+| chip content padding (all sides) | all | `{space.400}` (uniform) |
 | chip background | selected | `{color.surfaceSecondary}` |
 | chip foreground | selected | `{color.onSurfaceSecondary}` |
 | chip border side | selected | `{color.surfaceSecondary}` |
 | chip background | unselected | transparent |
 | chip foreground | unselected | `{color.onSurfaceSecondary}` |
-| chip border side | unselected | `{color.surfaceSecondary}` |
+| chip border side | unselected | `{color.borderSubtle}` |
 | chip border width | all | `{border.regular}` |
 | chip opacity | unselectedDimmed | `0.5` |
 | run height | scrollable | `{space.1200}` |
@@ -90,9 +90,10 @@ only layout dimensions (height, spacing, padding) and the selection→role mappi
 
 > The chip's selected fill, border color, and label style are bound at the **chip-theme**
 > level and shared with the standalone chip component; this group does not re-bind them
-> per instance. The current chip-theme uses a single secondary-surface role for both the
-> selected fill and the unselected border, hence the repeated `{color.surfaceSecondary}`
-> rows above.
+> per instance. The chip rows above therefore restate [chip](chip.md)'s bindings and must
+> stay identical to them — the selected fill is the secondary-surface role, while the
+> unselected border is the distinct subtle-border role. The two currently resolve to the
+> same value, so a rendering check cannot tell them apart; only the role names can.
 
 ## Behavioral notes
 

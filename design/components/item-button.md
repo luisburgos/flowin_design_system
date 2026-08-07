@@ -66,6 +66,7 @@ the error color roles.
 |---|---|---|
 | width | all | full (stretches to the parent's width) |
 | alignment | all | center-left (leading edge) |
+| shape corner radius | all | `{radius.400}` — **per-call pin, not the theme's pill** |
 | content padding | all | `{space.400}` (16) on all sides |
 | min height | all | `{size.control.md}` (56) |
 | leading icon size | all | `{size.icon.md}` (20) — **not** the `md` control's paired `lg`; see Sizes |
@@ -92,12 +93,19 @@ the error color roles.
 
 ## Theming directive
 
-- **Global (theme slot):** corner radius, base text style, and the per-variant color roles —
-  installed on the platform's global button theming mechanism and **globally overridable,
-  not per-instance.**
+- **Global (theme slot):** base text style and the per-variant color roles — installed on
+  the platform's global button theming mechanism and **globally overridable, not
+  per-instance.**
 - **Per-call (resolved by the thin widget):** variant selection, full-width sizing,
-  center-left alignment, the uniform `{space.400}` padding, and the destructive error-role
-  overlay. These are the concerns the theme cannot know per invocation.
+  center-left alignment, the uniform `{space.400}` padding, the destructive error-role
+  overlay, and **the corner radius**. These are the concerns the theme cannot know per
+  invocation.
+- **The corner radius is deliberately *not* theme-global for this component.** Every other
+  control in the system inherits the theme's pill shape; the item-button overrides it with
+  `{radius.400}` on its own style. A full-width row reads as a *surface*, and a pill-shaped
+  surface spanning the viewport looks like a mistake — the radius has to stop scaling with
+  the height. This is the one documented exception to "shape comes from the theme", so a
+  transform must pin it per-call here and must **not** expect a theme override to reach it.
 
 ## Known gaps / planned fix
 

@@ -63,12 +63,12 @@ on, recorded here so a conformant transform can verify them.
 | inter-section gap (row → separator → pages) | composition | `{space.300}` |
 | separator color | divider | `{color.borderSubtle}` |
 | separator thickness | divider | `{border.regular}` |
-| chip label text style | chip row, all | `{typography.baseline.labelMedium}` |
+| chip label text style | chip row, all | `{typography.baseline.labelSmall}` |
 | chip background | chip row, selected | `{color.surfaceSecondary}` |
-| chip border | chip row, unselected | `{color.surfaceSecondary}` |
+| chip border | chip row, unselected | `{color.borderSubtle}` |
 | chip background | chip row, unselected | transparent |
 | chip corner radius | chip row, all | `{radius.full}` |
-| chip content padding (h × v) | chip row, all | `{space.400}` × `{space.200}` |
+| chip content padding (all sides) | chip row, all | `{space.400}` (uniform) |
 
 ## Behavioral notes
 

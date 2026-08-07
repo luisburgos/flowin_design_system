@@ -35,11 +35,17 @@ Default variant is `filled`.
 Default size is `sm`. An icon button is square: its side equals the size's control
 height, and the icon is sized to the paired icon size.
 
-| Size | Square side | Icon size |
-|---|---|---|
-| `xs` | `{size.control.xs}` (32px) | `{size.icon.sm}` (16px) |
-| `sm` | `{size.control.sm}` (40px) | `{size.icon.md}` (20px) |
-| `md` | `{size.control.md}` (56px) | `{size.icon.lg}` (24px) |
+| Size | Square side | Icon size | Outer padding (all sides) |
+|---|---|---|---|
+| `xs` | `{size.control.xs}` (32px) | `{size.icon.sm}` (16px) | `{space.200}` (8) |
+| `sm` | `{size.control.sm}` (40px) | `{size.icon.md}` (20px) | `{space.100}` (4) |
+| `md` | `{size.control.md}` (56px) | `{size.icon.lg}` (24px) | `{space.zero}` (0) |
+
+**Outer padding is applied on all four sides**, unlike the button's, which is vertical-only
+at the same steps. The difference is deliberate and normative: an icon button is a square
+target that needs breathing room on every side, whereas a button is laid out in a vertical
+rhythm where horizontal spacing comes from its container. A transform must preserve the
+axis difference, not unify the two.
 
 ## States
 
@@ -66,6 +72,7 @@ the error color roles).
 | foreground | destructive, default | `{color.onErrorContainer}` |
 | square side | per size | `{size.control.*}` (see Sizes table) |
 | icon size | per size | `{size.icon.*}` (see Sizes table) |
+| outer padding (all sides) | per size | `{space.*}` (see Sizes table) |
 
 ## Behavioral notes
 
@@ -92,9 +99,11 @@ the error color roles).
 - The `text` variant binds its foreground to `{color.primary}`, diverging from the sibling
   text **button** variant, which binds foreground to `{color.onSurface}`. Recorded as an
   audit divergence; not reconciled in v1.
-- The legacy variant wrapped the button in an outer transparent container with per-size
-  outer padding; the modern reference drops the outer padding. Recorded as backlog, not
-  specified here.
+- _(Resolved 2026-08-06, audit unit "icon-button".)_ This entry previously stated that the
+  modern reference **drops** the legacy outer padding. That was wrong: the reference applies
+  per-size outer padding on all four sides. It is now **specified** above (Sizes table and
+  Token bindings) rather than deferred, restoring legacy parity with the axis difference
+  from the button made explicit.
 
 ## Transform notes
 

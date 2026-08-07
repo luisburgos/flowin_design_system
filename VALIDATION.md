@@ -1,8 +1,15 @@
 # Validation
 
-How the `flowin_design_system` spec is kept correct. There are **four gates**: one
-automated, three manual. Run the automated gate on every change; perform the manual gates
-when authoring or reviewing the relevant artifacts.
+How the `flowin_design_system` spec is kept correct. There are **four gates**: three
+automated, one manual. Run the automated gates on every change; perform the manual gate
+when a transform target is built or reviewed against the spec.
+
+```sh
+node tokens/validate.mjs && node tokens/validate-contracts.mjs
+```
+
+Gate 1 is the first script; Gates 2 and 4 are the second. Gate 3 is manual by nature — it
+asserts a property of an *implementation*, not of the spec.
 
 A gate checks an **externally observable property** of the spec (does a token resolve? does
 a cited reference exist?) — never an authoring style choice.
@@ -29,7 +36,7 @@ each dangling/circular reference listed. The script is dependency-free and walks
 
 ---
 
-## Gate 2 — Cross-reference integrity (MANUAL)
+## Gate 2 — Cross-reference integrity (AUTOMATED)
 
 **What it checks:** every token reference cited in a component contract
 (`design/components/<name>.md`) exists in the token set. A contract that binds a property
