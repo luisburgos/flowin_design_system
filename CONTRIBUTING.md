@@ -1,5 +1,8 @@
 # Contributing
 
+> **This file owns the workflow**: how to make a change, and when to release. The gates
+> live in [`VALIDATION.md`](VALIDATION.md); the audit protocol in [`AUDIT.md`](AUDIT.md).
+
 This repository is a **specification**, not a package. Nothing here compiles or ships;
 what it produces is a contract that other repositories transform into real UI kits.
 
@@ -41,20 +44,12 @@ reader's tour of the three-layer model. The rest of this file covers mechanics.
 
 ## Before you commit
 
-Run both validators:
-
 ```sh
 npm run validate
 ```
 
-That is Gates 1, 2 and 4 from [`VALIDATION.md`](VALIDATION.md): every token alias
-resolves, every `{token.reference}` cited in a contract exists, every contract carries the
-fixed template sections, the component index matches the files on disk, and no technology
-name has leaked into a normative section. A non-zero exit is a blocking failure, not a
-warning.
-
-Gate 3 (conformance) cannot run here — it asserts that a documented binding is overridable
-on a *platform's* theme, which only that platform's test suite can prove.
+A non-zero exit is a blocking failure. [`VALIDATION.md`](VALIDATION.md) says what each
+gate checks.
 
 ## Changing a component contract
 
@@ -119,11 +114,9 @@ confidence. Concretely, all of:
    verdicted, nothing left undecided. The protocol is [`AUDIT.md`](AUDIT.md) and the run's
    state lives in a ledger under `flowin_pm/audits/<technology>/`.
 
-Point 3 is what separates a release from a checkpoint. Gates 1, 2 and 4 prove the spec is
-*internally* consistent — that every reference resolves and every contract is
-well-formed. None of them can see whether the spec still describes something real. Only an
-audit against a working implementation does that, which is why a release is cut *after* an
-audit converges, not whenever main happens to look tidy.
+Point 3 is what separates a release from a checkpoint: the gates prove the spec is
+internally consistent, and only an audit shows it still describes something real.
+[`AUDIT.md`](AUDIT.md) explains why.
 
 If you are unsure whether the spec has drifted from the implementations, it has. Run an
 audit.

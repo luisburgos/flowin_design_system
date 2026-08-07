@@ -1,15 +1,22 @@
 # Validation
 
-How the `flowin_design_system` spec is kept correct. There are **four gates**: three
-automated, one manual. Run the automated gates on every change; perform the manual gate
-when a transform target is built or reviewed against the spec.
+> **This file owns the gates**: what each one checks and how to run it. For how to make a
+> change, see [`CONTRIBUTING.md`](CONTRIBUTING.md); for checking the spec against a real
+> implementation, see [`AUDIT.md`](AUDIT.md).
+
+How the spec is kept correct. There are **four gates**: three automated, one manual.
 
 ```sh
-node tokens/validate.mjs && node tokens/validate-contracts.mjs
+npm run validate
 ```
 
-Gate 1 is the first script; Gates 2 and 4 are the second. Gate 3 is manual by nature — it
-asserts a property of an *implementation*, not of the spec.
+Run that **before every commit**; treat a non-zero exit as a blocking failure. It runs
+Gates 1, 2 and 4 — `tokens/validate.mjs` for the first, `tokens/validate-contracts.mjs`
+for the other two. Use the npm script rather than calling either directly, so a gate added
+later is picked up everywhere.
+
+Gate 3 is manual by nature: it asserts a property of an *implementation*, not of the spec,
+so nothing run inside this repository can see it.
 
 A gate checks an **externally observable property** of the spec (does a token resolve? does
 a cited reference exist?) — never an authoring style choice.

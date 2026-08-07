@@ -1,8 +1,11 @@
 # flowin_design_system — agent notes
 
-Read [`CONTRIBUTING.md`](CONTRIBUTING.md) first. It is written for everyone and covers the
-validation gates, how to change a contract, when a release is warranted, and how to cut
-one. This file is only the things an agent gets wrong that a human would not.
+> **This file owns nothing.** Everything here is a pointer or a failure mode; the rules
+> live in [`CONTRIBUTING.md`](CONTRIBUTING.md) (workflow), [`VALIDATION.md`](VALIDATION.md)
+> (gates) and [`AUDIT.md`](AUDIT.md) (audits).
+
+Read CONTRIBUTING.md first — it is written for everyone. What follows is only the things
+an agent gets wrong that a human would not.
 
 ## This repository specifies; it does not implement
 

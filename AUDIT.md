@@ -1,5 +1,9 @@
 # Audit Protocol — spec ↔ reference implementations
 
+> **This file owns the audit**: why it exists, what it checks, and how a run converges.
+> The workflow around it lives in [`CONTRIBUTING.md`](CONTRIBUTING.md); the gates in
+> [`VALIDATION.md`](VALIDATION.md).
+
 > **Status: active. Technology-agnostic.** This file defines the reusable audit protocol
 > for converging this spec with any SDK that implements it. It complements
 > `VALIDATION.md`: validation gates check the spec's internal correctness; the audit
@@ -14,11 +18,21 @@
 
 ## Why this protocol exists
 
-The spec must reflect the latest decisions of whatever reference implementation has
-reached stability, so that (a) team members can iterate on the spec with confidence, and
-(b) new transforms (a React SDK, any future UI kit) can be built from the spec alone.
-An audit run converges the spec and one implementation onto a trusted baseline; after
-that, changes flow through the normal issue-driven process instead of ad-hoc drift.
+A specification's purpose is **convergence** — the test CONTRIBUTING.md opens with.
+Nothing inside this repository can check it. The gates prove the spec is *internally*
+consistent, and all of that stays true while the spec quietly stops describing anything
+real.
+
+An audit is the only check that closes the loop. It compares the contract against a
+working implementation and asks, unit by unit, whether the two still say the same thing.
+Where they disagree, one of them is wrong and the audit decides which; where they agree,
+the contract has been shown to describe something buildable rather than merely
+well-formed.
+
+That is what makes an audited state worth building on. A transform author starting from
+an unaudited spec is trusting prose that may have drifted arbitrarily far from every
+implementation; starting from an audited one, they are trusting prose that was checked
+against reality on a known date.
 
 **Direction of truth (per finding, not global):**
 
@@ -30,6 +44,23 @@ that, changes flow through the normal issue-driven process instead of ad-hoc dri
   verdict: the spec adopts the implementation's decision (**spec-stale**), or an issue
   is filed against the implementation (**impl-deviates**), or the call needs a human
   decision (**undecided**).
+
+**Deciding which side is wrong.** Ask what a *second* implementation, built from the
+contract alone, would do:
+
+- If it would produce the implementation's behaviour, the contract is merely describing
+  it badly → **spec-stale**.
+- If it would produce something the implementation does not do, and the contract's
+  version is what the system should be, the implementation has drifted →
+  **impl-deviates**.
+- If the contract does not determine the behaviour at all, the finding is not a drift but
+  a **gap** — declare it rather than resolving it by copying whatever the implementation
+  happens to do. Copying is how one platform's incidental decision becomes everyone's
+  requirement.
+
+The last case is the one most easily mistaken for the first. An implementation always has
+*some* behaviour, so there is always something to copy, and copying always makes the
+disagreement go away. That it resolves the finding is not evidence it was the right call.
 
 ## Audit units
 
@@ -116,15 +147,21 @@ one spec commit.
   then components in index order. A component audit that hits an unresolved
   cross-cutting question pauses and escalates rather than guessing.
 - **Stop condition (baseline reached):** every ledger row verdicted, zero `undecided`
-  rows, and Gate 1 (`node tokens/validate.mjs`) green. Tag the spec and record the
-  implementation version audited against in the ledger header.
+  rows, and the automated gates green (`npm run validate`). This is the same condition
+  CONTRIBUTING.md names as the bar for cutting a release, because it is the same
+  question: has the contract been shown to describe something real? Tag the spec and
+  record the implementation version audited against in the ledger header.
+- **A finding left `undecided` blocks the baseline.** That is deliberate. An `undecided`
+  is a place where the contract does not determine behaviour, so implementations built
+  from it would diverge — precisely what a baseline is supposed to rule out. Resolving it
+  by picking whichever answer is convenient defeats the run.
 - **Re-entry trigger:** a new stable implementation release, or a merged spec change
   touching tokens or a contract. Start a **new ledger file** for the new run and
   re-audit only the affected units; prior ledgers are history, never overwritten.
 
 ## Binding a new technology
 
-To audit a new SDK (e.g. a React UI kit):
+To audit an implementation on a technology the protocol has not covered before:
 
 1. Create `audits/<technology>/<TECHNOLOGY>_AUDIT.md` in `flowin_pm`: map each of the
    five dimensions to concrete locations (component surface, theme construction, test

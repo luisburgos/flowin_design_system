@@ -15,6 +15,9 @@ specific rendering technique**.
 | `tokens/` | DTCG JSON | machines / transform input | two-tier design tokens (primitive ramps + semantic aliases) |
 | `design/components/<name>.md` | Markdown | agents / transform input | per-component contracts (fixed template) |
 | `docs/` | HTML | humans | usage guides + rationale |
+| `CONTRIBUTING.md` | Markdown | contributors | how to change a contract · when to release |
+| `VALIDATION.md` | Markdown | contributors | the four gates and what each checks |
+| `AUDIT.md` | Markdown | contributors | checking the spec against a real implementation |
 
 ## Docs
 
