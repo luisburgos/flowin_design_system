@@ -119,8 +119,16 @@ only layout dimensions (height, spacing, padding) and the selection→role mappi
   null long-press callback disables the gesture.
 - **Layout switch.** A flag chooses horizontal scrolling (a single scrollable run of fixed
   height) versus wrapping (a leading-aligned multi-line wrap with no fixed height, rows
-  separated by the wrapped-row spacing). Scroll physics are platform-default for the
-  scrollable run.
+  separated by the wrapped-row spacing).
+- **Scroll physics are a bouncing default, overridable per call.** The scrollable run does
+  **not** inherit the platform's own physics. A chip run is a short strip inside a page
+  rather than a page-length list, and one that stops dead at its edge reads as broken, so
+  the group defaults to a bouncing feel on every platform. This is a deliberate departure
+  from the platform convention, which is why it is stated rather than inherited.
+  A call site may substitute different physics — most importantly a **composing component
+  with a scroller of its own**, which must pass the same physics to both so two scrollers on
+  the same axis do not feel different (see
+  [chip-group-view-pager](chip-group-view-pager.md)).
 - **Wrap layout is overridable per call.** The wrapped-row spacing and alignment above are
   defaults, not fixed values: a call site may override either (for example, centring a
   short standalone row). The defaults are what an unconfigured group must render.

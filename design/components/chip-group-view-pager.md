@@ -114,6 +114,14 @@ on, recorded here so a conformant transform can verify them.
   inter-chip spacing). These are the only concerns the theme cannot know per invocation —
   none of them are visual styling.
 
+## Behavioral notes (scrolling)
+
+- **One physics governs both scrollers.** The component owns two scrollers on the same
+  axis — the chip row and the page view, stacked — so a single per-call physics is applied
+  to both. Letting them differ would put two horizontal scrollers with different feel on one
+  screen. The default is the chip row's bouncing feel (see [chip-group](chip-group.md)); a
+  call site overriding it moves both together.
+
 ## Known gaps / planned fix
 
 - **Controlled mode, chip factory, and chip-row layout knobs (audit H11) — now specified
