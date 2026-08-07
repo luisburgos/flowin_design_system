@@ -1,0 +1,12 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "color": {
+    "$type": "color",
+    "fixed": {
+      "$description": "Mode-independent semantic colors — these resolve to the same primitive value in light and dark modes, so they live outside the per-mode role files.",
+      "neutral200": { "$value": "{color.neutral.200}" },
+      "neutral600": { "$value": "{color.neutral.600}" },
+      "success": { "$value": "{color.success.500}" }
+    }
+  }
+}

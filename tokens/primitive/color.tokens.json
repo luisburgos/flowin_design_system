@@ -1,0 +1,49 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "color": {
+    "$type": "color",
+    "$description": "Primitive color ramps — literal values, the raw palette. Not consumed directly by components; semantic tokens alias these. Values are byte-for-byte from the Flowin foundation palette. No primary/secondary/tertiary ramps exist here: those are semantic roles, not raw palette, and currently alias the neutral ramp pending a chromatic brand accent.",
+    "white": { "$value": "#ffffff" },
+    "black": { "$value": "#000000" },
+    "neutral": {
+      "100": { "$value": "#f9f9f9" },
+      "200": { "$value": "#f3f3f3" },
+      "300": { "$value": "#dbdbdb" },
+      "400": { "$value": "#ababab" },
+      "500": { "$value": "#7a7a7a" },
+      "600": { "$value": "#494949" },
+      "700": { "$value": "#313131" },
+      "800": { "$value": "#181818" }
+    },
+    "error": {
+      "100": { "$value": "#fef7f7" },
+      "200": { "$value": "#fde9e9" },
+      "300": { "$value": "#f5918f" },
+      "400": { "$value": "#f15957" },
+      "500": { "$value": "#ec221f" },
+      "600": { "$value": "#ac1f1d" },
+      "700": { "$value": "#821d1b" },
+      "800": { "$value": "#55161f" }
+    },
+    "warning": {
+      "100": { "$value": "#fdf8e7" },
+      "200": { "$value": "#fbf1d0" },
+      "300": { "$value": "#f6e3a1" },
+      "400": { "$value": "#f1d672" },
+      "500": { "$value": "#eabf24" },
+      "600": { "$value": "#edb143" },
+      "700": { "$value": "#eda043" },
+      "800": { "$value": "#bd6f10" }
+    },
+    "success": {
+      "100": { "$value": "#e7f3e1" },
+      "200": { "$value": "#cee8c2" },
+      "300": { "$value": "#9ed185" },
+      "400": { "$value": "#6eb948" },
+      "500": { "$value": "#3da20b" },
+      "600": { "$value": "#34800e" },
+      "700": { "$value": "#2b5d12" },
+      "800": { "$value": "#213b15" }
+    }
+  }
+}
