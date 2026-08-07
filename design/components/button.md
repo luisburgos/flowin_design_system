@@ -116,6 +116,12 @@ substituting a fixed radius.
   in the modern reference but not in legacy `FDButtonVariant` — v1 follows modern.
 - **Theme slots (reference impl):** `filledButtonTheme` / `outlinedButtonTheme` /
   `textButtonTheme`.
+- **The base text style is reachable through the type scale, not the button slot.** Because
+  the component always resolves a per-size label style, a style set on the *button's own*
+  theme slot is shadowed by it — including at `md`, where the two are equal. The live
+  binding is the type-scale role (`{typography.baseline.labelLarge}`), and re-skinning button
+  type means re-pointing that role. A transform should either bind the same way or ensure its
+  per-size resolution falls back to the component slot when the call site names no size.
 - **Inherited bindings are conformant.** Several rows in the Token bindings table are
   satisfied by the platform's own defaults rather than by an explicit assignment in the
   theme builder — the pill shape (below) and the `tonal` fill/on-color pair, whose platform
