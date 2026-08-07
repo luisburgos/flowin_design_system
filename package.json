@@ -1,0 +1,14 @@
+{
+  "name": "flowin_design_system",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Technology-agnostic specification for the Flowin Design System.",
+  "scripts": {
+    "changelog": "conventional-changelog -n ./changelog.config.js -i CHANGELOG.md -s",
+    "validate": "node tokens/validate.mjs && node tokens/validate-contracts.mjs"
+  },
+  "devDependencies": {
+    "conventional-changelog-cli": "^5.0.0",
+    "conventional-changelog-conventionalcommits": "^9.3.1"
+  }
+}
