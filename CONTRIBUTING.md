@@ -1,12 +1,37 @@
 # Contributing
 
 This repository is a **specification**, not a package. Nothing here compiles or ships;
-what it produces is a contract that other repositories transform into real UI kits. That
-changes what "correct" means: a change is correct when it is unambiguous to someone
-implementing it on a platform you have never used.
+what it produces is a contract that other repositories transform into real UI kits.
+
+## The test
+
+> Could someone build this on a platform the spec has never targeted, **without reading
+> the Flutter code**?
+
+Apply it to every change. The second clause is the sharp one: the reference
+implementation is right there, and consulting it is exactly how a gap in the text stays
+invisible. If a question can only be settled by opening `flutter_flowin`, the contract has
+not answered it — and a transform author who lacks that option will guess instead.
+
+Failing the test looks like this in practice:
+
+- **A value that resolves but is wrong elsewhere.** Binding a button's corner radius to a
+  fixed `{radius.400}` is precise and unambiguous. It is also wrong: the button is a pill
+  whose radius is half its rendered height, so a fixed 16 is correct at one size and a
+  rounded rectangle at the next. The fix was not more precision — it was saying *pill*,
+  and stating the `height / 2` rule.
+- **A reference that resolves to nothing.** "the tabs paired icon size" reads fine until
+  you try to look it up and find no such token.
+- **A claim the implementation contradicts.** "Scroll physics are platform-default" —
+  faithfully implemented, and the result does not match what ships, because the reference
+  pins one physics unconditionally.
+
+The first two are *unambiguous* and still fail. Clarity is necessary and not sufficient:
+the contract also has to be true, and true on a platform whose defaults differ from
+Flutter's.
 
 Read [`docs/usage-guide.html`](docs/usage-guide.html) first if you have not — it is the
-reader's tour of the three-layer model. This file covers the mechanics of changing things.
+reader's tour of the three-layer model. The rest of this file covers mechanics.
 
 ## Before you commit
 
