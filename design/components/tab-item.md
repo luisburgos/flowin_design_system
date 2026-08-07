@@ -38,7 +38,7 @@ No per-call size axis. The item lays out within the bar's fixed height (`{space.
 
 | Size | Notable dimensions |
 |---|---|
-| (single) | label `14 / w500`; icon paired at the tabs label size; height inherited from the bar |
+| (single) | label `{typography.baseline.labelMedium}`; icon size caller-supplied; height inherited from the bar |
 
 ## States
 
@@ -53,7 +53,7 @@ indicator are bound at the **bar / tab-theme** level (see [tabs](tabs.md)).
 
 | Property | State | Token |
 |---|---|---|
-| label text style | all | `14 / w500` (— see Behavioral notes) |
+| label text style | all | `{typography.baseline.labelMedium}` (14 / semibold) |
 | label overflow | all | ellipsis (single line) |
 | icon placement | all | leading (icon-left of label) |
 | icon-label gap | all (icon present) | `{space.100}` (4) |
@@ -66,8 +66,9 @@ indicator are bound at the **bar / tab-theme** level (see [tabs](tabs.md)).
   label on the same line — never above it.
 - **Single-line ellipsized label.** The label is one line and truncates with an ellipsis
   when constrained; it does not wrap.
-- **Label weight.** The label renders at `14 / w500` (medium). This is the item's own
-  intrinsic label sizing; the bar's selected/unselected *color* is layered on top.
+- **The label style comes from the bar, not the item.** The item sets no style of its own;
+  it inherits the tab bar's label style, so a Flowin cell and a raw platform cell in the
+  same bar render alike. The bar's selected/unselected *color* is layered on top.
 - **Icon is optional.** A label is required; the leading icon is optional.
 - **The bar owns selection.** The item does not manage selection state, the indicator, or
   the tap/selection callback — those belong to [tabs](tabs.md).
@@ -95,8 +96,12 @@ indicator are bound at the **bar / tab-theme** level (see [tabs](tabs.md)).
 - **Reference implementation:** `FlowinTabItem` (flutter_flowin) — a public widget passed as
   a tab to `FlowinTabs`, which sizes/wraps it to the bar height. Replaces a raw
   `Tab(icon:, text:)` (which stacks icon over label).
-- **Theme slot (reference impl):** `tabBarTheme` (label text styles, indicator) supplies the
-  selected/unselected coloring; the item supplies the row layout + `14/w500` label.
+- **Theme slot (reference impl):** `tabBarTheme` supplies the label text styles and the
+  selected/unselected coloring; the item supplies the row layout only.
+- **Weight deviates from the legacy source, deliberately.** The legacy cell hardcoded a
+  medium (w500) label per item. v1 binds the label to the type scale instead, which is
+  semibold (w600), so the weight travels through the theme and every cell in a bar agrees.
+  A conformance pass against the legacy source will find this difference; it is intended.
 - **Legacy names (reference):** the legacy tab cell was an icon-left row with an ellipsized
   `14/w500` label; the modern rebuild had regressed to the stacked native `Tab`. This
   contract restores the legacy layout (audit H1).

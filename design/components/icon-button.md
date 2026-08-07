@@ -96,9 +96,12 @@ the error color roles).
   installed on the global theme slot (which currently carries only the shape). Variant
   colors are therefore not globally overridable. Recorded as backlog; no planned fix
   specified here (`flowin_pm`).
-- The `text` variant binds its foreground to `{color.primary}`, diverging from the sibling
-  text **button** variant, which binds foreground to `{color.onSurface}`. Recorded as an
-  audit divergence; not reconciled in v1.
+- _(Resolved 2026-08-06, audit unit "icon-button".)_ The `text` variant binds its foreground
+  to `{color.primary}` while the sibling text **button** binds `{color.onSurface}`. This was
+  recorded as an unreconciled divergence; it is now **deliberate**. A standalone icon
+  affordance has no surrounding text to be mistaken for, so it carries the accent; a text
+  button sits in a content flow, where an accent label would read as a link. Both contracts
+  state the reason.
 - _(Resolved 2026-08-06, audit unit "icon-button".)_ This entry previously stated that the
   modern reference **drops** the legacy outer padding. That was wrong: the reference applies
   per-size outer padding on all four sides. It is now **specified** above (Sizes table and

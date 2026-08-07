@@ -49,7 +49,7 @@ The input field is single-size; it exposes no `xs`/`sm`/`md` scale.
 | Measure | Value |
 |---|---|
 | Label → surface gap | `{space.200}` (8) |
-| Surface min height | `{space.1600}` (64) |
+| Surface height (fixed) | `{space.1600}` (64) |
 | Content max height | `{space.1000}` (40) |
 | Surface inner padding (h × v) | `{space.400}` × `{space.300}` (16 × 12) |
 
@@ -75,7 +75,7 @@ is themed text. All bindings below describe the **shell**, not the field child.
 | label text style | `field`, default | `{typography.baseline.labelMedium}` |
 | label text color | `field`, default | `{color.onSurface}` |
 | label → surface gap | `field`, default | `{space.200}` |
-| surface min height | `field`, default | `{space.1600}` |
+| surface height (fixed) | `field`, default | `{space.1600}` |
 | content max height | `field`, default | `{space.1000}` |
 | surface inner padding (horizontal) | `field`, default | `{space.400}` |
 | surface inner padding (vertical) | `field`, default | `{space.300}` |
@@ -93,7 +93,11 @@ is themed text. All bindings below describe the **shell**, not the field child.
   **truncates with an ellipsis** when it exceeds the available width.
 - The child is **arbitrary**: any widget may occupy the content slot, and the input field
   neither styles nor constrains it beyond the surface's padding and content max height.
-- The surface holds a fixed minimum height regardless of child content.
+- The surface holds a **fixed** height regardless of child content — not a minimum. A child
+  taller than the surface is constrained to it rather than growing it, so a field that must
+  accommodate variable-height content should scroll that content itself. ("Fixed minimum"
+  in an earlier revision was ambiguous and read as a floor; the shipped behaviour is a
+  fixed height, and that is what this specifies.)
 - The field child's own contract governs all interaction (focus, value changes,
   validation, disabled). The shell neither intercepts nor styles those.
 

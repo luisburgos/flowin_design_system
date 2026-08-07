@@ -118,6 +118,14 @@ binds **no color at all** — see the note below the table.
 
 ## Known gaps / planned fix
 
+- _(Closed 2026-08-06, audit unit "color-radial-button".)_ The reference briefly exposed the
+  **fill decoration** as a public per-call parameter. That was an escape hatch of exactly the
+  kind this contract prohibits, and a sharp one: supplying it made the component ignore the
+  colour payload entirely and skip the swatch painter, so a caller could replace the very
+  value the swatch exists to display. It is now internal — the variant is chosen by
+  construction (solid vs. gradient), which is the API, and the component reports which fill
+  it carries rather than accepting one.
+
 - **Deliberate deviation from the legacy swatch (2026-08-04): the gap is transparent.**
   The ring math (`middle = diameter − 2 × ringWidth`, `inner = middle − 2 × gapWidth`) and
   the default diameter / ring / gap measures are carried over unchanged, so the geometry is

@@ -80,7 +80,7 @@ substituting a fixed radius.
 | background | outline, default | transparent |
 | foreground | outline, default | `{color.onSurface}` |
 | border side | outline, default | `{color.borderSubtle}` |
-| foreground | text, default | `{color.onSurface}` |
+| foreground | text, default | `{color.onSurface}` — neutral, **not** the accent; see Behavioral notes |
 | background | destructive, default | `{color.errorContainer}` |
 | foreground | destructive, default | `{color.onErrorContainer}` |
 | content padding | theme base (no size resolved) | `space.400` × `space.300` (16 × 12) |
@@ -92,6 +92,12 @@ substituting a fixed radius.
 ## Behavioral notes
 
 - A null/absent activation callback **disables** the button.
+- **The `text` variant's foreground is neutral, not the brand accent.** A text button sits
+  inside a content flow, where an accent-coloured label reads as a link rather than as a
+  button, so it binds the on-surface role. This differs deliberately from the text
+  [icon-button](icon-button.md), which *does* bind the accent because a standalone icon
+  affordance has no surrounding text to be confused with. Platforms commonly default a text
+  button to the accent, so a transform must set this explicitly rather than inherit it.
 - Either a `label` (string) or arbitrary `child` content must be provided; `child` wins
   when both are present.
 - An optional leading icon renders before the label with the size's paired icon size.
