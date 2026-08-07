@@ -89,8 +89,11 @@ binds only the label's text style and the gap between label and field.
 
 - **Reference implementation:** `FlowinLabeledTextField` (flutter_flowin), a thin adapter
   over [input-field](input-field.md) that fills its child slot with a
-  [text-field](text-field.md). The stacked layout, surface and label styling live in the
-  input field; this component contributes only the text-field wiring.
+  [text-field](text-field.md). The stacked layout and label styling live in the input field;
+  this component contributes only the text-field wiring. It **suppresses the input field's
+  surface**, because the text field already draws the field border and fill from the global
+  input theming mechanism — without that, the composition would render two nested borders.
+  So the field chrome here comes from the text field, not from the input field's surface.
 - **Theme slots (reference impl):** the text-field's input theming (field chrome) plus the
   global `textTheme` (label style). No dedicated slot for the composition itself.
 - **Legacy names (reference):** `FDInputField` — the legacy bundled-label text field, which

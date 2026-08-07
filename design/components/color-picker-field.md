@@ -110,7 +110,7 @@ separation shadow; it binds no swatch colour at all.
 | selection ring width | any, selected | `{border.extraBold}` |
 | selection ring gap width | any, selected | `{border.bold}` |
 | selection ring gap fill | any, selected | **none** — unpainted; the background shows through |
-| swatch separation shadow | all swatches | `shadow10` — themed against the scheme in dark mode |
+| swatch separation shadow | predefined swatches | `{shadow.shadow10}`, its colour bound to `{color.borderSubtle}` so the ring stays visible on a dark surface |
 | swatch interaction overlay | all swatches | **none** — splash/highlight/hover suppressed |
 | inter-swatch gap | all swatches | `{space.400}` |
 
@@ -157,10 +157,11 @@ separation shadow; it binds no swatch colour at all.
   data, so an entry may match the field surface — a white swatch on a white surface is a
   real case, not a contrived one. Two guarantees follow, and **neither needs a colour
   resolved for it**:
-  - **Unselected**, the hairline separation shadow every swatch already carries is what
+  - **Unselected**, the hairline separation shadow each predefined swatch carries is what
     keeps it readable — a swatch matching the surface still reads as a disc because the
     shadow draws its edge. No swatch takes a border of its own; adding one on top of the
-    shadow would double the treatment.
+    shadow would double the treatment. The custom swatch needs no such ring: it renders a
+    multi-hue sweep, so it can never match the surface the way a single-colour preset can.
   - **Selected**, the ring gap is **unpainted**, so the ring reads against whatever is
     behind the swatch. A swatch matching the surface still shows its ring, because the
     separation comes from the background itself rather than from a colour chosen to
@@ -194,11 +195,11 @@ separation shadow; it binds no swatch colour at all.
 ## Known gaps / planned fix
 
 - **Near-faithful to the reference.** The contract matches the reference implementation as
-  validated, with a single recorded loss: the legacy field exposed an **`id` parameter**
-  used purely as a test-key hook (a stable handle for locating the field in tests). The
-  modern reference drops it, so there is no caller-supplied test handle on the field.
-  Recorded as backlog (`flowin_pm`); not specified here because it carries no visual or
-  behavioral binding.
+  validated. The legacy field's **`id` parameter**, a per-call test-key hook, is not carried
+  forward as a parameter; the reference instead publishes a **fixed identifier for the custom
+  swatch**, so tests get a stable handle without the field surfacing a styling-adjacent knob.
+  A test handle is a platform-testing affordance rather than a design binding, so the form it
+  takes is left to each transform.
 - **No field-level disabled state.** The current reference has no mechanism to disable the
   whole field; only `default` is specified at the field level. Noted as a future enhancement
   rather than a deviation from the reference.

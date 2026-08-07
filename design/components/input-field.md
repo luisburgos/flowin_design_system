@@ -107,9 +107,18 @@ is themed text. All bindings below describe the **shell**, not the field child.
   A field child that is itself a themed text-entry primitive picks up its own fill, border,
   hint, and content padding from the **global text-input styling**, which is independent of
   the shell.
-- **Per-call (resolved at the call site):** the label text and the field child. These are
-  the only concerns the shell surfaces, because all other styling lives in global roles or
-  in the field child's own contract.
+- **Per-call (resolved at the call site):** the label text, the field child, and whether
+  the shell draws its **surface**. These are the only concerns the shell surfaces, because
+  all other styling lives in global roles or in the field child's own contract.
+- **The surface can be suppressed.** A child that already draws its own chrome — most
+  importantly a themed text entry, which carries the field border and fill from the global
+  input theming mechanism — would otherwise be wrapped in a second border. Suppressing the
+  surface is therefore a composition concern, not a styling override: it selects *which*
+  layer owns the chrome, rather than changing what the chrome looks like. With the surface
+  suppressed, the surface bindings below (background, border, radius, smoothing, min height,
+  content max height, inner padding) do not apply; the label bindings and the stacked
+  label-above-child layout still do. This is the composition
+  [labeled-text-field](labeled-text-field.md) uses.
 
 ## Known gaps / planned fix
 

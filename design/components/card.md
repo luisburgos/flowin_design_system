@@ -109,7 +109,9 @@ shadows, clip).
 - An optional border may be supplied per-call (off by default).
 - Optional drop shadows may be supplied per-call (none by default); shadows are a
   caller-provided list, not a theme elevation token in v1.
-- **An elevation shadow's colour resolves per brightness.** The geometry is fixed
+- **An elevation shadow's colour resolves per brightness.** This is a rule for *whoever
+  supplies the shadow* — since shadows are caller-provided here, the card itself installs no
+  shadow binding to override. The geometry is fixed
   (`{shadow.shadow100}`), but the colour binds to the semantic `shadow` role, which is a
   light neutral in light mode and **black** in dark. A shadow is an absence of light, so
   it darkens whatever it falls on; a colour that does not vary by mode inverts that on a
