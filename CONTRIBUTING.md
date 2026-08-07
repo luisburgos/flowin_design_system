@@ -5,30 +5,36 @@ what it produces is a contract that other repositories transform into real UI ki
 
 ## The test
 
-> Could someone build this on a platform the spec has never targeted, **without reading
-> the Flutter code**?
+> If two teams implemented this independently, on different platforms, would they arrive
+> at the same behaviour?
 
-Apply it to every change. The second clause is the sharp one: the reference
-implementation is right there, and consulting it is exactly how a gap in the text stays
-invisible. If a question can only be settled by opening `flutter_flowin`, the contract has
-not answered it — and a transform author who lacks that option will guess instead.
+That is what a specification is for. Not that a change is buildable — a vague contract is
+buildable, just differently by each reader — but that everyone who builds it converges.
+Anything a reader has to decide for themselves is a place where implementations diverge,
+and divergence is the failure this repository exists to prevent.
 
-Failing the test looks like this in practice:
+The corollary is that the spec has to be **self-sufficient**. A question answered by
+looking at an existing implementation is a question the text did not answer; the reader
+who had that implementation to hand simply did not notice. Someone without it guesses, and
+the guesses differ.
 
-- **A value that resolves but is wrong elsewhere.** Binding a button's corner radius to a
-  fixed `{radius.400}` is precise and unambiguous. It is also wrong: the button is a pill
-  whose radius is half its rendered height, so a fixed 16 is correct at one size and a
-  rounded rectangle at the next. The fix was not more precision — it was saying *pill*,
-  and stating the `height / 2` rule.
+Three ways a change fails the test:
+
+- **A value that holds on one platform and not another.** Binding a button's corner radius
+  to a fixed `{radius.400}` is precise and unambiguous. It is also wrong: the button is a
+  pill whose radius is half its rendered height, so a fixed 16 is right at one size and a
+  rounded rectangle at the next. Implementers converge on the number and diverge on the
+  shape. The fix was not more precision — it was saying *pill*, and stating the
+  `height / 2` rule.
 - **A reference that resolves to nothing.** "the tabs paired icon size" reads fine until
-  you try to look it up and find no such token.
-- **A claim the implementation contradicts.** "Scroll physics are platform-default" —
-  faithfully implemented, and the result does not match what ships, because the reference
-  pins one physics unconditionally.
+  you look for the token and there is none. Every reader now picks their own.
+- **A claim contradicted by what ships.** "Scroll physics are platform-default", when the
+  reference pins one physics unconditionally. Implement the sentence faithfully and you do
+  not match the system you are supposed to be joining.
 
-The first two are *unambiguous* and still fail. Clarity is necessary and not sufficient:
-the contract also has to be true, and true on a platform whose defaults differ from
-Flutter's.
+The first two are perfectly unambiguous and still fail. Clarity is necessary and not
+sufficient: a contract also has to be *complete* — leaving nothing to the reader's
+judgement — and *true*.
 
 Read [`docs/usage-guide.html`](docs/usage-guide.html) first if you have not — it is the
 reader's tour of the three-layer model. The rest of this file covers mechanics.

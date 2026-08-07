@@ -7,15 +7,15 @@ one. This file is only the things an agent gets wrong that a human would not.
 ## This repository specifies; it does not implement
 
 There is no runtime here, so nothing "passes" to tell you a change is done. Use the test
-at the top of CONTRIBUTING.md: could someone build this on a platform the spec has never
-targeted, without reading the Flutter code?
+at the top of CONTRIBUTING.md: would two teams implementing this independently arrive at
+the same behaviour?
 
-The agent-specific trap is the second clause. Reading `flutter_flowin` is cheap for you
-and impossible for the transform author you are writing for, so a question you settle by
-opening the code is a question the contract still does not answer. Consulting the
-implementation is right for *fidelity* — does the spec match what ships? — and wrong for
-*intent*, where it launders an implementation detail into a normative section and makes
-every other platform non-conformant.
+The agent-specific trap is that you can read every implementation at once. A question you
+settle by opening one of them is a question the contract still does not answer — you just
+had a source the next reader will not. Consulting an implementation is right for
+*fidelity*, where the question is whether the spec matches what ships, and wrong for
+*intent*, where it launders that implementation's decisions into a normative section and
+makes every other platform non-conformant.
 
 ## Do not hand-edit generated or authoritative-elsewhere files
 
