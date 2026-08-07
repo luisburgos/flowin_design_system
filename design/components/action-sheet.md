@@ -158,8 +158,14 @@ applies **no fill of its own to the slot content**.
   re-skins every action-sheet header at once.
 - **Per-call (resolved at the call site):** the header title, optional subtitle, optional
   header icon; whether the close control is shown and its override handler; the body and
-  footer content; and the scrim barrier override. The card surface, radius, edge insets,
-  and internal spacing are fixed by the contract and are **not** call-site concerns.
+  footer content; the scrim barrier override; and whether the card's **outer margin** is
+  suppressed. The card surface, radius, and internal spacing are fixed by the contract and
+  are **not** call-site concerns.
+- **The outer margin is a placement concern, not a styling one.** The contract's screen-edge
+  insets are what a *modal* presentation wants; the same layout embedded **inside a page**
+  needs none, because there the surrounding layout owns the spacing. Suppressing the margin
+  moves the card without touching the surface, the radius, or any internal spacing — all of
+  which stay fixed. This is the only inset a call site may change.
 
 > Note: the floating **card** surface (`{color.surface}`) and its `{radius.1000}` corner
 > radius are supplied by the sheet's own card composition, *distinct* from the global
