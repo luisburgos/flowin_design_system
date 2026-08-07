@@ -35,6 +35,23 @@ mechanism** (Flutter `ThemeData` + component themes, CSS custom properties + cla
 etc.). Custom components exist only where a platform has no equivalent. Every token
 binding must be **globally overridable, not per-instance**.
 
+## Site
+
+`site/` is an Astro/Starlight app that **reads** this spec and renders it for human
+review — swatches with resolved values, scales drawn to scale, each contract with its
+cited tokens resolved. It is generated from `tokens/**` and `design/components/*.md` at
+build time and never restates a value, so a page cannot drift from the spec; it can only
+fail to build.
+
+```sh
+cd site && npm install && npm run dev
+```
+
+**The site is not part of the spec.** A transform reads `tokens/`, `DESIGN.md` and
+`design/components/` directly — the JSON and Markdown are the machine-readable inputs, and
+they are what a transform must consume. `site/` is a reader, and its build tooling is
+deliberately confined to that directory.
+
 ## Contributing
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md) for how to change a contract, what the validation

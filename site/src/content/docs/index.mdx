@@ -1,0 +1,54 @@
+---
+title: Flowin Design System
+description: The technology-agnostic specification — tokens, component contracts, and the theme-first model.
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+This is the **specification**, not a package. Nothing here compiles or ships; what it
+produces is a contract that other repositories transform into real UI kits — one for
+Flutter today, others to follow.
+
+Every value on this site is resolved from the spec's own token files and contracts when
+the site is built. Nothing is retyped, so a page cannot disagree with the spec.
+
+## What a specification is for
+
+**Convergence.** Two teams implementing this independently, on different platforms, should
+arrive at the same behaviour. That is a stronger property than being *buildable* — a vague
+contract is buildable, just differently by each reader.
+
+Anything a reader has to decide for themselves is a place where implementations diverge.
+
+<CardGrid>
+  <LinkCard title="Colour" href="/tokens/colour/" description="Semantic roles, status roles, and the primitive ramps." />
+  <LinkCard title="Dimensions" href="/tokens/dimensions/" description="Spacing, radius, border, control and icon scales." />
+  <LinkCard title="Typography" href="/tokens/typography/" description="The baseline and brand type scales." />
+</CardGrid>
+
+## Theme-first
+
+Appearance lives on the platform's **global theming mechanism**, never in a wrapper
+widget. Native widgets inherit the Flowin look; a component resolves only the per-call
+concerns a theme cannot know — which variant, which size.
+
+Custom components exist only where a platform has no equivalent.
+
+<Aside type="caution" title="Two decisions are open">
+Reviewing before the next SDK is built is the point of this site. Two things are
+deliberately unresolved, and both change what implementations render:
+
+- **No chromatic brand accent.** `primary`, `secondary` and `tertiary` alias the neutral
+  ramp — see [Colour](/tokens/colour/).
+  ([`flowin_pm#30`](https://github.com/luisburgos/flowin_pm/issues/30))
+- **Three declared-but-unbound gaps**, including a type style nothing cites.
+  ([`flowin_pm#31`](https://github.com/luisburgos/flowin_pm/issues/31))
+
+Filling the first re-points three roles and is breaking for anything built against the
+placeholders. Better to settle it now than after a second implementation exists.
+</Aside>
+
+## Status
+
+Released as `0.2.0` — the first state audited against a stable reference implementation,
+with every unit of the audit protocol verdicted.

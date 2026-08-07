@@ -1,0 +1,34 @@
+---
+// Renders a dimension scale to scale: each step draws a bar of its own width,
+// so the rhythm of the scale is visible rather than inferred from numbers.
+import { group, px } from '../lib/tokens.mjs';
+
+const { prefix, unit = 'px', max, filter } = Astro.props;
+let tokens = group(prefix);
+if (filter) tokens = tokens.filter((t) => filter(t));
+const widest = max ?? Math.max(...tokens.map((t) => px(t) ?? 0));
+---
+
+<table class="tokens">
+  <thead>
+    <tr><th>Step</th><th>Value</th><th class="bar-col">Scale</th></tr>
+  </thead>
+  <tbody>
+    {
+      tokens.map((t) => {
+        const n = px(t);
+        return (
+          <tr>
+            <td><code>{t.name}</code>{t.description && <p class="desc">{t.description}</p>}</td>
+            <td><code>{n}{typeof n === 'number' ? unit : ''}</code></td>
+            <td class="bar-col">
+              {typeof n === 'number' && widest > 0 && (
+                <span class="bar" style={`width:${Math.max((n / widest) * 100, 0.5)}%`} />
+              )}
+            </td>
+          </tr>
+        );
+      })
+    }
+  </tbody>
+</table>

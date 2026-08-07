@@ -1,0 +1,48 @@
+---
+// One page per component contract, generated from `design/components/*.md`.
+// The contract's own Markdown is rendered as-is — this repository's normative
+// text, not a paraphrase — with its cited tokens resolved alongside it.
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { marked } from 'marked';
+import { slugs, source, citedTokens, intent } from '../../lib/contracts.mjs';
+
+export function getStaticPaths() {
+  return slugs().map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const html = marked.parse(source(slug));
+const cited = citedTokens(slug);
+const isColour = (v) => typeof v === 'string' && /^#[0-9a-f]{3,8}$/i.test(v);
+const show = (v) => (typeof v === 'object' && v !== null ? JSON.stringify(v) : String(v));
+---
+
+<StarlightPage frontmatter={{ title: slug, description: intent(slug).slice(0, 160) }}>
+  <p>
+    Rendered from <code>design/components/{slug}.md</code>. The contract text below is the
+    normative source; the table resolves every token it cites.
+  </p>
+
+  <h2>Tokens this contract cites</h2>
+  <table class="tokens">
+    <thead>
+      <tr><th></th><th>Reference</th><th>Resolves to</th></tr>
+    </thead>
+    <tbody>
+      {
+        cited.map((t) => (
+          <tr>
+            <td>{isColour(t.value) && <span class="swatch" style={`background:${t.value}`} />}</td>
+            <td><code>{`{${t.path}}`}</code></td>
+            <td>
+              {t.missing ? <strong>unresolved</strong> : <code>{show(t.value)}</code>}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+
+  <h2>Contract</h2>
+  <div set:html={html} />
+</StarlightPage>

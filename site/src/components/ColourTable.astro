@@ -1,0 +1,55 @@
+---
+// Renders a colour group as swatches with their resolved values and alias
+// chains. Everything here comes from `tokens/**` at build time.
+import { group, collisions } from '../lib/tokens.mjs';
+
+const { prefix, filter, note } = Astro.props;
+let tokens = group(prefix);
+if (filter) tokens = tokens.filter((t) => filter(t));
+
+const shared = new Map();
+for (const [value, names] of collisions(tokens)) shared.set(value, names);
+---
+
+{note && <p class="group-note" set:html={note} />}
+
+<table class="tokens">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Role</th>
+      <th>Aliases</th>
+      <th>Resolves to</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      tokens.map((t) => {
+        const alsoNamed = shared.get(String(t.value).toLowerCase()) ?? [];
+        const others = alsoNamed.filter((n) => n !== t.name);
+        return (
+          <tr>
+            <td>
+              <span class="swatch" style={`background:${t.value}`} />
+            </td>
+            <td>
+              <code>{t.name}</code>
+              {t.description && <p class="desc">{t.description}</p>}
+            </td>
+            <td>
+              {t.aliased ? <code class="alias">{t.raw}</code> : <span class="literal">literal</span>}
+            </td>
+            <td>
+              <code>{t.value}</code>
+              {others.length > 0 && (
+                <p class="desc shared">
+                  Same value as {others.map((n) => <code>{n}</code>).reduce((a, b) => [a, ', ', b])}
+                </p>
+              )}
+            </td>
+          </tr>
+        );
+      })
+    }
+  </tbody>
+</table>

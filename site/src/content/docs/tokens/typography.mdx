@@ -1,0 +1,51 @@
+---
+title: Typography
+description: The baseline and brand type scales, resolved from the token set.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Two families with different jobs.
+
+**Baseline** carries the working type — body, labels, titles, captions — and is what
+native widgets inherit. **Brand** is expressive display type; it has no standard slot on a
+typical platform, so it binds through the theme-extension mechanism alongside the other
+non-native tokens.
+
+A transform must keep both reachable. Replacing brand styles with baseline ones collapses
+the distinction the two families exist to draw.
+
+<Aside title="The scale overlays, it does not replace">
+A conformant transform starts from the platform's own type scale, applies the Flowin
+family across it, then overrides **only** the slots the token set names. Slots the token
+set does not name keep their platform default size and weight, in the Flowin family.
+
+Replacing the whole scale would leave unnamed slots undefined and change how native
+widgets render.
+</Aside>
+
+<Aside type="caution" title="One style is declared but not bound">
+`typography.baseline.titleLarge` is defined in the token set, but no component contract
+cites it and the reference implementation leaves the corresponding slot at the platform
+default.
+
+A transform must **not** install it on the strength of its existence — doing so silently
+diverges the rendered output. Tracked as
+[`flowin_pm#31`](https://github.com/luisburgos/flowin_pm/issues/31).
+</Aside>
+
+## Conversion rules
+
+`letterSpacing` is authored in **px**. A transform targeting a platform that expects
+relative units converts per binding: `em = letterSpacing_px / fontSize_px`.
+
+`lineHeight` is a unitless ratio and transforms directly.
+
+## Packaged font names
+
+Where a platform namespaces bundled font assets — so a library's font is addressed
+differently from an application's — the binding must use the namespaced form.
+
+Referencing the bare family name typically does **not** fail loudly. It silently falls
+back to the host's default UI font, which on some platforms resembles the intended face
+closely enough to pass review unnoticed.
