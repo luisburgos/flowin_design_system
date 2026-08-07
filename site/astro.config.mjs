@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import { slugs as contractSlugs } from './src/lib/contracts.mjs';
 
 // The site is a *reader* of the spec, never a source of truth for it. Token
 // pages resolve `../tokens/**` at build time and component pages read
@@ -32,7 +33,10 @@ export default defineConfig({
         },
         {
           label: 'Components',
-          autogenerate: { directory: 'components' },
+          // Built by the `[slug]` route from `design/components/*.md`, so there
+          // are no content files for `autogenerate` to scan — the list is
+          // derived from the same source the pages are.
+          items: contractSlugs().map((slug) => ({ label: slug, link: `/components/${slug}/` })),
         },
       ],
       customCss: ['./src/styles/spec.css'],

@@ -9,6 +9,7 @@ if (filter) tokens = tokens.filter((t) => filter(t));
 const widest = max ?? Math.max(...tokens.map((t) => px(t) ?? 0));
 ---
 
+<div class="tokens-wrap">
 <table class="tokens">
   <thead>
     <tr><th>Step</th><th>Value</th><th class="bar-col">Scale</th></tr>
@@ -32,3 +33,4 @@ const widest = max ?? Math.max(...tokens.map((t) => px(t) ?? 0));
     }
   </tbody>
 </table>
+</div>

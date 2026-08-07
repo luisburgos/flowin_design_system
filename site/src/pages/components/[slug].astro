@@ -14,7 +14,13 @@ const { slug } = Astro.params;
 const html = marked.parse(source(slug));
 const cited = citedTokens(slug);
 const isColour = (v) => typeof v === 'string' && /^#[0-9a-f]{3,8}$/i.test(v);
-const show = (v) => (typeof v === 'object' && v !== null ? JSON.stringify(v) : String(v));
+// DTCG dimensions are `{ value, unit }` objects; a reviewer wants "16px", not
+// the serialised shape.
+const show = (v) => {
+  if (v && typeof v === 'object' && 'value' in v) return `${v.value}${v.unit ?? ''}`;
+  if (v && typeof v === 'object') return JSON.stringify(v);
+  return String(v);
+};
 ---
 
 <StarlightPage frontmatter={{ title: slug, description: intent(slug).slice(0, 160) }}>
@@ -24,7 +30,8 @@ const show = (v) => (typeof v === 'object' && v !== null ? JSON.stringify(v) : S
   </p>
 
   <h2>Tokens this contract cites</h2>
-  <table class="tokens">
+  <div class="tokens-wrap">
+<table class="tokens">
     <thead>
       <tr><th></th><th>Reference</th><th>Resolves to</th></tr>
     </thead>
@@ -42,6 +49,7 @@ const show = (v) => (typeof v === 'object' && v !== null ? JSON.stringify(v) : S
       }
     </tbody>
   </table>
+</div>
 
   <h2>Contract</h2>
   <div set:html={html} />

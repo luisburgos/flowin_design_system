@@ -13,6 +13,7 @@ for (const [value, names] of collisions(tokens)) shared.set(value, names);
 
 {note && <p class="group-note" set:html={note} />}
 
+<div class="tokens-wrap">
 <table class="tokens">
   <thead>
     <tr>
@@ -53,3 +54,4 @@ for (const [value, names] of collisions(tokens)) shared.set(value, names);
     }
   </tbody>
 </table>
+</div>

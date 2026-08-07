@@ -1,5 +1,11 @@
 /* Token rendering. Deliberately plain: the page's job is to show values
    accurately, not to have a look of its own. */
+
+/* Token paths are identifiers — breaking one mid-word turns a readable
+   reference into two nonsense fragments, so they never wrap. The table
+   scrolls instead when the viewport cannot hold them. */
+.tokens code { white-space: nowrap; }
+.tokens-wrap { overflow-x: auto; }
 .tokens { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
 .tokens th { text-align: left; font-weight: 600; padding: 0.4rem 0.6rem;
   border-bottom: 1px solid var(--sl-color-gray-5); }
