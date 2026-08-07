@@ -2,7 +2,7 @@
   "$schema": "https://tr.designtokens.org/format/",
   "space": {
     "$type": "dimension",
-    "$description": "Spacing scale (padding, gaps, fixed dimensions). Non-linear step scale named by token weight. Derived from the Flowin foundation spacing scale.",
+    "$description": "Spacing scale (padding, gaps, fixed dimensions). Non-linear step scale named by token weight. Derived from the Flowin foundation spacing scale. This weight-named scale is the COMPLETE set and the one component contracts cite; a transform may additionally expose the t-shirt subset in `space.alias` as its ergonomic layout API, but that subset is an alias onto these steps, never a separate scale.",
     "zero": { "$value": { "value": 0, "unit": "px" } },
     "50": { "$value": { "value": 2, "unit": "px" } },
     "100": { "$value": { "value": 4, "unit": "px" } },
@@ -38,10 +38,24 @@
   },
   "border": {
     "$type": "dimension",
-    "$description": "Border / stroke width scale. Derived from the Flowin foundation border scale.",
+    "$description": "Border / stroke width scale for CONTAINER edges. Derived from the Flowin foundation border scale. Icon stroke weights are a separate, finer scale — see `stroke.icon`.",
     "regular": { "$value": { "value": 1, "unit": "px" } },
     "bold": { "$value": { "value": 2, "unit": "px" } },
     "extraBold": { "$value": { "value": 3, "unit": "px" } }
+  },
+
+  "stroke": {
+    "$type": "dimension",
+    "$description": "Stroke weights for drawn glyphs, as opposed to the container-edge widths in `border`.",
+    "icon": {
+      "$description": "Icon stroke weight, one entry per `size.icon` step. This size↔stroke pairing is a genuinely-Flowin concept with no native slot on a typical platform: it binds into the theme-extension mechanism (DESIGN.md §2) alongside the icon sizes it pairs with. A transform MUST carry the pairing, not just the sizes — an icon rendered at a larger box with an unchanged stroke reads as a different weight of icon.",
+      "xs": { "$value": { "value": 1.25, "unit": "px" } },
+      "sm": { "$value": { "value": 1.5, "unit": "px" } },
+      "md": { "$value": { "value": 1.75, "unit": "px" } },
+      "lg": { "$value": { "value": 2, "unit": "px" } },
+      "xl": { "$value": { "value": 2.5, "unit": "px" } },
+      "xxl": { "$value": { "value": 3, "unit": "px" } }
+    }
   },
   "size": {
     "$type": "dimension",
@@ -52,6 +66,7 @@
       "md": { "$value": { "value": 56, "unit": "px" } }
     },
     "icon": {
+      "$description": "Icon box sizes. Each step is paired with a stroke weight in `stroke.icon` so icon thickness scales with the box; the two are one contract and must be transformed together. Default step is `md`.",
       "xs": { "$value": { "value": 12, "unit": "px" } },
       "sm": { "$value": { "value": 16, "unit": "px" } },
       "md": { "$value": { "value": 20, "unit": "px" } },

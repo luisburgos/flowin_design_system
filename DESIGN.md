@@ -165,6 +165,21 @@ being hardcoded at call sites. The non-native, genuinely-Flowin concepts (for ex
 size↔stroke pairing for icons, or the brand type styles that have no standard slot) live
 here too.
 
+**Status roles are colors that go in the extension mechanism.** `success`, `warning` and
+`info` — each with its on-color — are semantic color roles, but unlike the core roles they
+have **no universal native slot**: a platform's color-role table typically models a primary,
+a surface, and an error, and stops there. They therefore bind alongside spacing and radius
+in the theme-extension mechanism rather than into the native color-role table, and they
+live in their own token files (`tokens/semantic/color.status.*`) to keep that split visible.
+`error` is **not** a status role in this sense — it has a native slot on every target and
+stays in the core role set.
+
+Two consequences follow. First, `info` is **neutral, not chromatic**: it is not an alert, so
+under the monochrome thesis below it carries no hue. Second, the chromatic status steps
+**lighten in dark mode** (the 500 step becomes 400) so they hold their contrast against a
+dark surface, with the on-colors darkening to match — the core roles' light/dark pairs are
+declared the same way.
+
 The exact role set, including its on-color pairings, lives in `tokens/semantic/`. The
 binding rules — which semantic role targets which native slot or extension field — are
 specified per platform in §3.
@@ -183,6 +198,8 @@ of a second transform, not a shipped one.
 | Semantic colors | Bound onto `ColorScheme` roles (role + on-color → the scheme's color/on-color pairs); native widgets inherit from `Theme.of(context).colorScheme`. | Custom properties on `:root` (`--color-primary`, `--color-on-primary`, …); elements read them via `var(--color-…)`. |
 | Typography | Bound onto `TextTheme` slots; native text inherits the resolved text styles from the theme. | Custom properties (`--font-body`, `--line-height-body`, …) plus utility classes that apply them. |
 | Spacing / radius / other non-Material tokens | Carried on a `ThemeExtension` (e.g. a `FlowinTokens` extension: spacing scale, radius, base shadow, icon sizing), read via a typed `context` accessor. | Custom properties (`--space-200`, `--radius-400`, `--shadow-100`, …) under `:root`. |
+| Status colors (`success` / `warning` / `info` + on-colors) | Carried on the same `ThemeExtension` (a semantic-colors value object), **not** on `ColorScheme` — Material models no such roles. Resolved per brightness. | Custom properties (`--color-success`, `--color-on-success`, …) under `:root`, re-declared in the dark-mode block. |
+| Base elevation shadow | Carried on the `ThemeExtension` as the resolved per-brightness shadow; the geometry is one token, the colour binds to the per-mode `shadow` role. | `--shadow-100` under `:root`, re-declared in the dark-mode block. |
 | Component appearance | Bound onto per-component theme slots (e.g. `filledButtonTheme`, and the analogous `…Theme` slot for each component); the native widget renders Flowin by default. | Component classes (`.flw-button`, `.flw-button--filled`, …) whose declarations resolve the custom properties. |
 
 The Flutter column is the contract a conformant Flutter transform MUST satisfy: semantic
@@ -292,7 +309,10 @@ backlog.
   the neutral ramp introduced a divergence at the 400 step: the `primary`/`secondary` 400
   value (`#b6b6b6`) does not match `neutral400` (`#ababab`). This off-by-shade divergence
   is an artifact of the placeholder aliasing and is resolved alongside the chromatic brand
-  accent above; until then it is documented, not patched.
+  accent above; until then it is documented, not patched. **Currently inert:** no semantic
+  role binds a brand ramp's 400 step, so the divergence reaches no rendered output
+  (verified against the reference implementation, audit unit 1). It becomes live the moment
+  a role does bind that step.
 - **Legacy-only & intentionally-trimmed component capabilities.** Capabilities that
   existed in the legacy widgets but were intentionally dropped in the theme-first rebuild
   (and any legacy-only widgets not yet carried over) are tracked as scoped items in the

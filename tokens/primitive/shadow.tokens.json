@@ -3,7 +3,18 @@
   "shadow": {
     "$type": "shadow",
     "$description": "Elevation shadow GEOMETRY. Offsets, blur, and spread are px lengths; the colour here is the light-mode value and is the raw source, not the binding. Consumers bind the colour to the semantic `shadow` role so it resolves per brightness — see semantic/color.{light,dark}.tokens.json. A shadow colour that does not vary by mode is a glow on a dark surface.",
+    "shadow10": {
+      "$description": "Hairline separation ring — separates a surface from its background WITHOUT reading as elevation. Zero offset and zero blur: it is a 1px ring, not a cast shadow. Distinct in intent from shadow100, which is elevation. Its colour also binds to a per-mode role (the subtle border role rather than the shadow role) so the ring stays visible on a dark surface.",
+      "$value": {
+        "color": "{color.neutral.200}",
+        "offsetX": { "value": 0, "unit": "px" },
+        "offsetY": { "value": 0, "unit": "px" },
+        "blur": { "value": 0, "unit": "px" },
+        "spread": { "value": 1, "unit": "px" }
+      }
+    },
     "shadow100": {
+      "$description": "Base ambient elevation shadow for raised surfaces.",
       "$value": {
         "color": "{color.neutral.200}",
         "offsetX": { "value": 0, "unit": "px" },

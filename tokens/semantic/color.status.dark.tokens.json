@@ -1,0 +1,18 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "color": {
+    "$type": "color",
+    "status": {
+      "$description": "Dark-mode semantic STATUS roles — success / warning / info with their on-colors. Light mode lives in color.status.light.tokens.json. The chromatic steps lighten (500 → 400) against a dark surface so they keep their contrast; the on-colors darken correspondingly.",
+      "success": { "$value": "{color.success.400}" },
+      "onSuccess": { "$value": "{color.neutral.800}" },
+      "warning": { "$value": "{color.warning.400}" },
+      "onWarning": { "$value": "{color.neutral.800}" },
+      "info": {
+        "$value": "{color.neutral.200}",
+        "$description": "Informational status. Neutral, not chromatic — see the light-mode counterpart."
+      },
+      "onInfo": { "$value": "{color.neutral.800}" }
+    }
+  }
+}

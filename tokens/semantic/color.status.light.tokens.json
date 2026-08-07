@@ -1,0 +1,18 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "color": {
+    "$type": "color",
+    "status": {
+      "$description": "Light-mode semantic STATUS roles — success / warning / info, each paired with its on-color. Distinct from the core role set in color.light.tokens.json: those roles map onto whatever native color-role table a platform provides, whereas these three have no universal native slot and bind into the platform's theme-extension mechanism (DESIGN.md §2). `error` is deliberately NOT here — it is a core role with a native slot on every target. Dark mode lives in color.status.dark.tokens.json.",
+      "success": { "$value": "{color.success.500}" },
+      "onSuccess": { "$value": "{color.white}" },
+      "warning": { "$value": "{color.warning.500}" },
+      "onWarning": { "$value": "{color.neutral.800}" },
+      "info": {
+        "$value": "{color.neutral.700}",
+        "$description": "Informational status. Neutral, not chromatic — consistent with the monochrome-by-design thesis (DESIGN.md §2): info is not an alert, so it carries no hue."
+      },
+      "onInfo": { "$value": "{color.white}" }
+    }
+  }
+}

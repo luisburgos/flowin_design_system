@@ -1,0 +1,17 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "space": {
+    "$type": "dimension",
+    "alias": {
+      "$description": "Ergonomic t-shirt aliases onto the weight-named spacing scale — the layout-facing API a transform exposes so call sites write `spacing.md` rather than `space400`. This is an ALIAS LAYER, not a second scale: every entry resolves to a primitive step, and a component contract's Token bindings always cite the primitive weight (`{space.400}`), never the alias. The subset is deliberate — it covers the steps layouts reach for, and the fine steps (50/150/250) and large steps (1400+) are intentionally absent, reachable only through the full scale.",
+      "none": { "$value": "{space.zero}" },
+      "xxs": { "$value": "{space.100}" },
+      "xs": { "$value": "{space.200}" },
+      "sm": { "$value": "{space.300}" },
+      "md": { "$value": "{space.400}" },
+      "lg": { "$value": "{space.600}" },
+      "xl": { "$value": "{space.800}" },
+      "xxl": { "$value": "{space.1200}" }
+    }
+  }
+}
