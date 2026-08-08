@@ -350,10 +350,19 @@ These are spec-coverage gaps known and tracked. They are declared here so transf
   A transform still ports them as the declared neutral aliases — it must not fabricate a
   hue — but the reason is that neutral *is* the Flowin default, not that a value is
   missing.
-- **Dark-mode `onSurfaceBright` / `onSurfaceBrightVariant`.** The dark scheme defines
-  `surfaceBright` but does **not** define `onSurfaceBright` or `onSurfaceBrightVariant`.
-  This is a genuine gap: the bright surface has no declared on-color in dark mode. Do not
-  invent these values — leave them undefined until the design source supplies them.
+- _(Closed 2026-08-07.)_ The dark scheme defined `surfaceBright` with no on-color, which
+  broke the role-plus-on-color pairing the semantic tier is built on: the first component
+  to use it would have had nothing legible specified on top. `onSurfaceBright` is now
+  defined, and it did not require inventing a value — `surfaceSecondary` resolves to the
+  same underlying color and already declares its on-color, so the pair is derived from the
+  existing palette.
+  The same entry also named `onSurfaceBrightVariant`. That one is **not** added: no
+  `surfaceBrightVariant` role exists, so it would be an on-color for a surface the spec
+  does not declare.
+  Note for transforms: a platform may model the bright surface natively while offering no
+  slot for its on-color — the reference platform does exactly that. Where that happens the
+  on-color binds through the theme-extension mechanism (§2) alongside the status roles,
+  rather than being dropped for lack of a native home.
 - _(Closed 2026-08-07.)_ The 400-step divergence recorded here — the accent ramps' 400
   step not matching `neutral400` — is resolved in the reference implementation, which
   aligned the step. It reached no rendered output while it lasted, since no role binds a
@@ -361,13 +370,12 @@ These are spec-coverage gaps known and tracked. They are declared here so transf
   spec declares accent *roles* and no accent ramps, so there was never a
   `{color.primary.400}` to diverge. A transform that ships accent ramps for consumers to
   work from resolves this in its own palette; there is nothing here to port.
-- **`typography.baseline.titleLarge` is declared but not bound.** The style is defined in
-  the token set, but no component contract cites it and the reference implementation leaves
-  the corresponding native slot at the platform default (carried forward from the production
-  source, where it appears to be an oversight). A transform must **not** install it just
-  because it exists — see the token's own `$description`. Resolving this means either binding
-  it deliberately across all transforms or removing it; until then it stays declared and
-  unbound, not silently adopted.
+- _(Closed 2026-08-07.)_ `typography.baseline.titleLarge` was declared but not installed
+  into the type scale, so the slot resolved to nothing and a native widget reading it
+  inherited from ambient text rather than a Flowin value. It is now **bound like every
+  other named style**: a transform installs it into the slot the platform provides. The
+  earlier instruction not to install it is withdrawn — it was correct only while the style
+  was declared and unbound.
 
 - **Legacy-only & intentionally-trimmed component capabilities.** Capabilities that
   existed in the legacy widgets but were intentionally dropped in the theme-first rebuild
