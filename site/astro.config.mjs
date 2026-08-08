@@ -7,11 +7,11 @@ import { slugs as contractSlugs } from './src/lib/contracts.mjs';
 // `../design/components/*.md`, so the site cannot drift from the spec — it can
 // only fail to build, which is the failure mode we want.
 export default defineConfig({
-  // No `site`/`base` yet: nothing hosts this. Setting them would bake a host
-  // and a path prefix into every generated link for a URL that does not serve
-  // the site, and `base` in particular rewrites local paths too. Add both when
-  // a hosting target exists — the sitemap warning on build is that absence,
-  // not a defect.
+  // GitHub Pages serves a project site under `/<repo>/`, so `base` is required
+  // — without it every generated link resolves against the domain root and
+  // 404s. `npm run dev` honours both, so local review matches production.
+  site: 'https://luisburgos.github.io',
+  base: '/flowin_design_system',
   srcDir: './src',
   outDir: './dist',
   integrations: [
