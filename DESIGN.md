@@ -110,6 +110,27 @@ picker's palette, a chart series, user-chosen entity colours — takes them from
 site**, not from the brand ramps. The system supplies neutrals and semantics; it does not
 supply a spectrum.
 
+**Accent roles are a customization surface.** `primary`, `secondary` and `tertiary` are
+neutral *by default*, not by necessity. They are the slots a consuming application
+re-points to introduce its own accent, and a conformant transform must leave them
+overridable at the theme level — overriding one has to reach every component that binds
+it, without touching a call site.
+
+This is what the three roles are *for*, and it is why they stay in the vocabulary even
+though the default palette makes them indistinguishable from the neutral ramp. An
+application may re-point all three, or only `secondary`, or none; each is a supported
+configuration. A consumer that overrides nothing gets the monochrome system described
+above.
+
+Two consequences for a transform:
+
+- **Do not collapse the roles because they currently share a value.** They are distinct
+  slots that happen to resolve alike under the default palette. Merging them removes the
+  customization surface, and the resulting rendering is identical, so no test would catch
+  it.
+- **Do not fabricate a hue.** Neutral is the shipped default, and a transform that invents
+  an accent diverges from every other transform for a consumer who overrode nothing.
+
 **Colour that comes from data is vetted, not trusted.** The consequence above leaves a
 hole: a colour supplied by the call site — a team's colour, a chart series, a user-picked
 accent — has no on-colour paired with it and no guarantee it differs from the surface it
@@ -320,26 +341,26 @@ These are spec-coverage gaps known and tracked. They are declared here so transf
 **not to invent values** for them (see §3 "Do not"). This section is authoritative; the
 `flowin_pm` backlog tracks the work.
 
-- Chromatic brand accent → [`flowin_pm#30`](https://github.com/luisburgos/flowin_pm/issues/30)
 - The three declared-but-unbound gaps → [`flowin_pm#31`](https://github.com/luisburgos/flowin_pm/issues/31)
 
-- **Chromatic brand accent.** The `primary` / `secondary` / `tertiary` roles are
-  **placeholder aliases to the neutral ramp** — the brand has no chromatic accent yet.
-  They exist as named slots awaiting a real palette. A transform must port them as the
-  declared neutral aliases; it must not fabricate a brand hue. Re-pointing these to
-  chromatic values is a future revisit, not a transform-time fix.
+- _(Reclassified 2026-08-07.)_ The `primary` / `secondary` / `tertiary` roles were
+  recorded here as placeholders awaiting a palette. That was wrong about their purpose:
+  they are the system's **accent surface**, deliberately neutral by default and intended
+  to be re-pointed by a consumer. See §2, "Accent roles are a customization surface".
+  A transform still ports them as the declared neutral aliases — it must not fabricate a
+  hue — but the reason is that neutral *is* the Flowin default, not that a value is
+  missing.
 - **Dark-mode `onSurfaceBright` / `onSurfaceBrightVariant`.** The dark scheme defines
   `surfaceBright` but does **not** define `onSurfaceBright` or `onSurfaceBrightVariant`.
   This is a genuine gap: the bright surface has no declared on-color in dark mode. Do not
   invent these values — leave them undefined until the design source supplies them.
-- **`primary` / `secondary` 400 ramp divergence.** Aliasing `primary` and `secondary` to
-  the neutral ramp introduced a divergence at the 400 step: the `primary`/`secondary` 400
-  value (`#b6b6b6`) does not match `neutral400` (`#ababab`). This off-by-shade divergence
-  is an artifact of the placeholder aliasing and is resolved alongside the chromatic brand
-  accent above; until then it is documented, not patched. **Currently inert:** no semantic
-  role binds a brand ramp's 400 step, so the divergence reaches no rendered output
-  (verified against the reference implementation, audit unit 1). It becomes live the moment
-  a role does bind that step.
+- _(Closed 2026-08-07.)_ The 400-step divergence recorded here — the accent ramps' 400
+  step not matching `neutral400` — is resolved in the reference implementation, which
+  aligned the step. It reached no rendered output while it lasted, since no role binds a
+  400 step. Note the entry described a **transform's own palette**, not a spec token: the
+  spec declares accent *roles* and no accent ramps, so there was never a
+  `{color.primary.400}` to diverge. A transform that ships accent ramps for consumers to
+  work from resolves this in its own palette; there is nothing here to port.
 - **`typography.baseline.titleLarge` is declared but not bound.** The style is defined in
   the token set, but no component contract cites it and the reference implementation leaves
   the corresponding native slot at the platform default (carried forward from the production
