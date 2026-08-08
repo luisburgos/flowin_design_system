@@ -7,6 +7,18 @@ const { prefix, filter, note } = Astro.props;
 let tokens = group(prefix);
 if (filter) tokens = tokens.filter((t) => filter(t));
 
+// Fail the build rather than render an empty table. A filter keyed on a file
+// name or a naming convention stops matching the moment either changes, and a
+// silently empty section reads as "this group has no tokens" rather than "this
+// page is broken".
+if (tokens.length === 0) {
+  throw new Error(
+    `ColourTable: no tokens matched prefix "${prefix}"` +
+      (filter ? ' with the supplied filter' : '') +
+      '. The token set moved and this page did not follow.',
+  );
+}
+
 const shared = new Map();
 for (const [value, names] of collisions(tokens)) shared.set(value, names);
 ---
