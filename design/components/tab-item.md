@@ -84,12 +84,11 @@ indicator are bound at the **bar / tab-theme** level (see [tabs](tabs.md)).
 
 ## Known gaps / planned fix
 
-- **Icon size is unbound.** The bindings table previously cited "the tabs paired icon size",
-  which resolves to nothing: [tabs](tabs.md) declares no icon-size token, and the reference
-  accepts an arbitrary icon widget whose size the caller sets. The reference correctly did
-  not invent a value (DESIGN.md §3 "Do not invent values for documented gaps"). Resolving
-  this means choosing a step from the icon scale and binding it here; until then the row is
-  marked unbound rather than pointing at a non-existent token.
+- _(Closed 2026-08-07.)_ The icon size was unbound, and the gap was live rather than
+  theoretical: one consumer passed the small step explicitly while another took the icon
+  scale's default, so the same component shipped at two sizes in two applications. That is
+  the convergence failure a contract exists to prevent. The size is now bound to
+  `{size.icon.sm}` — the value a production application already ships.
 
 ## Transform notes
 

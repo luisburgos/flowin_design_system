@@ -34,7 +34,12 @@
       "$value": "{color.neutral.400}"
     },
     "surfaceBright": {
-      "$value": "{color.neutral.700}"
+      "$value": "{color.neutral.700}",
+      "$description": "A brighter surface for raising an element off the base surface in dark mode. Paired with `onSurfaceBright`."
+    },
+    "onSurfaceBright": {
+      "$value": "{color.neutral.200}",
+      "$description": "Foreground on the bright surface. Takes the same on-colour as `onSurfaceSecondary`, which pairs with the identical underlying value \u2014 derived from the existing palette rather than chosen, so the pair is complete without inventing a colour."
     },
     "inverseSurface": {
       "$value": "{color.white}"
