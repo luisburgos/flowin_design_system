@@ -29,6 +29,13 @@ export default defineConfig({
       sidebar: [
         { label: 'Start here', slug: 'index' },
         {
+          label: 'Guides',
+          items: [
+            { label: 'Reading a component contract', slug: 'guides/reading-a-contract' },
+            { label: 'How the spec becomes a UI kit', slug: 'guides/transforms' },
+          ],
+        },
+        {
           label: 'Tokens',
           items: [
             { label: 'Colour', slug: 'tokens/colour' },
