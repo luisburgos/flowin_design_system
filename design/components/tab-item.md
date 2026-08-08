@@ -38,7 +38,7 @@ No per-call size axis. The item lays out within the bar's fixed height (`{space.
 
 | Size | Notable dimensions |
 |---|---|
-| (single) | label `{typography.baseline.labelMedium}`; icon size caller-supplied; height inherited from the bar |
+| (single) | label `{typography.baseline.labelMedium}`; icon `{size.icon.sm}` (16); height inherited from the bar |
 
 ## States
 
@@ -57,7 +57,7 @@ indicator are bound at the **bar / tab-theme** level (see [tabs](tabs.md)).
 | label overflow | all | ellipsis (single line) |
 | icon placement | all | leading (icon-left of label) |
 | icon-label gap | all (icon present) | `{space.100}` (4) |
-| icon size | all | caller-supplied — **not bound**; see Known gaps |
+| icon size | all | `{size.icon.sm}` (16) |
 | selected label color | selected | inherited from the bar (tab-theme / global role) |
 
 ## Behavioral notes
