@@ -65,5 +65,4 @@ gates check, and when a release is warranted. Run `npm run validate` before comm
 
 Released as `0.2.0` — the first state audited against a stable reference implementation
 (`flutter_flowin`), with every unit of the audit protocol verdicted. Open gaps are
-declared in [`DESIGN.md`](DESIGN.md) §5; program planning lives in
-[`flowin_pm`](https://github.com/luisburgos/flowin_pm).
+declared in [`DESIGN.md`](DESIGN.md) §5.

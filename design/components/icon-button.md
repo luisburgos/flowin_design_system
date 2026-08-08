@@ -95,7 +95,7 @@ the error color roles).
 - The per-variant **color roles** are resolved per-call by the widget rather than
   installed on the global theme slot (which currently carries only the shape). Variant
   colors are therefore not globally overridable. Recorded as backlog; no planned fix
-  specified here (`flowin_pm`).
+  specified here.
 - _(Resolved 2026-08-06, audit unit "icon-button".)_ The `text` variant binds its foreground
   to `{color.primary}` while the sibling text **button** binds `{color.onSurface}`. This was
   recorded as an unreconciled divergence; it is now **deliberate**. A standalone icon

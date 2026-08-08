@@ -115,7 +115,7 @@ scheme defaults — recorded explicitly below.
   widget itself; these are now expressed only through the theme slot. If a host theme does
   not carry those slot values, a **stray divider** can reappear and the indicator may shrink
   to label width. Planned fix: guarantee the slot values via a conformance check (or
-  re-pin defensively). Tracked in `flowin_pm` (audit Med).
+  re-pin defensively). Tracked as backlog (audit Med).
 
 ## Transform notes
 

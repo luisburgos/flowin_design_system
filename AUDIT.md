@@ -12,9 +12,9 @@
 >
 > This file contains **no technology names and no repository paths**. Each SDK binds the
 > protocol in its own audit binding document, and each audit run keeps its state in a
-> ledger. Both live in the `flowin_pm` repository under `audits/<technology>/` — the
-> binding (`<TECHNOLOGY>_AUDIT.md`) plus one ledger file per run, so audit history is
-> preserved across versions.
+> ledger — the binding (`<TECHNOLOGY>_AUDIT.md`) plus one ledger file per run, so audit
+> history is preserved across versions. Both live outside this repository, alongside the
+> program backlog.
 
 ## Why this protocol exists
 
@@ -130,10 +130,10 @@ Each unit ends with exactly one verdict in the run's ledger:
 |---|---|---|
 | `in-sync` | All five dimensions pass. | Ledger only. |
 | `spec-stale` | Implementation decision is right; spec lags. | Update the contract in the same iteration, then re-verdict `in-sync`. |
-| `impl-deviates` | Spec intent is right; implementation drifts. | File a `flowin_pm` issue, link it in the contract's Known gaps. Verdict stays until fixed. |
-| `undecided` | Direction of truth unclear. | File a `flowin_pm` issue with `needs-decision`. |
+| `impl-deviates` | Spec intent is right; implementation drifts. | File a backlog issue, link it in the contract's Known gaps. Verdict stays until fixed. |
+| `undecided` | Direction of truth unclear. | File a backlog issue with `needs-decision`. |
 
-**Issue convention (`flowin_pm`):** title `fix:`/`chore:` per the ticketing standard;
+**Issue convention:** title `fix:`/`chore:` per the ticketing standard;
 domain label `fidelity` (B), `api-parity` (A), `conformance` (C/D), `needs-spec`
 (missing contract coverage), plus `needs-decision` when undecided. One issue per
 finding, not per unit. Every non-`in-sync` ledger row must link at least one issue or
@@ -163,7 +163,7 @@ one spec commit.
 
 To audit an implementation on a technology the protocol has not covered before:
 
-1. Create `audits/<technology>/<TECHNOLOGY>_AUDIT.md` in `flowin_pm`: map each of the
+1. Create the technology's binding document, `<TECHNOLOGY>_AUDIT.md`: map each of the
    five dimensions to concrete locations (component surface, theme construction, test
    suites) and list the platform-specific mechanisms dimension C must watch for.
 2. Create the run's ledger from the unit list above, header recording spec version +

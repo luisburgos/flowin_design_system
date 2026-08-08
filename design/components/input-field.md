@@ -129,7 +129,7 @@ is themed text. All bindings below describe the **shell**, not the field child.
 - **No themed shell slot.** The shell reads its chrome from global color/typography roles
   rather than from a dedicated input-field theme slot, so a conformant transform cannot
   re-skin only the shell without touching the shared roles. Recorded as an accepted
-  consequence of the composition approach (`flowin_pm`), not a planned change for v1.
+  consequence of the composition approach, not a planned change for v1.
 
 ## Transform notes
 

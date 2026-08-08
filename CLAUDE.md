@@ -24,8 +24,8 @@ makes every other platform non-conformant.
 
 - **`CHANGELOG.md`** is generated. Edits survive exactly until the next
   `npm run changelog`. Anything a reader needs belongs in a commit message.
-- **Gaps** belong in `DESIGN.md` §5, with an issue in `flowin_pm`. Restating them in the
-  changelog or the README creates copies that drift.
+- **Gaps** belong in `DESIGN.md` §5. Restating them in the changelog or the README
+  creates copies that drift.
 
 ## Verify before asserting
 
@@ -55,8 +55,10 @@ Companion repositories, none of which version together:
 
 - [`flutter_flowin`](https://github.com/luisburgos/flutter_flowin) — the reference
   implementation. Audits compare against it; its version is independent of this one.
-- [`flowin_pm`](https://github.com/luisburgos/flowin_pm) — issues, and the audit ledgers
-  under `audits/<technology>/`.
+
+Issues and audit ledgers are kept in a separate program-management repository, which is
+not public. This repository does not link to it: the spec is the public artifact, and it
+must not depend on something a reader cannot open.
 
 A finding that spans both a contract and an implementation is **two changes in two
 repositories**. Land the spec side here and file or fix the implementation side there;

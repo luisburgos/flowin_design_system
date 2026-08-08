@@ -80,7 +80,7 @@ Nothing is resolved per call.
   reference shipped a separate vertical primitive; the modern theme slot has a single
   channel that governs the horizontal rule's reserved extent and offers **no separate
   vertical-extent channel**. A vertical orientation and its own extent channel are
-  backlog, not specified here (track in `flowin_pm`).
+  backlog, not specified here.
 - The legacy reference exposed optional per-instance `color` / `thickness` overrides; these
   are intentionally absent from the theme-only contract (styling is global). Recorded, not
   reintroduced here.

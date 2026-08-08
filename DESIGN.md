@@ -2,8 +2,7 @@
 
 > **Status: spine.** This file is the agent-facing spine of the spec. Sections below
 > are normative for v1. Component contracts live under `design/components/`; token
-> sources live under `tokens/`. See the
-> [`flowin_pm`](https://github.com/luisburgos/flowin_pm) backlog for planned work.
+> sources live under `tokens/`. Open gaps are declared in §5.
 
 ## 1. Thesis — theme-first
 
@@ -154,7 +153,7 @@ knowing about.
 A component consuming caller colour is **required** to resolve through this layer rather
 than comparing luminance itself. Hand-rolled checks drift: the same rule implemented
 independently at several call sites produces several different answers, which is what
-happened before the layer existed (`flowin_pm#14`).
+happened before the layer existed.
 
 **Normal text (4.5:1) is the default compliance level.** A component asks for a different
 one only when it knows its content is not body text — large display type or a non-text
@@ -338,10 +337,10 @@ review unnoticed.
 ## 5. Open gaps
 
 These are spec-coverage gaps known and tracked. They are declared here so transforms know
-**not to invent values** for them (see §3 "Do not"). This section is authoritative; the
-`flowin_pm` backlog tracks the work.
+**not to invent values** for them (see §3 "Do not"). This section is authoritative for
+what the gaps are; scheduling the work is tracked separately.
 
-- The three declared-but-unbound gaps → [`flowin_pm#31`](https://github.com/luisburgos/flowin_pm/issues/31)
+- The three declared-but-unbound gaps.
 
 - _(Reclassified 2026-08-07.)_ The `primary` / `secondary` / `tertiary` roles were
   recorded here as placeholders awaiting a palette. That was wrong about their purpose:
@@ -371,5 +370,5 @@ These are spec-coverage gaps known and tracked. They are declared here so transf
 
 - **Legacy-only & intentionally-trimmed component capabilities.** Capabilities that
   existed in the legacy widgets but were intentionally dropped in the theme-first rebuild
-  (and any legacy-only widgets not yet carried over) are tracked as scoped items in the
-  `flowin_pm` backlog rather than re-derived here.
+  (and any legacy-only widgets not yet carried over) are tracked as scoped backlog items
+  rather than re-derived here.
