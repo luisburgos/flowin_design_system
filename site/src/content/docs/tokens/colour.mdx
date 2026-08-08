@@ -4,7 +4,6 @@ description: The primitive ramps and the semantic roles that alias them, resolve
 ---
 
 import ColourTable from '../../../components/ColourTable.astro';
-import GapNotice from '../../../components/GapNotice.astro';
 import { Aside } from '@astrojs/starlight/components';
 
 Every value on this page is resolved from `tokens/**` when the site is built. Nothing
@@ -21,20 +20,17 @@ of "a colour and the colour that goes on it" can host the binding.
   filter={(t) => !t.name.includes('.') && !['white', 'black'].includes(t.name)}
 />
 
-<GapNotice
-  title="The brand roles are placeholders"
-  prefix="color"
-  match={(t) => t.description?.includes('PLACEHOLDER')}
-  label="placeholders"
->
-They alias the **neutral ramp**: there is no chromatic brand accent yet, so they are named
-slots awaiting a palette. That is why several of them resolve to the same value as roles
-they are supposed to differ from.
+<Aside title="The accent roles are yours to re-point">
+`primary`, `secondary` and `tertiary` are **neutral by default, not by necessity**. They
+are the slots a consuming application re-points to introduce its own accent — all three,
+or only `secondary`, or none. Overriding one reaches every component that binds it,
+without touching a call site.
 
-This is the single most consequential open decision in the spec. Filling it re-points
-those roles and changes the appearance of every implementation built against the
-placeholders. Tracked as [`flowin_pm#30`](https://github.com/luisburgos/flowin_pm/issues/30).
-</GapNotice>
+That is why they stay in the vocabulary even though the default palette makes them
+indistinguishable from the neutral ramp: they are a customization surface, not a gap. A
+transform must not collapse them because they currently share a value, and must not
+invent a hue — neutral is the shipped default.
+</Aside>
 
 ### Why the repeated values matter
 

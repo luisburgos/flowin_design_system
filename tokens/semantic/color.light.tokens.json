@@ -2,30 +2,52 @@
   "$schema": "https://tr.designtokens.org/format/",
   "color": {
     "$type": "color",
-    "$description": "Light-mode semantic color roles — aliases onto primitive ramps. Dark mode lives in color.dark.tokens.json; mode-independent colors in color.fixed.tokens.json. primary/secondary/tertiary are PLACEHOLDERS aliasing the neutral ramp until a chromatic brand accent exists; the foundation primary/secondary 400 step was #b6b6b6 whereas neutral.400 is #ababab, so aliasing onto neutral shifts that one step — accepted divergence rather than inventing a new ramp.",
+    "$description": "Light-mode semantic color roles \u2014 aliases onto primitive ramps. Dark mode lives in color.dark.tokens.json; mode-independent colors in color.fixed.tokens.json. primary/secondary/tertiary are ACCENT ROLES: neutral by default, re-pointable by a consuming application (DESIGN.md section 2). the foundation primary/secondary 400 step was #b6b6b6 whereas neutral.400 is #ababab, so aliasing onto neutral shifts that one step \u2014 accepted divergence rather than inventing a new ramp.",
     "primary": {
       "$value": "{color.neutral.800}",
-      "$description": "PLACEHOLDER: aliases the neutral ramp — no chromatic brand accent yet. Re-point or de-alias when a brand hue exists."
+      "$description": "Accent role. Neutral by default; a consuming application may re-point it to introduce its own accent. Overriding it must reach every component that binds it, without touching a call site."
     },
-    "onPrimary": { "$value": "{color.white}" },
+    "onPrimary": {
+      "$value": "{color.white}"
+    },
     "secondary": {
       "$value": "{color.neutral.200}",
-      "$description": "PLACEHOLDER: aliases the neutral ramp pending a chromatic brand accent."
+      "$description": "Accent role. Neutral by default and overridable independently of primary \u2014 an application may re-point only this one."
     },
-    "onSecondary": { "$value": "{color.neutral.800}" },
+    "onSecondary": {
+      "$value": "{color.neutral.800}"
+    },
     "tertiary": {
       "$value": "{color.neutral.100}",
-      "$description": "PLACEHOLDER: aliases the neutral ramp pending a chromatic brand accent."
+      "$description": "Accent role. Neutral by default and overridable independently of the other accent roles."
     },
-    "onTertiary": { "$value": "{color.neutral.800}" },
-    "surface": { "$value": "{color.white}" },
-    "onSurface": { "$value": "{color.neutral.800}" },
-    "onSurfaceVariant": { "$value": "{color.neutral.400}" },
-    "inverseSurface": { "$value": "{color.neutral.700}" },
-    "onInverseSurface": { "$value": "{color.white}" },
-    "shadow": { "$value": "{color.neutral.200}" },
-    "primaryContainer": { "$value": "{color.neutral.800}" },
-    "onPrimaryContainer": { "$value": "{color.white}" },
+    "onTertiary": {
+      "$value": "{color.neutral.800}"
+    },
+    "surface": {
+      "$value": "{color.white}"
+    },
+    "onSurface": {
+      "$value": "{color.neutral.800}"
+    },
+    "onSurfaceVariant": {
+      "$value": "{color.neutral.400}"
+    },
+    "inverseSurface": {
+      "$value": "{color.neutral.700}"
+    },
+    "onInverseSurface": {
+      "$value": "{color.white}"
+    },
+    "shadow": {
+      "$value": "{color.neutral.200}"
+    },
+    "primaryContainer": {
+      "$value": "{color.neutral.800}"
+    },
+    "onPrimaryContainer": {
+      "$value": "{color.white}"
+    },
     "surfaceSecondary": {
       "$value": "{color.neutral.200}",
       "$description": "Tonal/secondary surface."
@@ -34,14 +56,24 @@
       "$value": "{color.neutral.800}",
       "$description": "Foreground on the tonal/secondary surface."
     },
-    "outline": { "$value": "{color.neutral.800}" },
+    "outline": {
+      "$value": "{color.neutral.800}"
+    },
     "borderSubtle": {
       "$value": "{color.neutral.200}",
       "$description": "Low-emphasis border."
     },
-    "error": { "$value": "{color.error.500}" },
-    "onError": { "$value": "{color.white}" },
-    "errorContainer": { "$value": "{color.error.100}" },
-    "onErrorContainer": { "$value": "{color.error.500}" }
+    "error": {
+      "$value": "{color.error.500}"
+    },
+    "onError": {
+      "$value": "{color.white}"
+    },
+    "errorContainer": {
+      "$value": "{color.error.100}"
+    },
+    "onErrorContainer": {
+      "$value": "{color.error.500}"
+    }
   }
 }

@@ -2,34 +2,56 @@
   "$schema": "https://tr.designtokens.org/format/",
   "color": {
     "$type": "color",
-    "$description": "Dark-mode semantic color roles — aliases onto the same primitive ramps as light mode. Light mode lives in color.light.tokens.json; mode-independent colors in color.fixed.tokens.json. primary/secondary/tertiary are PLACEHOLDERS aliasing the neutral ramp until a chromatic brand accent exists (the foundation primary/secondary 400 step diverges from neutral.400 — accepted, no new ramp invented).",
+    "$description": "Dark-mode semantic color roles \u2014 aliases onto the same primitive ramps as light mode. Light mode lives in color.light.tokens.json; mode-independent colors in color.fixed.tokens.json. primary/secondary/tertiary are ACCENT ROLES: neutral by default, re-pointable by a consuming application (DESIGN.md section 2).",
     "primary": {
       "$value": "{color.neutral.200}",
-      "$description": "PLACEHOLDER: aliases the neutral ramp — no chromatic brand accent yet. Re-point or de-alias when a brand hue exists."
+      "$description": "Accent role. Neutral by default; a consuming application may re-point it to introduce its own accent. Overriding it must reach every component that binds it, without touching a call site."
     },
-    "onPrimary": { "$value": "{color.neutral.800}" },
+    "onPrimary": {
+      "$value": "{color.neutral.800}"
+    },
     "secondary": {
       "$value": "{color.neutral.700}",
-      "$description": "PLACEHOLDER: aliases the neutral ramp pending a chromatic brand accent."
+      "$description": "Accent role. Neutral by default and overridable independently of primary \u2014 an application may re-point only this one."
     },
-    "onSecondary": { "$value": "{color.neutral.200}" },
+    "onSecondary": {
+      "$value": "{color.neutral.200}"
+    },
     "tertiary": {
       "$value": "{color.neutral.500}",
-      "$description": "PLACEHOLDER: aliases the neutral ramp pending a chromatic brand accent."
+      "$description": "Accent role. Neutral by default and overridable independently of the other accent roles."
     },
-    "onTertiary": { "$value": "{color.neutral.800}" },
-    "surface": { "$value": "{color.neutral.800}" },
-    "onSurface": { "$value": "{color.neutral.200}" },
-    "onSurfaceVariant": { "$value": "{color.neutral.400}" },
-    "surfaceBright": { "$value": "{color.neutral.700}" },
-    "inverseSurface": { "$value": "{color.white}" },
-    "onInverseSurface": { "$value": "{color.neutral.800}" },
+    "onTertiary": {
+      "$value": "{color.neutral.800}"
+    },
+    "surface": {
+      "$value": "{color.neutral.800}"
+    },
+    "onSurface": {
+      "$value": "{color.neutral.200}"
+    },
+    "onSurfaceVariant": {
+      "$value": "{color.neutral.400}"
+    },
+    "surfaceBright": {
+      "$value": "{color.neutral.700}"
+    },
+    "inverseSurface": {
+      "$value": "{color.white}"
+    },
+    "onInverseSurface": {
+      "$value": "{color.neutral.800}"
+    },
     "shadow": {
       "$value": "{color.black}",
       "$description": "Elevation shadow colour. Black rather than a neutral step: a shadow is an absence of light, so it darkens whatever it falls on. A dark-grey shadow on the dark surface (neutral.700 on neutral.800) is only one step of separation and reads as nothing at all."
     },
-    "primaryContainer": { "$value": "{color.neutral.200}" },
-    "onPrimaryContainer": { "$value": "{color.neutral.800}" },
+    "primaryContainer": {
+      "$value": "{color.neutral.200}"
+    },
+    "onPrimaryContainer": {
+      "$value": "{color.neutral.800}"
+    },
     "surfaceSecondary": {
       "$value": "{color.neutral.700}",
       "$description": "Tonal/secondary surface."
@@ -38,14 +60,24 @@
       "$value": "{color.neutral.200}",
       "$description": "Foreground on the tonal/secondary surface."
     },
-    "outline": { "$value": "{color.neutral.200}" },
+    "outline": {
+      "$value": "{color.neutral.200}"
+    },
     "borderSubtle": {
       "$value": "{color.neutral.700}",
       "$description": "Low-emphasis border."
     },
-    "error": { "$value": "{color.error.500}" },
-    "onError": { "$value": "{color.white}" },
-    "errorContainer": { "$value": "{color.error.800}" },
-    "onErrorContainer": { "$value": "{color.error.500}" }
+    "error": {
+      "$value": "{color.error.500}"
+    },
+    "onError": {
+      "$value": "{color.white}"
+    },
+    "errorContainer": {
+      "$value": "{color.error.800}"
+    },
+    "onErrorContainer": {
+      "$value": "{color.error.500}"
+    }
   }
 }

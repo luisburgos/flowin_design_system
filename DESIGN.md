@@ -110,6 +110,27 @@ picker's palette, a chart series, user-chosen entity colours — takes them from
 site**, not from the brand ramps. The system supplies neutrals and semantics; it does not
 supply a spectrum.
 
+**Accent roles are a customization surface.** `primary`, `secondary` and `tertiary` are
+neutral *by default*, not by necessity. They are the slots a consuming application
+re-points to introduce its own accent, and a conformant transform must leave them
+overridable at the theme level — overriding one has to reach every component that binds
+it, without touching a call site.
+
+This is what the three roles are *for*, and it is why they stay in the vocabulary even
+though the default palette makes them indistinguishable from the neutral ramp. An
+application may re-point all three, or only `secondary`, or none; each is a supported
+configuration. A consumer that overrides nothing gets the monochrome system described
+above.
+
+Two consequences for a transform:
+
+- **Do not collapse the roles because they currently share a value.** They are distinct
+  slots that happen to resolve alike under the default palette. Merging them removes the
+  customization surface, and the resulting rendering is identical, so no test would catch
+  it.
+- **Do not fabricate a hue.** Neutral is the shipped default, and a transform that invents
+  an accent diverges from every other transform for a consumer who overrode nothing.
+
 **Colour that comes from data is vetted, not trusted.** The consequence above leaves a
 hole: a colour supplied by the call site — a team's colour, a chart series, a user-picked
 accent — has no on-colour paired with it and no guarantee it differs from the surface it
@@ -320,14 +341,15 @@ These are spec-coverage gaps known and tracked. They are declared here so transf
 **not to invent values** for them (see §3 "Do not"). This section is authoritative; the
 `flowin_pm` backlog tracks the work.
 
-- Chromatic brand accent → [`flowin_pm#30`](https://github.com/luisburgos/flowin_pm/issues/30)
 - The three declared-but-unbound gaps → [`flowin_pm#31`](https://github.com/luisburgos/flowin_pm/issues/31)
 
-- **Chromatic brand accent.** The `primary` / `secondary` / `tertiary` roles are
-  **placeholder aliases to the neutral ramp** — the brand has no chromatic accent yet.
-  They exist as named slots awaiting a real palette. A transform must port them as the
-  declared neutral aliases; it must not fabricate a brand hue. Re-pointing these to
-  chromatic values is a future revisit, not a transform-time fix.
+- _(Reclassified 2026-08-07.)_ The `primary` / `secondary` / `tertiary` roles were
+  recorded here as placeholders awaiting a palette. That was wrong about their purpose:
+  they are the system's **accent surface**, deliberately neutral by default and intended
+  to be re-pointed by a consumer. See §2, "Accent roles are a customization surface".
+  A transform still ports them as the declared neutral aliases — it must not fabricate a
+  hue — but the reason is that neutral *is* the Flowin default, not that a value is
+  missing.
 - **Dark-mode `onSurfaceBright` / `onSurfaceBrightVariant`.** The dark scheme defines
   `surfaceBright` but does **not** define `onSurfaceBright` or `onSurfaceBrightVariant`.
   This is a genuine gap: the bright surface has no declared on-color in dark mode. Do not
