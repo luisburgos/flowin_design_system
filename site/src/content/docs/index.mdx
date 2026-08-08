@@ -34,16 +34,14 @@ concerns a theme cannot know — which variant, which size.
 
 Custom components exist only where a platform has no equivalent.
 
-<Aside type="caution" title="Two decisions are open">
-Reviewing before the next SDK is built is the point of this site. Two things are
-deliberately unresolved, and both change what implementations render:
+<Aside title="The accent roles are neutral on purpose">
+`primary`, `secondary` and `tertiary` alias the neutral ramp — see
+[Colour](./tokens/colour/). That is the default, not a missing palette: colour in this
+system is reserved for meaning, so only the status roles are chromatic.
 
-- **No chromatic brand accent.** `primary`, `secondary` and `tertiary` alias the neutral
-  ramp — see [Colour](./tokens/colour/).
-- **Three declared-but-unbound gaps**, including a type style nothing cites.
-
-Filling the first re-points three roles and is breaking for anything built against the
-placeholders. Better to settle it now than after a second implementation exists.
+They are the slots an application re-points to introduce its own accent, which is why a
+transform must keep them overridable at the theme level rather than resolving them to
+fixed values.
 </Aside>
 
 ## Status
