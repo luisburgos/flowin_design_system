@@ -4,7 +4,6 @@ description: The technology-agnostic specification — tokens, component contrac
 ---
 
 import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
-export const withBase = (p) => `${import.meta.env.BASE_URL.replace(/\/$/, '')}${p}`;
 
 This is the **specification**, not a package. Nothing here compiles or ships; what it
 produces is a contract that other repositories transform into real UI kits — one for
@@ -22,9 +21,9 @@ contract is buildable, just differently by each reader.
 Anything a reader has to decide for themselves is a place where implementations diverge.
 
 <CardGrid>
-  <LinkCard title="Colour" href={withBase("/tokens/colour/")} description="Semantic roles, status roles, and the primitive ramps." />
-  <LinkCard title="Dimensions" href={withBase("/tokens/dimensions/")} description="Spacing, radius, border, control and icon scales." />
-  <LinkCard title="Typography" href={withBase("/tokens/typography/")} description="The baseline and brand type scales." />
+  <LinkCard title="Colour" href="/tokens/colour/" description="Semantic roles, status roles, and the primitive ramps." />
+  <LinkCard title="Dimensions" href="/tokens/dimensions/" description="Spacing, radius, border, control and icon scales." />
+  <LinkCard title="Typography" href="/tokens/typography/" description="The baseline and brand type scales." />
 </CardGrid>
 
 ## Theme-first

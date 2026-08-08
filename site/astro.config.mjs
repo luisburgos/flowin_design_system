@@ -7,11 +7,11 @@ import { slugs as contractSlugs } from './src/lib/contracts.mjs';
 // `../design/components/*.md`, so the site cannot drift from the spec — it can
 // only fail to build, which is the failure mode we want.
 export default defineConfig({
-  // Required by Pages so generated absolute URLs and the sitemap resolve. The
-  // repository is private and on a plan that keeps Pages private with it, so
-  // the deployed site is visible to repository members rather than the world.
-  site: 'https://luisburgos.github.io',
-  base: '/flowin_design_system',
+  // No `site`/`base` yet: nothing hosts this. Setting them would bake a host
+  // and a path prefix into every generated link for a URL that does not serve
+  // the site, and `base` in particular rewrites local paths too. Add both when
+  // a hosting target exists — the sitemap warning on build is that absence,
+  // not a defect.
   srcDir: './src',
   outDir: './dist',
   integrations: [
@@ -41,10 +41,7 @@ export default defineConfig({
           // Built by the `[slug]` route from `design/components/*.md`, so there
           // are no content files for `autogenerate` to scan — the list is
           // derived from the same source the pages are.
-          items: contractSlugs().map((slug) => ({
-            label: slug,
-            link: `/flowin_design_system/components/${slug}/`,
-          })),
+          items: contractSlugs().map((slug) => ({ label: slug, link: `/components/${slug}/` })),
         },
       ],
       customCss: ['./src/styles/spec.css'],
