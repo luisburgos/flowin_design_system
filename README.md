@@ -3,9 +3,8 @@
 The **technology-agnostic specification** of the Flowin design system.
 
 This repo is the source of truth that AI agents transform into technology-specific
-packages (Flutter first, via [`flutter_flowin`](https://github.com/luisburgos/flutter_flowin);
-others — web/npm, etc. — later). The spec asserts **contracts and token values, never a
-specific rendering technique**.
+packages. The spec asserts **contracts and token values, never a specific rendering
+technique**.
 
 ## Layout
 
@@ -14,26 +13,22 @@ specific rendering technique**.
 | `DESIGN.md` | Markdown | agents / transform input | thesis · theming model · transformation contract · component index |
 | `tokens/` | DTCG JSON | machines / transform input | two-tier design tokens (primitive ramps + semantic aliases) |
 | `design/components/<name>.md` | Markdown | agents / transform input | per-component contracts (fixed template) |
-| `docs/` | HTML | humans | usage guides + rationale |
+| `site/` | Astro/Starlight | humans | reader's guides + tokens and contracts resolved |
 | `CONTRIBUTING.md` | Markdown | contributors | how to change a contract · when to release |
 | `VALIDATION.md` | Markdown | contributors | the four gates and what each checks |
 | `AUDIT.md` | Markdown | contributors | checking the spec against a real implementation |
 
-## Docs
+## UI kits
 
-Human-facing reference docs live in `docs/` as self-contained HTML. They **explain** what
-`DESIGN.md` and the contracts **assert** — pedagogy, never a second source of truth:
+A UI kit is a technology-specific package produced by transforming this spec. Each one
+versions independently of the spec and of every other kit.
 
-- [`docs/usage-guide.html`](docs/usage-guide.html) — a reader's tour of the spec: the
-  three-layer model, how to read a component contract, how the tokens resolve, and how a
-  transform produces a tech-specific package.
+| Kit | Technology | Status |
+|---|---|---|
+| [`flutter_flowin`](https://github.com/luisburgos/flutter_flowin) | Flutter | reference implementation — audits compare against it |
 
-## Architecture: theme-first
-
-Native widgets / platform primitives are styled **entirely by a global theming
-mechanism** (Flutter `ThemeData` + component themes, CSS custom properties + classes,
-etc.). Custom components exist only where a platform has no equivalent. Every token
-binding must be **globally overridable, not per-instance**.
+Others (web/npm, etc.) come later. A kit is conformant when it satisfies the
+transformation contract in [`DESIGN.md`](DESIGN.md) §3.
 
 ## Site
 
