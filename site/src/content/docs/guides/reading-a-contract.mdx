@@ -51,7 +51,7 @@ faithful, only less portable.
 | `Token bindings` | normative | The core table: each *property × variant/state* mapped to a `{token.reference}`. This is what a transform writes into the theme. |
 | `Behavioral notes` | normative | Behaviour tokens cannot express — gestures, async, helper APIs, disable-on-null-callback. |
 | `Theming directive` | normative | The split: what is styled globally (theme slot) versus what the thin widget resolves per call (variant, size, and any per-call role overlay). |
-| `Known gaps` | tracking | Documented deviations from the reference and their planned fix, linking the `flowin_pm` backlog. |
+| `Known gaps` | tracking | Documented deviations from the reference and their planned fix. |
 | `Transform notes` | hints | Optional per-technology hints: reference implementation name, theme slots, the generic-primitive versus domain-specific tag. |
 
 ## Reading the bindings table
@@ -92,7 +92,6 @@ the call site alone can decide.
 
 <Aside title="Where planned work lives">
 A contract specifies the component *as it stands*. Deviations from the reference and their
-planned fixes are recorded in that contract's own **Known gaps** section and tracked in
-the [`flowin_pm`](https://github.com/luisburgos/flowin_pm) backlog — never inferred from a
-contract's silence.
+planned fixes are recorded in that contract's own **Known gaps** section — never
+inferred from a contract's silence.
 </Aside>

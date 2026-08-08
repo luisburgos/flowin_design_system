@@ -44,7 +44,7 @@ What is styled globally (theme) vs. resolved per-call (the concerns the theme ca
 
 ## Known gaps / planned fix
 
-Documented deviations from the reference and their planned remediation (link `flowin_pm`).
+Documented deviations from the reference and their planned remediation.
 
 ## Transform notes (optional)
 

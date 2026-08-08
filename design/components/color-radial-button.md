@@ -138,7 +138,7 @@ binds **no color at all** — see the note below the table.
   reference (an 8-stop rainbow loop), **not** drawn from design tokens. This is a documented
   gap: the spectrum stops are not tokenized and the contract therefore cannot bind them to
   token refs. Recorded as backlog (tokenize / parameterize the custom-color spectrum), not
-  specified here — link `flowin_pm`.
+  specified here.
 - Per-call overridable geometry (diameter, ring width, gap width) currently uses raw
   scale-derived defaults rather than a named size axis; a future pass may fold these into a
   size-name axis consistent with other controls. Recorded, not specified here.

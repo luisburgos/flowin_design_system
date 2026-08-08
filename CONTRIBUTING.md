@@ -76,8 +76,7 @@ one.
 
 A **gap** is something the spec deliberately does not answer yet: a role with no real
 value, a token bound by nothing, a capability not carried across. Gaps are declared in
-[`DESIGN.md`](DESIGN.md) §5 and tracked as issues in
-[`flowin_pm`](https://github.com/luisburgos/flowin_pm).
+[`DESIGN.md`](DESIGN.md) §5.
 
 Declaring a gap is not an admission of incompleteness — it is the instruction that stops a
 transform inventing a value and silently diverging from every other transform. If you find
@@ -114,8 +113,8 @@ confidence. Concretely, all of:
    unresolved is written down in §5 with an issue behind it, rather than left implicit.
 3. **The spec agrees with at least one reference implementation.** This is the real gate,
    and the one that takes work: an audit run against a stable implementation, every unit
-   verdicted, nothing left undecided. The protocol is [`AUDIT.md`](AUDIT.md) and the run's
-   state lives in a ledger under `flowin_pm/audits/<technology>/`.
+   verdicted, nothing left undecided. The protocol is [`AUDIT.md`](AUDIT.md), which says
+   where a run's state is kept.
 
 Point 3 is what separates a release from a checkpoint: the gates prove the spec is
 internally consistent, and only an audit shows it still describes something real.

@@ -101,7 +101,7 @@ contributes content and constraints only, never visual tokens.
   wrapper. This contract specifies the standalone shape. (audit: surface decomposition.)
 - **Dropped API surface.** `id`, `label`, and `labelDecoration` were removed; labelling is
   now a caller responsibility composed around the field. An `enabled` flag was added.
-  Recorded as backlog, not re-introduced here. (link `flowin_pm`.)
+  Recorded as backlog, not re-introduced here.
 - **No label / helper / error / counter slots.** Validation messaging, helper text, and
   character counters are not part of this contract today; callers compose them externally.
 - **Hover / pressed / focused visuals.** v1 does not bind distinct tokens for hover,
