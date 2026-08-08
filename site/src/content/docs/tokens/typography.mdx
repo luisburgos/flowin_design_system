@@ -3,7 +3,6 @@ title: Typography
 description: The baseline and brand type scales, resolved from the token set.
 ---
 
-import GapNotice from '../../../components/GapNotice.astro';
 import { Aside } from '@astrojs/starlight/components';
 
 Two families with different jobs.
@@ -24,19 +23,6 @@ set does not name keep their platform default size and weight, in the Flowin fam
 Replacing the whole scale would leave unnamed slots undefined and change how native
 widgets render.
 </Aside>
-
-<GapNotice
-  title="Declared but not bound"
-  prefix="typography.baseline"
-  match={(t) => t.description?.includes('DECLARED BUT NOT BOUND')}
-  label="declared but unbound"
->
-The style is defined in the token set, but no component contract cites it and the
-reference implementation leaves the corresponding slot at the platform default.
-
-A transform must **not** install it on the strength of its existence — doing so silently
-diverges the rendered output.
-</GapNotice>
 
 ## Conversion rules
 

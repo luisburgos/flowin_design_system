@@ -15,8 +15,10 @@ Two-tier [Design Tokens Community Group](https://tr.designtokens.org/format/) JS
   - `color.light.tokens.json` and `color.dark.tokens.json` define the per-mode role set;
     both alias the shared primitive ramps.
   - `color.fixed.tokens.json` holds mode-independent colors (same value in both modes).
-  - `primary` / `secondary` / `tertiary` alias the `neutral` ramp and are flagged
-    **placeholder** pending a chromatic brand accent.
+  - `primary` / `secondary` / `tertiary` alias the `neutral` ramp. That is the default,
+    not a missing palette: they are the accent surface a consumer re-points, and a
+    transform keeps them overridable rather than resolving them to fixed values.
+    See DESIGN.md §2, "Accent roles are a customization surface".
   - Semantic role keys use a platform-neutral vocabulary (e.g. `surfaceSecondary` /
     `onSurfaceSecondary`, `borderSubtle`); see DESIGN.md §2 for the role-vocabulary rationale.
 

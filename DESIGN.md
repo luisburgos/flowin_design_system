@@ -340,8 +340,6 @@ These are spec-coverage gaps known and tracked. They are declared here so transf
 **not to invent values** for them (see §3 "Do not"). This section is authoritative for
 what the gaps are; scheduling the work is tracked separately.
 
-- The three declared-but-unbound gaps.
-
 - _(Reclassified 2026-08-07.)_ The `primary` / `secondary` / `tertiary` roles were
   recorded here as placeholders awaiting a palette. That was wrong about their purpose:
   they are the system's **accent surface**, deliberately neutral by default and intended
