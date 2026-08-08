@@ -354,12 +354,13 @@ These are spec-coverage gaps known and tracked. They are declared here so transf
   `surfaceBright` but does **not** define `onSurfaceBright` or `onSurfaceBrightVariant`.
   This is a genuine gap: the bright surface has no declared on-color in dark mode. Do not
   invent these values — leave them undefined until the design source supplies them.
-- _(Closed 2026-08-07.)_ A 400-step divergence between the accent ramps and the neutral
-  ramp was recorded here. It never belonged in this file: the spec declares accent
-  **roles**, not accent ramps, so there was no spec token to diverge. The mismatch existed
-  only in a transform's own palette and is fixed there, with a test keeping the ramps
-  aligned. A transform that ships accent ramps for consumers to work from should do the
-  same; the spec has nothing to port.
+- _(Closed 2026-08-07.)_ The 400-step divergence recorded here — the accent ramps' 400
+  step not matching `neutral400` — is resolved in the reference implementation, which
+  aligned the step. It reached no rendered output while it lasted, since no role binds a
+  400 step. Note the entry described a **transform's own palette**, not a spec token: the
+  spec declares accent *roles* and no accent ramps, so there was never a
+  `{color.primary.400}` to diverge. A transform that ships accent ramps for consumers to
+  work from resolves this in its own palette; there is nothing here to port.
 - **`typography.baseline.titleLarge` is declared but not bound.** The style is defined in
   the token set, but no component contract cites it and the reference implementation leaves
   the corresponding native slot at the platform default (carried forward from the production
