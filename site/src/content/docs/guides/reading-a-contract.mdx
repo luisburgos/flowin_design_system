@@ -1,0 +1,98 @@
+---
+title: Reading a component contract
+description: Normative versus illustrative, the fixed sections in order, and how to read a token bindings table.
+---
+
+import { Aside, CardGrid, Card } from '@astrojs/starlight/components';
+
+Every component is specified by one Markdown file under `design/components/`, following a
+**fixed template** (`_TEMPLATE.md`). The shape never varies, so once you can read one
+contract you can read all of them. The [button contract](/components/button/) is the
+worked reference.
+
+Each contract's own text renders on its component page, alongside a table resolving every
+token it cites. This page explains how to read what you find there.
+
+## Normative versus illustrative
+
+The distinction to internalise first: each section is either **normative** (a transform
+MUST satisfy it) or **illustrative** (it shows the reference implementation's shape but
+binds nothing). The template states this in its header, and each contract repeats it.
+
+<CardGrid>
+  <Card title="Normative — the binding contract">
+    **Intent**, **Variants**, **Sizes**, **States**, **Token bindings** and **Behavioral
+    notes**. These are the machine-targetable core: *property × state → token reference*.
+    A conformant transform reproduces them exactly.
+  </Card>
+  <Card title="Illustrative — not binding">
+    **Anatomy** is the reference implementation's structure only. Where rendering is
+    platform-dependent the contract says so and specifies *intent*, not the drawing. Do
+    not treat anatomy as a requirement.
+  </Card>
+</CardGrid>
+
+<Aside type="caution" title="Anatomy is the trap">
+Anatomy reads like a specification — it names parts and describes arrangement — which is
+exactly why it misleads. Building to it reproduces one platform's widget tree on a
+platform that may have no equivalent structure, and a transform that does so is not more
+faithful, only less portable.
+</Aside>
+
+## The fixed sections, in order
+
+| Section | Status | What it tells you |
+|---|---|---|
+| `Intent` | normative | One sentence: what the component is *for*, independent of how any platform renders it. |
+| `Anatomy` | illustrative | The reference structure. Not binding; flagged where platform-dependent. |
+| `Variants` | normative | The emphasis/purpose options a call site may choose (e.g. filled / tonal / outline / text / destructive). |
+| `Sizes` | normative | The footprint options and their notable dimensions (padding, min-height, paired icon size). |
+| `States` | normative | Which interaction states apply (default · hover · pressed · focused · disabled). |
+| `Token bindings` | normative | The core table: each *property × variant/state* mapped to a `{token.reference}`. This is what a transform writes into the theme. |
+| `Behavioral notes` | normative | Behaviour tokens cannot express — gestures, async, helper APIs, disable-on-null-callback. |
+| `Theming directive` | normative | The split: what is styled globally (theme slot) versus what the thin widget resolves per call (variant, size, and any per-call role overlay). |
+| `Known gaps` | tracking | Documented deviations from the reference and their planned fix, linking the `flowin_pm` backlog. |
+| `Transform notes` | hints | Optional per-technology hints: reference implementation name, theme slots, the generic-primitive versus domain-specific tag. |
+
+## Reading the bindings table
+
+The **Token bindings** table is where a contract earns its keep. Each row reads a
+*property*, the *variant/state* it applies to, and a `{token.reference}` in curly braces.
+The reference resolves against the token set, so a contract holds no literal hex or pixel
+values — only pointers into the token layer.
+
+```md
+# Token bindings (normative)
+| Property            | Variant / State | Token                    |
+| shape corner radius | all             | {radius.400}             |
+| background          | filled, default | {color.primary}          |
+| foreground          | filled, default | {color.onPrimary}        |
+| background          | tonal, default  | {color.surfaceSecondary} |
+| content padding     | per size        | {space.*} (see Sizes)    |
+```
+
+That indirection is what makes the spec technology-agnostic. A literal value would encode
+one platform's colour representation and freeze the palette into every contract that used
+it; a reference stays correct when the token behind it changes, and every consumer of that
+token changes with it.
+
+Each component page resolves these citations against the current token set, so you can
+read the name and its present value side by side without either being retyped.
+
+## The theming directive
+
+The accompanying **Theming directive** tells you which bindings are installed once on the
+global theme (shape, base padding, base text style, per-variant colour roles) versus
+resolved by the thin widget per call (variant selection, size dimensions, and any role
+overlay such as the destructive error role).
+
+That global-versus-per-call split is the theme-first thesis made concrete for one
+component: anything a theme can know belongs on the theme, and what remains is only what
+the call site alone can decide.
+
+<Aside title="Where planned work lives">
+A contract specifies the component *as it stands*. Deviations from the reference and their
+planned fixes are recorded in that contract's own **Known gaps** section and tracked in
+the [`flowin_pm`](https://github.com/luisburgos/flowin_pm) backlog — never inferred from a
+contract's silence.
+</Aside>

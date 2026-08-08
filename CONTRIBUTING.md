@@ -39,8 +39,10 @@ The first two are perfectly unambiguous and still fail. Clarity is necessary and
 sufficient: a contract also has to be *complete* — leaving nothing to the reader's
 judgement — and *true*.
 
-Read [`docs/usage-guide.html`](docs/usage-guide.html) first if you have not — it is the
-reader's tour of the three-layer model. The rest of this file covers mechanics.
+Read the site's guides first if you have not — **Reading a component contract** and **How
+the spec becomes a UI kit** are the reader's tour, and they render the tokens and contracts
+resolved. Run `cd site && npm install && npm run dev`. The rest of this file covers
+mechanics.
 
 ## Before you commit
 

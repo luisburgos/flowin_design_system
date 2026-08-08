@@ -1,0 +1,83 @@
+---
+title: How the spec becomes a UI kit
+description: What a transform is, how tokens map onto a platform's theming mechanism, and the acceptance test a UI kit must pass.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+A **transform** takes the platform-agnostic tokens and contracts and binds them into one
+platform's global theming mechanism. What it produces is a **UI kit**: a real, installable
+package for one technology. [`flutter_flowin`](https://github.com/luisburgos/flutter_flowin)
+is the first, and the named reference implementation.
+
+This page is the human summary. The normative definition — the full mechanism mapping, the
+role-name mapping, and the conformance rules — is `DESIGN.md` §3 in the spec repository.
+
+## The mechanism mapping
+
+Flutter is the named reference implementation, and its column is real and verified. A CSS
+column appears in the spec as **illustrative only**: it demonstrates that the same token
+set maps onto a fundamentally different mechanism without changing the tokens. It is not a
+delivered kit.
+
+| Concept | Flutter (reference) | CSS (illustrative) |
+|---|---|---|
+| Semantic colours | Bound onto `ColorScheme` roles; native widgets inherit from `Theme.of(context).colorScheme`. | Custom properties on `:root` (`--color-primary`, …). |
+| Typography (baseline) | Overlaid onto `TextTheme` slots on top of the platform scale, with the Flowin family applied. | Custom properties plus utility classes that apply them. |
+| Typography (caption + brand) | No standard slot exists, so these are exposed as typed accessors alongside the theme. | Additional custom properties and their own classes. |
+| Spacing / radius / other non-native tokens | Carried on a `ThemeExtension`, read via a typed `context` accessor. | Custom properties under `:root`. |
+| Status colours (`success` / `warning` / `info`) | Carried on the same `ThemeExtension`, **not** on `ColorScheme` — Material models no such roles. Resolved per brightness. | Custom properties under `:root`, re-declared in the dark-mode block. |
+| Component appearance | Bound onto per-component theme slots (`filledButtonTheme`, …); the native widget renders Flowin by default. | Component classes (`.flw-button--filled`, …) resolving the custom properties. |
+
+Several role keys carry **platform-neutral names** so the agnostic layer does not
+presuppose one framework's vocabulary. A Flutter kit maps them onto Material's roles —
+`surfaceSecondary` onto `secondaryContainer`, `borderSubtle` onto `outlineVariant`, and so
+on. `DESIGN.md` §3 holds that mapping table, and it is the single source of truth for it:
+a reviewer uses it to confirm that a Material name in the code is the *correct* transform
+of a neutral name rather than a deviation. For a non-Material target, the neutral name
+*is* the name and no mapping applies.
+
+## The acceptance test
+
+A kit is conformant only if **every token binding is globally overridable, not
+per-instance**. Changing a binding once on the global theme must change every consumer. If
+a value can only be changed by editing a call site, it is not a binding — it is a leak.
+
+<Aside type="tip" title="Theme-overridability">
+The concrete test: for any documented binding, it must be possible to override it *purely
+through the theme*, render the component unchanged, and observe the override.
+
+The reference implementation proves this for the button — a test overrides the
+filled-button shape on the theme, pumps the button unchanged, and reads the themed radius
+off the rendered surface.
+</Aside>
+
+This is a stronger property than looking right. A kit can reproduce every value in the
+spec and still fail, if it reproduces them by hardcoding at the call site: the rendered
+output matches, and the theming mechanism the spec exists to define does not work.
+
+## What a transform must not do
+
+<Aside type="danger" title="The four prohibitions">
+- **Do not apply per-instance hardcoded styling.** Appearance lives on the theme. A
+  component resolves only per-call variant and size.
+- **Do not invent values for documented gaps.** Where a token or role is declared a gap,
+  leave the placeholder or alias as declared — no fabricated brand hue, no fabricated dark
+  on-colour.
+- **Do not collapse variants or sizes.** These are the per-call concerns a theme cannot
+  know. Preserve the full surface a component documents.
+- **Do not rename a token reference without updating its bindings** in the same change. A
+  role key and the bindings targeting it are one contract.
+</Aside>
+
+The full list, with its rationale, is `DESIGN.md` §3.
+
+## Why kits version independently
+
+A UI kit versions on its own line, not with the spec and not with any other kit. The spec
+changing does not oblige every kit to move, and a kit shipping a fix of its own does not
+imply the spec changed.
+
+That independence is also why a finding spanning both a contract and a kit is **two
+changes in two repositories** — the spec side lands in the spec repository, the kit side
+in the kit's own.
