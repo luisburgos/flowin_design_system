@@ -1,0 +1,57 @@
+name: pages
+
+# Deploys the site to GitHub Pages on every push to main.
+#
+# Separate from `ci` rather than a job inside it: Pages needs `id-token` and
+# `pages` permissions this repository does not otherwise grant, and its
+# concurrency group must *not* cancel in progress. Cancelling a half-finished
+# deploy can leave the live site serving a partially-published build, which is
+# the opposite of what `ci`'s cancel-in-progress is for.
+on:
+  push:
+    branches:
+      - main
+  # Lets a failed or superseded deploy be re-run without an empty commit.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+        working-directory: site
+      # The site reads `tokens/**` and `design/components/*.md` from the
+      # repository root at build time, so this step also re-proves the spec
+      # resolves — a broken reference fails here rather than publishing a
+      # stale page.
+      - run: npm run build
+        working-directory: site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

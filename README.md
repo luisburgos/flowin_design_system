@@ -2,6 +2,9 @@
 
 The **technology-agnostic specification** of the Flowin design system.
 
+📖 **[Read the spec](https://luisburgos.github.io/flowin_design_system/)** — tokens and
+component contracts rendered with every value resolved.
+
 This repo is the source of truth that AI agents transform into technology-specific
 packages. The spec asserts **contracts and token values, never a specific rendering
 technique**.
@@ -32,11 +35,17 @@ transformation contract in [`DESIGN.md`](DESIGN.md) §3.
 
 ## Site
 
+[**luisburgos.github.io/flowin_design_system**](https://luisburgos.github.io/flowin_design_system/)
+
 `site/` is an Astro/Starlight app that **reads** this spec and renders it for human
 review — swatches with resolved values, scales drawn to scale, each contract with its
 cited tokens resolved. It is generated from `tokens/**` and `design/components/*.md` at
 build time and never restates a value, so a page cannot drift from the spec; it can only
 fail to build.
+
+It deploys to GitHub Pages on every push to `main`. Because the pages are generated from
+the spec, a change that moves a token or renames a contract fails the deploy rather than
+publishing a stale page.
 
 ```sh
 cd site && npm install && npm run dev
