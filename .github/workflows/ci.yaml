@@ -1,0 +1,51 @@
+name: ci
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  # The spec's own gates: every token alias resolves, every `{token.reference}`
+  # a contract cites exists, every contract carries the fixed template
+  # sections, the component index matches the files on disk, and no technology
+  # name has leaked into a normative section.
+  #
+  # These ran only when someone remembered to run them before this workflow
+  # existed.
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm run validate
+
+  # The site renders the spec by reading `tokens/**` and
+  # `design/components/*.md` at build time, so a spec change that moves a token
+  # or renames a file breaks the build rather than producing a stale page.
+  #
+  # That property is only worth having if something exercises it. Without this
+  # job the breakage would sit unnoticed until a human opened the site — which,
+  # for a review tool a designer visits occasionally, could be weeks.
+  site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+        working-directory: site
+      - run: npm run build
+        working-directory: site

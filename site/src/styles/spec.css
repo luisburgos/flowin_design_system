@@ -1,0 +1,22 @@
+/* Token rendering. Deliberately plain: the page's job is to show values
+   accurately, not to have a look of its own. */
+
+/* Token paths are identifiers — breaking one mid-word turns a readable
+   reference into two nonsense fragments, so they never wrap. The table
+   scrolls instead when the viewport cannot hold them. */
+.tokens code { white-space: nowrap; }
+.tokens-wrap { overflow-x: auto; }
+.tokens { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+.tokens th { text-align: left; font-weight: 600; padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid var(--sl-color-gray-5); }
+.tokens td { padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--sl-color-gray-6);
+  vertical-align: top; }
+.swatch { display: block; width: 2.25rem; height: 2.25rem; border-radius: 4px;
+  border: 1px solid var(--sl-color-gray-5); }
+.desc { margin: 0.25rem 0 0; font-size: 0.8rem; color: var(--sl-color-gray-3); }
+.desc.shared { color: var(--sl-color-orange-high, #b45309); }
+.literal { font-size: 0.8rem; color: var(--sl-color-gray-3); }
+.bar-col { width: 45%; }
+.bar { display: block; height: 0.65rem; border-radius: 2px;
+  background: var(--sl-color-accent); }
+.group-note { font-size: 0.9rem; }

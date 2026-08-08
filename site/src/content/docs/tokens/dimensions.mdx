@@ -1,0 +1,52 @@
+---
+title: Dimensions
+description: Spacing, radius, border, control and icon scales, rendered to scale from the token set.
+---
+
+import ScaleTable from '../../../components/ScaleTable.astro';
+import { Aside } from '@astrojs/starlight/components';
+
+## Spacing
+
+A non-linear step scale named by token weight rather than by pixels. This weight-named
+scale is the complete set, and it is what component contracts cite.
+
+<ScaleTable prefix="space" filter={(t) => !t.name.startsWith('alias.')} />
+
+<Aside title="The t-shirt names are an alias layer">
+A transform may additionally expose the `space.alias` subset (`xs`, `sm`, `md`, …) as its
+ergonomic layout API, so call sites read `spacing.md` rather than `space400`. That subset
+is an **alias onto these steps, never a second scale** — a contract always cites the
+primitive weight.
+
+The subset is deliberate: it covers the steps layouts reach for. The fine steps and the
+large ones are reachable only through the full scale above.
+</Aside>
+
+## Radius
+
+<ScaleTable prefix="radius" />
+
+## Border
+
+Stroke widths for container edges. Icon strokes are a separate, finer scale.
+
+<ScaleTable prefix="border" />
+
+## Control heights
+
+The fixed heights interactive controls are built to — a button's minimum height, an icon
+button's square side. Distinct from spacing: a control height is a sizing decision, not a
+spacing value, even where the two share a number.
+
+<ScaleTable prefix="size.control" />
+
+## Icon sizes and strokes
+
+Each icon step is paired with a stroke weight so thickness scales with the box. **The two
+are one contract**: an icon rendered at a larger box with an unchanged stroke reads as a
+different weight of icon, so a transform must carry the pairing rather than just the
+sizes.
+
+<ScaleTable prefix="size.icon" />
+<ScaleTable prefix="stroke.icon" />

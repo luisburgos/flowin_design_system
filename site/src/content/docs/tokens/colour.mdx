@@ -1,0 +1,82 @@
+---
+title: Colour
+description: The primitive ramps and the semantic roles that alias them, resolved from the token set.
+---
+
+import ColourTable from '../../../components/ColourTable.astro';
+import GapNotice from '../../../components/GapNotice.astro';
+import { Aside } from '@astrojs/starlight/components';
+
+Every value on this page is resolved from `tokens/**` when the site is built. Nothing
+here is typed by hand, so a page cannot disagree with the spec.
+
+## Semantic roles — light
+
+The vocabulary components speak. A role is always paired with the on-colour legible on
+top of it, which is what makes the contract platform-neutral: any platform with a notion
+of "a colour and the colour that goes on it" can host the binding.
+
+<ColourTable
+  prefix="color"
+  filter={(t) => !t.name.includes('.') && !['white', 'black'].includes(t.name)}
+/>
+
+<GapNotice
+  title="The brand roles are placeholders"
+  prefix="color"
+  match={(t) => t.description?.includes('PLACEHOLDER')}
+  label="placeholders"
+>
+They alias the **neutral ramp**: there is no chromatic brand accent yet, so they are named
+slots awaiting a palette. That is why several of them resolve to the same value as roles
+they are supposed to differ from.
+
+This is the single most consequential open decision in the spec. Filling it re-points
+those roles and changes the appearance of every implementation built against the
+placeholders. Tracked as [`flowin_pm#30`](https://github.com/luisburgos/flowin_pm/issues/30).
+</GapNotice>
+
+### Why the repeated values matter
+
+The **Resolves to** column flags roles that share a value. Those are not duplicates to be
+tidied up — they are roles the spec deliberately distinguishes that happen to land on the
+same neutral today.
+
+That distinction is invisible to any rendering test: a binding pointed at the wrong role
+renders correctly and stays wrong until the accent lands. The 2026-08 audit found exactly
+this twice, and only by reading role *names* rather than comparing pixels.
+
+## Semantic roles — dark
+
+<ColourTable prefix="color" filter={(t) => t.file?.includes('color.dark')} />
+
+## Status roles
+
+`success`, `warning` and `info`, each with an on-colour. Unlike the core roles these have
+**no universal native slot** — a platform's colour table typically models a primary, a
+surface and an error and stops there — so they bind through the platform's
+theme-extension mechanism instead.
+
+`info` is neutral rather than chromatic: it is not an alert, and under the monochrome
+thesis colour is reserved for meaning.
+
+<ColourTable prefix="color.status" />
+
+## Primitive ramps
+
+The raw palette. Never consumed directly by a component — semantic roles alias these.
+
+<Aside title="Monochrome by design">
+The `neutral` ramp carries no hue, and there are no brand ramps here at all. Colour in
+this system is reserved for *meaning*: only `error`, `warning` and `success` are
+chromatic. When nothing else on screen is coloured, a red or a green is impossible to
+miss.
+
+Three same-valued brand ramps read like placeholder scaffolding, so this is recorded
+explicitly: the greys are a decision, not an unfinished palette.
+</Aside>
+
+<ColourTable prefix="color.neutral" />
+<ColourTable prefix="color.error" />
+<ColourTable prefix="color.warning" />
+<ColourTable prefix="color.success" />

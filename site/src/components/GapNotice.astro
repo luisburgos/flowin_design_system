@@ -1,0 +1,46 @@
+---
+// Renders a gap warning only while the tokens still declare the gap.
+//
+// The values on a token page cannot drift — they are resolved from the spec.
+// The *prose about them* can, and it is the part most likely to: a warning
+// describes a gap, and a gap is the thing most likely to close. A hand-written
+// "these are placeholders" note survives the day the placeholders are replaced,
+// which is exactly the failure this spec's audit found six times in its own
+// contracts.
+//
+// So the condition is derived. When the tokens stop saying `PLACEHOLDER`, this
+// stops rendering, and if nothing matches the caller's `when` the notice is
+// replaced by a build-visible warning rather than silently vanishing.
+import { Aside } from '@astrojs/starlight/components';
+import { group } from '../lib/tokens.mjs';
+
+const { title, prefix, match, type = 'caution', label } = Astro.props;
+
+const matched = group(prefix).filter((t) => match(t));
+const names = matched.map((t) => t.name);
+---
+
+{
+  matched.length > 0 ? (
+    <Aside type={type} title={title}>
+      <p>
+        Applies to{' '}
+        {names.map((n, i) => (
+          <>
+            {i > 0 && ', '}
+            <code>{n}</code>
+          </>
+        ))}
+        , which the token set still marks as {label ?? 'open'}.
+      </p>
+      <slot />
+    </Aside>
+  ) : (
+    <Aside type="tip" title={`Resolved: ${title}`}>
+      <p>
+        No token under <code>{prefix}</code> matches this condition any more, so the gap
+        this note described has closed. Delete the notice from the page.
+      </p>
+    </Aside>
+  )
+}
