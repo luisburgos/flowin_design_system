@@ -19,9 +19,10 @@ label. The reference implementation composes the host platform's native choice-c
 primitive (in Flutter: `ChoiceChip`) rather than drawing a bespoke chip — the theme styles
 the native primitive, and a wrapper applies the dimmed opacity. Exact internal layout
 (ripple bounds, overlay geometry) is **platform-dependent**; the spec fixes the *intent*
-(leading element precedes label inside a single pill), not the pixels. The **gap** between
-a leading element and the label is an exception: it is bound to `{space.100}` in the
-Theming directive rather than left to the platform.
+(leading element precedes label inside a single pill), not the pixels. Two things are
+exceptions, fixed rather than left to the platform: the **gap** between a leading element
+and the label, bound to `{space.100}` in the Theming directive, and the chip's **height**
+in each of its two content cases (see Sizes).
 
 ## Variants
 
@@ -38,13 +39,24 @@ Selection is the only axis. Default is `unselected`.
 The chip has **no per-call size axis**. Footprint is fixed by the theme (single padding +
 label style for every chip). This is intentional and differs from the multi-size button.
 
-| Size | Content padding (all sides) | Label text style |
-|---|---|---|
-| (single) | `space.400` (16, uniform) | `typography.baseline.labelSmall` |
+| Size | Content padding (all sides) | Label text style | Height |
+|---|---|---|---|
+| (single) | `space.400` (16, uniform) | `typography.baseline.labelSmall` | 46 |
+| (single, leading present) | `space.400` (16, uniform) | `typography.baseline.labelSmall` | 50 |
 
 The padding is **uniform on all four sides**, not a horizontal/vertical pair: the chip's
 height is driven by the padding rather than by a min-height token, so the vertical and
 horizontal insets are the same step.
+
+**A leading element makes the chip taller**, and the two heights above are normative. Both
+follow from the content the padding wraps: a label alone is `labelSmall`'s 12px line box,
+and a leading element is `{size.icon.sm}` (16). Adding the uniform 16 padding per side and
+the `{border.regular}` hairline gives 46 and 50 respectively.
+
+The leading element is **never compressed to the label's line box**. It renders at its full
+icon step, and the chip grows to accommodate it — the reverse (holding the height and
+shrinking the icon) is non-conformant, even where a platform's chip primitive makes it the
+path of least resistance. See Transform notes.
 
 ## States
 
@@ -72,6 +84,7 @@ value on both light and dark surfaces. A transform must bind the label to
 | shape | all | pill — `{radius.full}` |
 | label text style | all | `{typography.baseline.labelSmall}` |
 | content padding | all | `{space.400}` (uniform, all sides) |
+| leading element size | all (leading present) | `{size.icon.sm}` (16) |
 | border side color | unselected | `{color.borderSubtle}` |
 | border side width | all | `{border.regular}` |
 | background | unselected | transparent |
@@ -128,6 +141,16 @@ value on both light and dark surfaces. A transform must bind the label to
   wrong in both directions: the padding is **uniform `{space.400}` on all sides**, and that
   is what *both* the legacy source and the modern reference render. The bindings above are
   authoritative; there is no padding divergence to track.
+- _(Closed 2026-08-11, audit unit "chip".)_ The contract fixed a single chip height driven
+  by the content padding and said nothing about a leading element changing it, so it did not
+  determine the leading-present case at all: an implementation reading it would hold the
+  height and compress the leading, which is a rendering defect rather than a variation. Both
+  heights are now normative (Sizes), the leading element binds `{size.icon.sm}`, and the
+  requirement that it never be compressed is stated. The reference platform's mechanism for
+  reaching the taller height is in Transform notes, deliberately **not** as a spec value —
+  it is a property of one layout system's coupling between label box and leading box, and a
+  transform that ports the number rather than the outcome will overshoot on a platform that
+  has no such coupling.
 - Legacy exposed per-instance escape hatches (`backgroundColor`, `borderColor`, `border`,
   `padding`, `margin`); these are intentionally **not** carried forward — styling is
   theme-only. A **minimum-size constraint** is the one exception, and it is *not* an escape
@@ -139,6 +162,20 @@ value on both light and dark surfaces. A transform must bind the label to
 - **Reference implementation:** `FlowinChip` (flutter_flowin) — a thin composition over the
   framework's native choice-chip primitive (`ChoiceChip`).
 - **Theme slot (reference impl):** `chipTheme`.
+- **Reaching the leading-present height.** The two heights in Sizes are the normative
+  outcome; how a platform reaches them is its own concern, and a primitive that sizes a
+  leading slot independently of the label needs no special handling at all. The reference
+  platform is not such a primitive: `RenderChip` derives its content height from the label
+  plus the label padding, sizes the avatar box to that content height, and *asserts* that no
+  child box exceeds it. A 16px leading in a 12px label's box is therefore squeezed and
+  painted outside its bounds rather than growing the chip. The reference resolves this by
+  carrying `{space.50}` vertically on the leading gap, which lifts the content height to 16
+  so the avatar box matches the icon step. That 2-per-side figure is a property of this
+  mechanism, **not a spec value** — a transform whose layout system has no such coupling
+  reaches 50 without it, and one that adds it anyway will overshoot.
+- **Trap (reference platform):** unconstraining `avatarBoxConstraints` looks like the fix
+  for a compressed leading and is not — it trips the same `sizes.content >= boxSize.height`
+  assert and fails in debug. The content height is what has to grow.
 - **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `surfaceSecondary`, `onSurfaceSecondary`, `borderSubtle`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Legacy names (reference):** `FdChip` / `FdChipVariant` (`selected` / `unselected` /
   `unselectedDimmed`), with `child` + `onLongPress` + per-instance styling hooks (see Known
@@ -147,3 +184,7 @@ value on both light and dark surfaces. A transform must bind the label to
 - **Conformance:** a theme-only-styling test must prove the pill shape, selected fill, and
   label style come from the theme slot, not the widget — override the slot, render the chip,
   assert it reflects the override.
+- **Conformance (leading footprint):** a rendered test must assert both heights — 46 without
+  a leading, 50 with one — and that the leading renders at its full `{size.icon.sm}` box.
+  Asserting the height alone is insufficient: a chip can reach 50 while still compressing
+  its leading, which is the failure this pins.
