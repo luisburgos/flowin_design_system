@@ -1,3 +1,27 @@
+## [0.3.0](https://github.com/luisburgos/flowin_design_system/compare/0.2.0...0.3.0) (2026-08-12)
+
+### Documentation
+
+* add contributing guide and record when a release is warranted ([7f18cce](https://github.com/luisburgos/flowin_design_system/commit/7f18cce59e71479a76d27c85e63e9fb8c14d3e68))
+* **audit:** chip — gap closed ([fedcd5b](https://github.com/luisburgos/flowin_design_system/commit/fedcd5b2926cf553a34d508ba6019b38af502283))
+* **audit:** chip-group — gap closed ([084820a](https://github.com/luisburgos/flowin_design_system/commit/084820a83d95f618e67bed4ed81407d22c4ea982))
+* **contributing:** frame the test as convergence ([eb0c44b](https://github.com/luisburgos/flowin_design_system/commit/eb0c44b3e8bb0a866701847e202aa256cadfa3be))
+* **contributing:** state the test a spec change has to pass ([af1aedd](https://github.com/luisburgos/flowin_design_system/commit/af1aedd8c385f74148900f31def4c5f275132511))
+* give each process file an owner and cut the overlap ([6bbeaef](https://github.com/luisburgos/flowin_design_system/commit/6bbeaefd8b9c77a7aaa178a283f80a489e5fa9e0))
+* port the usage guide into the site ([#22](https://github.com/luisburgos/flowin_design_system/issues/22)) ([caaecf8](https://github.com/luisburgos/flowin_design_system/commit/caaecf8f0f334d6a35b70d957af79629aeeee27a))
+* remove references to the private program repository ([#26](https://github.com/luisburgos/flowin_design_system/issues/26)) ([2a20a40](https://github.com/luisburgos/flowin_design_system/commit/2a20a40602bbfe7f48896d9a291b7f5183085fdf))
+* remove the legacy theme-first rationale ([cfb19f5](https://github.com/luisburgos/flowin_design_system/commit/cfb19f5857fe1b1d402f3cee3fab1d73242d5629))
+* retire the gap text for gaps that have closed ([#27](https://github.com/luisburgos/flowin_design_system/issues/27)) ([304893b](https://github.com/luisburgos/flowin_design_system/commit/304893b6616c181fb964b553fc8c288992f289c8))
+
+### Features
+
+* **site:** render the spec for human review ([#21](https://github.com/luisburgos/flowin_design_system/issues/21)) ([794c8bc](https://github.com/luisburgos/flowin_design_system/commit/794c8bcc27bdd6d10a911649ddd0945a74201a44))
+* **tokens:** bind the three declared-but-unbound gaps ([#25](https://github.com/luisburgos/flowin_design_system/issues/25)) ([b73167a](https://github.com/luisburgos/flowin_design_system/commit/b73167a7a60629b3eab67d0bb49e62b586b81c41))
+* **tokens:** specify the accent roles as a customization surface ([#23](https://github.com/luisburgos/flowin_design_system/issues/23)) ([114ee6c](https://github.com/luisburgos/flowin_design_system/commit/114ee6cdc3997754328257175a4cbbf44efa6706))
+
+### CI
+
+* deploy the site to GitHub Pages ([#24](https://github.com/luisburgos/flowin_design_system/issues/24)) ([4bae0ce](https://github.com/luisburgos/flowin_design_system/commit/4bae0ced8413d7815ca90575ecbd088e5ae3c2ec))
 
 ## [0.2.0](https://github.com/luisburgos/flowin_design_system/compare/0.1.0...0.2.0) (2026-08-07)
 

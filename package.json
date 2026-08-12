@@ -1,6 +1,6 @@
 {
   "name": "flowin_design_system",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "Technology-agnostic specification for the Flowin Design System.",
   "scripts": {
