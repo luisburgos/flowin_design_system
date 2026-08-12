@@ -156,6 +156,15 @@ only layout dimensions (height, spacing, padding) and the selection→role mappi
 - **Scroll handle dropped.** The legacy tap/long-press callbacks handed the caller the run's
   scroll controller (to programmatically scroll to the tapped chip); the modern reference
   does not surface a scroll handle. Programmatic scroll-to-selection is not available in v1.
+- _(Decided 2026-08-11, audit unit "chip-group".)_ **Vertical run padding stays out of the
+  contract.** The run is a strip whose height is the chips' own extent, and vertical space
+  around a group is the caller's layout concern — so the horizontal binding above is the
+  whole of the run padding, and the omission is deliberate rather than an unstated zero. A
+  platform that offers padding on both axes must compose it around the run; the reasoning
+  and the failure mode are in Transform notes. This is the narrower of two readings: the
+  alternative treats the group as owning a vertical band, which would make the inset a
+  binding and redefine the run height as an inner extent. Nothing in the system asks for
+  that today.
 
 ## Transform notes
 
@@ -180,6 +189,18 @@ only layout dimensions (height, spacing, padding) and the selection→role mappi
     but one that leaves a short final row floating out of line with the full rows above
     it. The contract now specifies leading alignment, with centring available as a
     per-call override.
+- **Run padding beyond the horizontal binding.** The run height above is the strip's own
+  extent, and the only padding the contract binds is horizontal. Vertical space *around* a
+  group belongs to the layout the caller places it in, not to this component — which is why
+  no vertical inset is specified rather than being specified as zero.
+  A platform may still expose padding on both axes, as the reference does. Where it does,
+  any vertical inset must be added **around** the run rather than subtracted from it. This
+  is not a free choice: a horizontal list primitive typically hands its children the cross
+  extent minus its own padding, so applying a vertical inset inside a fixed-height run takes
+  that space out of the chips and renders them below their content height — the border then
+  draws through the labels. Growing the box preserves the chips; shrinking them is a defect,
+  not a variation. None of this is a binding, and a transform that offers horizontal padding
+  only is conformant.
 - **Color-role neutralization:** this contract names color roles by their platform-neutral keys (e.g. `surfaceSecondary`, `onSurfaceSecondary`); a Flutter transform maps them to Material's `ColorScheme` roles per the table in [DESIGN.md §3](../../DESIGN.md#3-transformation-contract). The named slots in this file's bindings are already neutral.
 - **Tag:** generic-primitive.
 - **Conformance:** a theme-only-styling test must prove the selected fill, border, label
